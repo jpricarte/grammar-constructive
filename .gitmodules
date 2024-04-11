@@ -1,0 +1,3 @@
+[submodule "instances/knapsack"]
+	path = instances/knapsack
+	url = git@github.com:likr/kplib.git

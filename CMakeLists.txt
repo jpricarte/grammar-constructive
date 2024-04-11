@@ -12,7 +12,7 @@ endif()
 project ("simple-heuristic")
 
 # Adicione a origem ao executável deste projeto.
-add_executable (simple-heuristic "src/simple-heuristic.cpp" "src/simple-heuristic.h" "src/Instance.h" "src/KnapsackInstance.cpp" "src/KnapsackInstance.h")
+add_executable (simple-heuristic "src/simple-heuristic.cpp" "src/simple-heuristic.h" "src/Instance.h" "src/KnapsackInstance.cpp" "src/KnapsackInstance.h" "src/ConstructiveAlgorithm.h"   "src/SatInstance.h" "src/SatInstance.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET simple-heuristic PROPERTY CXX_STANDARD 20)

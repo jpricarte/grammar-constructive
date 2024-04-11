@@ -5,11 +5,10 @@
 
 #include <iostream>
 #include <vector>
-#include <sstream>
-#include <algorithm>
-#include <functional>
 
 // TODO: Referencie os cabeçalhos adicionais de que seu programa precisa aqui.
 
 #include "KnapsackInstance.h"
+#include "SatInstance.h"
 #include "Instance.h"
+#include "ConstructiveAlgorithm.h"

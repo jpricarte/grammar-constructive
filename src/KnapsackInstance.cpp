@@ -2,7 +2,6 @@
 
 // Private includes
 #include <iostream>
-#include <vector>
 #include <sstream>
 #include <algorithm>
 
@@ -22,8 +21,18 @@ KnapsackInstance::KnapsackInstance()
 void KnapsackInstance::readInstanceFromInput()
 {
 	string line;
+	// Read empty line
+	getline(cin, line);
+	// Get number of items
+	getline(cin, line);
+	// Set size of items
+	this->items.reserve(stoi(line));
+	this->selectedItems.reserve(stoi(line));
+	// Get max weight
 	getline(cin, line);
 	this->maxWeight = stoi(line);
+	// Read empty line
+	getline(cin, line);
 	while (getline(cin, line)) {
 		if (line.empty())
 			break;
@@ -31,7 +40,7 @@ void KnapsackInstance::readInstanceFromInput()
 		istringstream iss(line);
 		int weight;
 		double cost;
-		iss >> weight >> cost;
+		iss >> cost >> weight;
 		KnapsackItem e{ weight, cost };
 		this->items.push_back(e);
 	}
@@ -52,7 +61,7 @@ bool KnapsackInstance::validateChoice(const KnapsackItem& choice)
 	return choice.weight + this->totalWeight <= this->maxWeight;
 }
 
-void KnapsackInstance::addToSolution(const KnapsackItem& choice)
+void KnapsackInstance::addToSolution(KnapsackItem& choice)
 {
 	this->selectedItems.push_back(choice);
 	this->totalCost += choice.cost;
@@ -67,9 +76,10 @@ void KnapsackInstance::updateCandidates(const KnapsackItem& choice)
 		this->items.erase(it);
 }
 
-void KnapsackInstance::orderByComparator()
+int KnapsackInstance::orderByComparator()
 {
 	sort(this->items.begin(), this->items.end());
+	return this->items.size();
 }
 
 vector<KnapsackItem>& KnapsackInstance::getElements()

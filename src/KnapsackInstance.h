@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Instance.h"
+
 #include <vector>
 
 
@@ -26,16 +27,16 @@ public:
 
 	void readInstanceFromInput();
 
-	inline int getTotalWeight() { return totalWeight; };
-	inline double getTotalCost() { return totalCost; };
+	inline int getTotalWeight() const { return totalWeight; };
+	inline double getTotalCost() const { return totalCost; };
 	inline const std::vector<KnapsackItem>& getItems() { return selectedItems; };
 
 	virtual double objectiveValue();
 	virtual bool shouldStop();
 	virtual bool validateChoice(const KnapsackItem& choice);
-	virtual void addToSolution(const KnapsackItem& choice);
+	virtual void addToSolution(KnapsackItem& choice);
 	virtual void updateCandidates(const KnapsackItem& choice);
-	virtual void orderByComparator();
+	virtual int orderByComparator();
 	virtual std::vector<KnapsackItem>& getElements();
 	
 };
