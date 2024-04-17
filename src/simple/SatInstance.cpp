@@ -107,7 +107,7 @@ double sat::SatInstance::objectiveValue()
 			numClausesTrue++;
 		}
 	}
-	return numClausesTrue;
+	return - numClausesTrue;
 }
 
 bool sat::SatInstance::shouldStop()
@@ -122,7 +122,7 @@ bool sat::SatInstance::shouldStop()
 	return true;
 }
 
-bool sat::SatInstance::validateChoice(const Variable& choice)
+bool sat::SatInstance::validateChoice(Variable& choice)
 {
 	return choice.value == Value::UNDEFINED;
 }
@@ -160,7 +160,7 @@ void sat::SatInstance::addToSolution(Variable& choice)
 	}
 }
 
-void sat::SatInstance::updateCandidates(const Variable& choice)
+void sat::SatInstance::updateAfterChoice(const Variable& choice)
 {
 	// Set value clauses that choice make satisfiable to true
 	for (auto& clause : this->clauses)
@@ -216,4 +216,8 @@ int sat::SatInstance::orderByComparator()
 std::vector<Variable>& sat::SatInstance::getElements()
 {
 	return this->variables;
+}
+
+void sat::SatInstance::resetInstance()
+{
 }

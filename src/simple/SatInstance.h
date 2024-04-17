@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Instance.h"
+#include "SimpleInstance.h"
 
 namespace sat {
 	enum Value {
@@ -26,7 +26,7 @@ namespace sat {
 		Value value; // Defined by the variables
 	};
 
-	struct SatInstance : public Instance<Variable> {
+	struct SatInstance : public simple::Instance<Variable> {
 	private:
 		std::vector<Variable> variables;
 		std::vector<Clause> clauses;
@@ -39,11 +39,12 @@ namespace sat {
 
 		virtual double objectiveValue();
 		virtual bool shouldStop();
-		virtual bool validateChoice(const Variable& choice);
+		virtual bool validateChoice(Variable& choice);
 
 		virtual void addToSolution(Variable& choice);
-		virtual void updateCandidates(const Variable& choice);
+		virtual void updateAfterChoice(const Variable& choice);
 		virtual int orderByComparator();
 		virtual std::vector<Variable>& getElements();
+		virtual void resetInstance();
 	};
 } // namespace SAT

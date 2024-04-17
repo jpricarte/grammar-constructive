@@ -1,4 +1,0 @@
-Final result: weight=8 value=40
-2 20
-1 10
-5 10

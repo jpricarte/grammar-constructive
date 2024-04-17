@@ -8,7 +8,5 @@
 
 // TODO: Referencie os cabeçalhos adicionais de que seu programa precisa aqui.
 
-#include "KnapsackInstance.h"
-#include "SatInstance.h"
-#include "Instance.h"
+#include "KnapsackProblem.h"
 #include "ConstructiveAlgorithm.h"

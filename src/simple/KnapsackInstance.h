@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Instance.h"
+#include "SimpleInstance.h"
 
 #include <vector>
 
@@ -8,20 +8,22 @@
 struct KnapsackItem {
 	int weight;
 	double cost;
+	bool selected;
+	bool visited;
 
-	inline bool operator< (const KnapsackItem& other) { return -this->cost < -other.cost; };
-	inline bool operator==(const KnapsackItem& other) { return this->weight == other.weight && this->cost == other.cost; };
+	bool operator< (const KnapsackItem& other) const;
+	inline bool operator==(const KnapsackItem& other) const { return this->weight == other.weight && this->cost == other.cost; };
 };
 
-class KnapsackInstance : public Instance<KnapsackItem> {
+class KnapsackInstance : public simple::Instance<KnapsackItem> {
 private:
 	// instance
 	std::vector<KnapsackItem> items;
 	int maxWeight;
 	// result
-	std::vector<KnapsackItem> selectedItems;
 	int totalWeight;
 	double totalCost;
+
 public:
 	KnapsackInstance();
 
@@ -29,14 +31,14 @@ public:
 
 	inline int getTotalWeight() const { return totalWeight; };
 	inline double getTotalCost() const { return totalCost; };
-	inline const std::vector<KnapsackItem>& getItems() { return selectedItems; };
 
 	virtual double objectiveValue();
 	virtual bool shouldStop();
-	virtual bool validateChoice(const KnapsackItem& choice);
+	virtual bool validateChoice(KnapsackItem& choice);
 	virtual void addToSolution(KnapsackItem& choice);
-	virtual void updateCandidates(const KnapsackItem& choice);
+	virtual void updateAfterChoice(const KnapsackItem& choice);
 	virtual int orderByComparator();
 	virtual std::vector<KnapsackItem>& getElements();
+	virtual void resetInstance();
 	
 };
