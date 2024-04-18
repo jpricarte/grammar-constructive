@@ -12,7 +12,11 @@ int main(int argc, char* argv[])
     auto problem = KnapsackProblem();
     auto instance = KnapsackInstance(argv[1]);
 
-    double value = ConstructiveAlgorithm::greedyAlgorithm<KnapsackInstance, KnapsackSolution, KnapsackElement>(problem, instance);
+    function<std::shared_ptr<problem::Element>(problem::Instance&, std::shared_ptr<problem::Solution>)> f = [] (problem::Instance& i, shared_ptr<problem::Solution> s) -> std::shared_ptr<problem::Element> {
+        return ConstructiveAlgorithm::getElementAlphaSelection(i, s, 0.8); 
+    };
+
+    double value = ConstructiveAlgorithm::greedyAlgorithm(problem, instance, f);
 
     cout << "Objective value: " << value << endl;
 

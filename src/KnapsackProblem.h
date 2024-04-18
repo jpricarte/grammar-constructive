@@ -2,10 +2,12 @@
 
 #include "Problem.h"
 #include <vector>
+#include <set>
 #include <memory>
 #include <string>
 
-struct KnapsackElement{
+struct KnapsackElement : public problem::Element {
+public:
 	double value;
 	int weight;
 
@@ -18,33 +20,36 @@ struct KnapsackElement{
 };
 
 
-class KnapsackSolution : public problem::Solution<KnapsackElement> {
-	std::vector<std::shared_ptr<KnapsackElement>> solution;
-	std::vector<std::shared_ptr<KnapsackElement>> visited;
+class KnapsackSolution : public problem::Solution {
+	std::vector<std::shared_ptr<problem::Element>> solution;
+	std::set<std::shared_ptr<problem::Element>> visited;
 	double currentValue;
 	int currentWeight;
 
 public:
+
 	KnapsackSolution(size_t numElements);
 
 	int getCurrentWeight() const;
 
-	virtual void addElementToSolution(std::shared_ptr<KnapsackElement> element);
+	std::set<std::shared_ptr<problem::Element>> getVisited();
 
-	virtual void addElementToVisited(std::shared_ptr<KnapsackElement> element);
+	int getVisistedSize();
 
-	virtual double getObjectiveValue();
+	void addElementToSolution(std::shared_ptr<problem::Element> element) override;
 
-	virtual bool wasVisited(std::shared_ptr<KnapsackElement> element);
+	void addElementToVisited(std::shared_ptr<problem::Element> element) override;
 
-	virtual std::vector<std::shared_ptr<KnapsackElement>> getSolution();
+	double getObjectiveValue() override;
 
-	virtual std::vector<std::shared_ptr<KnapsackElement>> getVisited();
+	bool wasVisited(std::shared_ptr<problem::Element> element) override;
+
+	std::vector<std::shared_ptr<problem::Element>> getSolution() override;
+
 };
 
-
-class KnapsackInstance : public problem::Instance<KnapsackSolution, KnapsackElement> {
-	std::vector<std::shared_ptr<KnapsackElement>> elements;
+class KnapsackInstance : public problem::Instance {
+	std::vector<std::shared_ptr<problem::Element>> elements;
 	int capacity;
 
 public:
@@ -54,13 +59,20 @@ public:
 
 	int getCapacity() const;
 
-	std::vector<std::shared_ptr<KnapsackElement>> getElements() const;
+	std::vector<std::shared_ptr<problem::Element>> getElements() const;
 
-	virtual std::shared_ptr<KnapsackSolution> initializeSolution();
+	std::shared_ptr<problem::Solution> initializeSolution() override;
+
+	std::vector<std::shared_ptr<problem::Element>> getCandidatesElements(std::shared_ptr<problem::Solution> solution) override;
 };
 
-class KnapsackProblem : public problem::Problem<KnapsackInstance, KnapsackSolution, KnapsackElement> {
-	virtual double objectiveValue(KnapsackSolution& solution);
-	virtual bool isValid(KnapsackInstance& instance, KnapsackSolution& solution, std::shared_ptr<KnapsackElement> element);
-	virtual bool isComplete(KnapsackInstance& instance, KnapsackSolution& solution);
+class KnapsackProblem : public problem::Problem {
+public:
+	KnapsackProblem() {};
+
+	double objectiveValue(std::shared_ptr<problem::Solution> solution) override;
+
+	bool isValid(problem::Instance& instance, std::shared_ptr<problem::Solution> solution, std::shared_ptr<problem::Element> element) override;
+
+	bool isComplete(problem::Instance& instance, std::shared_ptr<problem::Solution> solution) override;
 };
