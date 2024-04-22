@@ -27,8 +27,12 @@ namespace ConstructiveAlgorithm {
 
     void selectBestCandidates(problem::Problem& problem, std::vector<std::shared_ptr<problem::Solution>>& solutions, std::vector<std::shared_ptr<problem::Solution>>& candidates)
     {
+        if (candidates.empty())
+            return;
+
         int solutionSize = (int) solutions.size();
         solutions.clear();
+        
         for (auto candidate : candidates)
         {
             if (solutions.size() < solutionSize)
@@ -80,37 +84,35 @@ namespace ConstructiveAlgorithm {
 		{
 			beam.push_back(instance.initializeSolution());
 		}
-        int i = 0;
-        do {
-            i++;
-            candidates.clear();
-            for (int i = 0; i < beam.size(); i++) {
+        
+        while (not beam.empty()) 
+        {
+            for (int i = beam.size() - 1; i >= 0; i--)
+			{
                 auto solution = beam.at(i);
-
-                for (int i = 0; i < expasionWidth; i++) {
-                    auto choosedElement = selectionAlgorithm(instance, solution);
-                    solution->addElementToVisited(choosedElement);
-
-                    if (problem.isValid(instance, solution, choosedElement)) {
-                        auto candidate = solution->clone();
-                        candidate->addElementToSolution(choosedElement);
-                        candidates.push_back(candidate);
-                    }
-				}
-            }
-
-            for (int i = candidates.size() - 1; i >= 0; i--) {
-                auto candidate = candidates.at(i);
-                if (problem.isComplete(instance, candidate)) {
-                    if ((bestSolution == nullptr) or (problem.objectiveValue(candidate) < problem.objectiveValue(bestSolution))) {
-						bestSolution = candidate;
+				if (problem.isComplete(instance, solution))
+				{
+					if (bestSolution == nullptr or problem.objectiveValue(solution) < problem.objectiveValue(bestSolution))
+					{
+						bestSolution = solution;
 					}
-                    candidates.erase(candidates.begin() + i);
+                    beam.erase(beam.begin() + i);
+				}
+				else
+				{
+					auto choosedElement = selectionAlgorithm(instance, solution);
+                    solution->addElementToVisited(choosedElement);
+					if (problem.isValid(instance, solution, choosedElement))
+					{
+                        auto newSolution = solution->clone();
+						newSolution->addElementToSolution(choosedElement);
+						candidates.push_back(newSolution);
+					}
 				}
 			}
-
-            selectionCandidateAlgorithm(problem, beam, candidates);
-        } while (not beam.empty());
+			selectionCandidateAlgorithm(problem, beam, candidates);
+			candidates.clear();
+        }
 
         if (bestSolution != nullptr) {
             return bestSolution;
