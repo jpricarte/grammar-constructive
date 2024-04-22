@@ -44,7 +44,7 @@ std::set<std::shared_ptr<problem::Element>> KnapsackSolution::getVisited()
 
 int KnapsackSolution::getVisistedSize()
 {
-	return this->visited.size();
+	return (int) this->visited.size();
 }
 
 bool KnapsackSolution::wasVisited(std::shared_ptr<problem::Element> element)
@@ -55,6 +55,20 @@ bool KnapsackSolution::wasVisited(std::shared_ptr<problem::Element> element)
 std::vector<std::shared_ptr<problem::Element>> KnapsackSolution::getSolution()
 {
 	return this->solution;
+}
+
+std::shared_ptr<problem::Solution> KnapsackSolution::clone()
+{
+	auto newSolution = std::make_shared<KnapsackSolution>(this->solution.size());
+	for (auto element : this->solution)
+	{
+		newSolution->addElementToSolution(element);
+	}
+	for (auto element : this->visited)
+	{
+		newSolution->addElementToVisited(element);
+	}
+	return newSolution;
 }
 
 
@@ -142,5 +156,16 @@ bool KnapsackProblem::isComplete(problem::Instance& instance, std::shared_ptr<pr
 {
 	auto knapSackSolution = std::dynamic_pointer_cast<KnapsackSolution>(solution);
 	auto& knapsackInstance = (KnapsackInstance&) instance;
-	return knapsackInstance.getElements().size() == knapSackSolution->getVisistedSize();
+	auto um = knapsackInstance.getElements().size();
+	auto dois = knapSackSolution->getVisistedSize();
+	auto result = um <= dois;
+	return result;
+}
+
+bool KnapsackProblem::elementCompleteSolution(problem::Instance& instance, std::shared_ptr<problem::Solution> solution, std::shared_ptr<problem::Element> element)
+{
+	auto knapSackSolution = std::dynamic_pointer_cast<KnapsackSolution>(solution);
+	auto& knapsackInstance = (KnapsackInstance&)instance;
+	// If the element is the last one, the solution is complete
+	return knapsackInstance.getElements().size() == knapSackSolution->getVisistedSize() - 1;
 }

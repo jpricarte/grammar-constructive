@@ -46,6 +46,7 @@ public:
 
 	std::vector<std::shared_ptr<problem::Element>> getSolution() override;
 
+	std::shared_ptr<problem::Solution> clone() override;
 };
 
 class KnapsackInstance : public problem::Instance {
@@ -75,4 +76,6 @@ public:
 	bool isValid(problem::Instance& instance, std::shared_ptr<problem::Solution> solution, std::shared_ptr<problem::Element> element) override;
 
 	bool isComplete(problem::Instance& instance, std::shared_ptr<problem::Solution> solution) override;
+
+	bool elementCompleteSolution(problem::Instance& instance, std::shared_ptr<problem::Solution> solution, std::shared_ptr<problem::Element> element) override;
 };

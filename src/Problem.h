@@ -27,6 +27,7 @@ namespace problem {
 		virtual double getObjectiveValue() = 0;
 		virtual bool wasVisited(std::shared_ptr<Element> element) = 0;
 		virtual std::vector<std::shared_ptr<Element>> getSolution() = 0;
+		virtual std::shared_ptr<Solution> clone() = 0;
 	};
 
 	/**
@@ -50,5 +51,6 @@ namespace problem {
 		virtual double objectiveValue(std::shared_ptr<Solution> solution) = 0;
 		virtual bool isValid(Instance& instance, std::shared_ptr<Solution> solution, std::shared_ptr<Element> element) = 0;
 		virtual bool isComplete(Instance& instance, std::shared_ptr<Solution> solution) = 0;
+		virtual bool elementCompleteSolution(Instance& instance, std::shared_ptr<Solution> solution, std::shared_ptr<Element> element) = 0;
 	};
 }
