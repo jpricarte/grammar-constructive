@@ -20,8 +20,12 @@ int main(int argc, char* argv[])
         return ConstructiveAlgorithm::selectBestCandidates(p, s, c);
     };
 
+    function<shared_ptr<problem::Solution>(problem::Problem&, problem::Instance&)> algorithm = [&] (problem::Problem& p, problem::Instance& i) {
+		return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, elementselection, solutionSelection, 2, 4);
+	};
 
-    shared_ptr<KnapsackSolution> solution = dynamic_pointer_cast<KnapsackSolution>(ConstructiveAlgorithm::beamsearchAlgorithm(problem, instance, elementselection, solutionSelection, 2, 2));
+
+    shared_ptr<KnapsackSolution> solution = dynamic_pointer_cast<KnapsackSolution>(ConstructiveAlgorithm::multistartAlgorithmMaxIterations(problem, instance, algorithm, 1000));
 
     cout << "Objective value: " << solution->getObjectiveValue() << endl;
 
