@@ -7,25 +7,26 @@
 
 namespace ConstructiveAlgorithm {
 
-    std::shared_ptr<problem::Element> getBestElement(problem::Instance& instance, std::shared_ptr<problem::Solution> solution);
+    problem::ElementPtr getBestElement(problem::Instance& instance, problem::SolutionPtr solution);
 
-    std::shared_ptr<problem::Element> getElementAlphaSelection(problem::Instance& instance, std::shared_ptr<problem::Solution> solution, double alpha);
+    problem::ElementPtr getElementAlphaSelection(problem::Instance& instance, problem::SolutionPtr solution, double alpha);
 
-    void selectBestCandidates(problem::Problem& problem, std::vector<std::shared_ptr<problem::Solution>>& solutions, std::vector<std::shared_ptr<problem::Solution>>& candidates);
+    void selectBestCandidates(problem::Problem& problem, std::vector<problem::SolutionPtr>& solutions, std::vector<problem::SolutionPtr>& candidates);
 
-    std::shared_ptr<problem::Solution> greedyAlgorithm(problem::Problem& problem, problem::Instance& instance, 
-        std::function<std::shared_ptr<problem::Element>(problem::Instance&, std::shared_ptr<problem::Solution>)> selectionElementAlgorithm);
+    problem::SolutionPtr greedyAlgorithm(problem::Problem& problem, problem::Instance& instance,
+        std::function<problem::ElementPtr(problem::Instance&, std::shared_ptr<problem::Solution>)> selectionElementAlgorithm);
 
-    std::shared_ptr<problem::Solution> beamsearchAlgorithm(problem::Problem& problem, 
+    problem::SolutionPtr beamsearchAlgorithm(problem::Problem& problem,
         problem::Instance& instance,
-        std::function<std::shared_ptr<problem::Element>(problem::Instance&, std::shared_ptr<problem::Solution>)> selectionElementAlgorithm,
-        std::function<void(problem::Problem&, std::vector<std::shared_ptr<problem::Solution>>&, std::vector<std::shared_ptr<problem::Solution>>&)> selectionCandidateAlgorithm,
+        std::function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> selectionElementAlgorithm,
+        std::function<void(problem::Problem&, std::vector<problem::SolutionPtr>&, std::vector<problem::SolutionPtr>&)> selectionCandidateAlgorithm,
         int beamWidth, 
         int expasionWidth);
 
     std::shared_ptr<problem::Solution> multistartAlgorithmMaxIterations(problem::Problem& problem,
         problem::Instance& instance,
-        std::function<std::shared_ptr<problem::Solution>(problem::Problem&, problem::Instance&)> algorithm,
+        std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm,
         int numIterations);
+
 
 }

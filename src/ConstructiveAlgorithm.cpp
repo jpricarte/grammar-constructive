@@ -1,15 +1,16 @@
 #include "ConstructiveAlgorithm.h"
+#include <random>
 
 using namespace std;
 using namespace ConstructiveAlgorithm;
 
-shared_ptr<problem::Element> ConstructiveAlgorithm::getBestElement(problem::Instance& instance, shared_ptr<problem::Solution> solution)
+problem::ElementPtr ConstructiveAlgorithm::getBestElement(problem::Instance& instance, problem::SolutionPtr solution)
 {
     auto listCandidates = instance.getCandidatesElements(solution);
     return listCandidates.front();
 }
 
-shared_ptr<problem::Element> ConstructiveAlgorithm::getElementAlphaSelection(problem::Instance& instance, shared_ptr<problem::Solution> solution, double alpha)
+problem::ElementPtr ConstructiveAlgorithm::getElementAlphaSelection(problem::Instance& instance, problem::SolutionPtr solution, double alpha)
 {
     auto listCandidates = instance.getCandidatesElements(solution);
 
@@ -21,7 +22,7 @@ shared_ptr<problem::Element> ConstructiveAlgorithm::getElementAlphaSelection(pro
     return element;
 }
 
-void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vector<std::shared_ptr<problem::Solution>>& solutions, vector<std::shared_ptr<problem::Solution>>& candidates)
+void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vector<problem::SolutionPtr>& solutions, vector<problem::SolutionPtr>& candidates)
 {
     if (candidates.empty())
         return;
@@ -49,8 +50,8 @@ void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vect
     }
 }
 
-shared_ptr<problem::Solution> ConstructiveAlgorithm::greedyAlgorithm(problem::Problem& problem, problem::Instance& instance, 
-    function<shared_ptr<problem::Element>(problem::Instance&, shared_ptr<problem::Solution>)> selectionElementAlgorithm)
+problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Problem& problem, problem::Instance& instance, 
+    function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> selectionElementAlgorithm)
 {
     auto solution = instance.initializeSolution();
     while (not problem.isComplete(instance, solution))
@@ -65,16 +66,16 @@ shared_ptr<problem::Solution> ConstructiveAlgorithm::greedyAlgorithm(problem::Pr
     return solution;
 }
 
-shared_ptr<problem::Solution> ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem& problem, 
+problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem& problem, 
     problem::Instance& instance, 
-    function<shared_ptr<problem::Element>(problem::Instance&, shared_ptr<problem::Solution>)> selectionElementAlgorithm, 
-    function<void(problem::Problem&, vector<shared_ptr<problem::Solution>>&, vector<shared_ptr<problem::Solution>>&)> selectionCandidateAlgorithm, 
+    function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> selectionElementAlgorithm, 
+    function<void(problem::Problem&, vector<problem::SolutionPtr>&, vector<problem::SolutionPtr>&)> selectionCandidateAlgorithm, 
     int beamWidth, 
     int expasionWidth)
 {
-    vector<std::shared_ptr<problem::Solution>> beam{};
-    vector<std::shared_ptr<problem::Solution>> candidates{};
-    shared_ptr<problem::Solution> bestSolution = nullptr;
+    vector<problem::SolutionPtr> beam{};
+    vector<problem::SolutionPtr> candidates{};
+    problem::SolutionPtr bestSolution = nullptr;
 
     beam.reserve(beamWidth);
     candidates.reserve(beamWidth * expasionWidth);
@@ -114,12 +115,12 @@ shared_ptr<problem::Solution> ConstructiveAlgorithm::beamsearchAlgorithm(problem
     return bestSolution;
 }
 
-shared_ptr<problem::Solution> ConstructiveAlgorithm::multistartAlgorithmMaxIterations(problem::Problem& problem, 
+problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithmMaxIterations(problem::Problem& problem, 
     problem::Instance& instance, 
-    function<shared_ptr<problem::Solution>(problem::Problem&, problem::Instance&)> algorithm,
+    function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm,
     int numIterations)
 {
-    shared_ptr<problem::Solution> bestSolution = nullptr;
+    problem::SolutionPtr bestSolution = nullptr;
 	for (int i = 0; i < numIterations; i++)
 	{
 		auto solution = algorithm(problem, instance);

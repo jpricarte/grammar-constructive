@@ -15,14 +15,14 @@ public:
 
 	bool operator<(const KnapsackElement& other) {
 		// Inverted because is a maximization problem
-		return -(value / weight) < -(other.value / other.weight);
+		return -(value) < -(other.value);
 	};
 };
 
 
 class KnapsackSolution : public problem::Solution {
-	std::vector<std::shared_ptr<problem::Element>> solution;
-	std::set<std::shared_ptr<problem::Element>> visited;
+	std::vector<problem::ElementPtr> solution;
+	std::set<problem::ElementPtr> visited;
 	double currentValue;
 	int currentWeight;
 
@@ -32,25 +32,25 @@ public:
 
 	int getCurrentWeight() const;
 
-	std::set<std::shared_ptr<problem::Element>> getVisited();
+	std::set<problem::ElementPtr> getVisited();
 
 	int getVisistedSize();
 
-	void addElementToSolution(std::shared_ptr<problem::Element> element) override;
+	void addElementToSolution(problem::ElementPtr element) override;
 
-	void addElementToVisited(std::shared_ptr<problem::Element> element) override;
+	void addElementToVisited(problem::ElementPtr element) override;
 
 	double getObjectiveValue() override;
 
-	bool wasVisited(std::shared_ptr<problem::Element> element) override;
+	bool wasVisited(problem::ElementPtr element) override;
 
-	std::vector<std::shared_ptr<problem::Element>> getSolution() override;
+	std::vector<problem::ElementPtr> getSolution() override;
 
-	std::shared_ptr<problem::Solution> clone() override;
+	problem::SolutionPtr clone() override;
 };
 
 class KnapsackInstance : public problem::Instance {
-	std::vector<std::shared_ptr<problem::Element>> elements;
+	std::vector<problem::ElementPtr> elements;
 	int capacity;
 
 public:
@@ -60,22 +60,24 @@ public:
 
 	int getCapacity() const;
 
-	std::vector<std::shared_ptr<problem::Element>> getElements() const;
+	std::vector<problem::ElementPtr> getElements() const;
 
-	std::shared_ptr<problem::Solution> initializeSolution() override;
+	void sortItems();
 
-	std::vector<std::shared_ptr<problem::Element>> getCandidatesElements(std::shared_ptr<problem::Solution> solution) override;
+	problem::SolutionPtr initializeSolution() override;
+
+	std::vector<problem::ElementPtr> getCandidatesElements(problem::SolutionPtr solution) override;
 };
 
 class KnapsackProblem : public problem::Problem {
 public:
 	KnapsackProblem() {};
 
-	double objectiveValue(std::shared_ptr<problem::Solution> solution) override;
+	double objectiveValue(problem::SolutionPtr solution) override;
 
-	bool isValid(problem::Instance& instance, std::shared_ptr<problem::Solution> solution, std::shared_ptr<problem::Element> element) override;
+	bool isValid(problem::Instance& instance, problem::SolutionPtr solution, problem::ElementPtr element) override;
 
-	bool isComplete(problem::Instance& instance, std::shared_ptr<problem::Solution> solution) override;
+	bool isComplete(problem::Instance& instance, problem::SolutionPtr solution) override;
 
-	bool elementCompleteSolution(problem::Instance& instance, std::shared_ptr<problem::Solution> solution, std::shared_ptr<problem::Element> element) override;
+	bool elementCompleteSolution(problem::Instance& instance, problem::SolutionPtr solution, problem::ElementPtr element) override;
 };

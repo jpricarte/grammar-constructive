@@ -9,25 +9,26 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+    srand(0xc0ff33);
     auto problem = KnapsackProblem();
     auto instance = KnapsackInstance(argv[1]);
 
-    function<std::shared_ptr<problem::Element>(problem::Instance&, std::shared_ptr<problem::Solution>)> elementselection = [] (problem::Instance& i, shared_ptr<problem::Solution> s) -> std::shared_ptr<problem::Element> {
-        return ConstructiveAlgorithm::getBestElement(i, s); 
+    function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> elementselection = [] (problem::Instance& i, problem::SolutionPtr s) -> problem::ElementPtr {
+        return ConstructiveAlgorithm::getElementAlphaSelection(i, s, 1); 
     };
 
-    function<void(problem::Problem&, std::vector<std::shared_ptr<problem::Solution>>&, std::vector<std::shared_ptr<problem::Solution>>&)> solutionSelection = [](problem::Problem& p, std::vector<std::shared_ptr<problem::Solution>>& s, std::vector<std::shared_ptr<problem::Solution>>& c) {
+    function<void(problem::Problem&, std::vector<problem::SolutionPtr>&, std::vector<problem::SolutionPtr>&)> solutionSelection = [](problem::Problem& p, std::vector<problem::SolutionPtr>& s, std::vector<problem::SolutionPtr>& c) {
         return ConstructiveAlgorithm::selectBestCandidates(p, s, c);
     };
 
-    function<shared_ptr<problem::Solution>(problem::Problem&, problem::Instance&)> algorithm = [&] (problem::Problem& p, problem::Instance& i) {
-		return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, elementselection, solutionSelection, 2, 4);
+    function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm = [&] (problem::Problem& p, problem::Instance& i) {
+        return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, elementselection, solutionSelection, 2, 5);
 	};
 
 
-    shared_ptr<KnapsackSolution> solution = dynamic_pointer_cast<KnapsackSolution>(ConstructiveAlgorithm::multistartAlgorithmMaxIterations(problem, instance, algorithm, 1000));
+    shared_ptr<KnapsackSolution> solution = dynamic_pointer_cast<KnapsackSolution>(ConstructiveAlgorithm::multistartAlgorithmMaxIterations(problem, instance, algorithm, 100));
 
-    cout << "Objective value: " << solution->getObjectiveValue() << endl;
+    cout << solution->getObjectiveValue() << endl;
 
     return 0;
 }

@@ -12,6 +12,8 @@ namespace problem {
 	struct Element {
 		virtual ~Element() = default;
 	};
+	using ElementPtr = std::shared_ptr<Element>;
+
 
 	/**
 	* @brief This class represents a partial or complete solution for a problem (elements and its values)
@@ -22,13 +24,15 @@ namespace problem {
 	class Solution {
 	public:
 		Solution() = default;
-		virtual void addElementToSolution(std::shared_ptr<Element> element) = 0;
-		virtual void addElementToVisited(std::shared_ptr<Element> element) = 0;
+		virtual void addElementToSolution(ElementPtr element) = 0;
+		virtual void addElementToVisited(ElementPtr element) = 0;
 		virtual double getObjectiveValue() = 0;
-		virtual bool wasVisited(std::shared_ptr<Element> element) = 0;
-		virtual std::vector<std::shared_ptr<Element>> getSolution() = 0;
+		virtual bool wasVisited(ElementPtr element) = 0;
+		virtual std::vector<ElementPtr> getSolution() = 0;
 		virtual std::shared_ptr<Solution> clone() = 0;
 	};
+	using SolutionPtr = std::shared_ptr<Solution>;
+
 
 	/**
 	* @brief This class represents a defined instance (elements and contraints and its values)
@@ -37,8 +41,8 @@ namespace problem {
 	*/
 	class Instance {
 	public:
-		virtual std::shared_ptr<Solution> initializeSolution() = 0;
-		virtual std::vector<std::shared_ptr<Element>> getCandidatesElements(std::shared_ptr<Solution> solution) = 0;
+		virtual SolutionPtr initializeSolution() = 0;
+		virtual std::vector<ElementPtr> getCandidatesElements(SolutionPtr solution) = 0;
 	};
 
 	/**
@@ -48,9 +52,9 @@ namespace problem {
 	*/
 	class Problem {
 	public:
-		virtual double objectiveValue(std::shared_ptr<Solution> solution) = 0;
-		virtual bool isValid(Instance& instance, std::shared_ptr<Solution> solution, std::shared_ptr<Element> element) = 0;
-		virtual bool isComplete(Instance& instance, std::shared_ptr<Solution> solution) = 0;
-		virtual bool elementCompleteSolution(Instance& instance, std::shared_ptr<Solution> solution, std::shared_ptr<Element> element) = 0;
+		virtual double objectiveValue(SolutionPtr solution) = 0;
+		virtual bool isValid(Instance& instance, SolutionPtr solution, ElementPtr element) = 0;
+		virtual bool isComplete(Instance& instance, SolutionPtr solution) = 0;
+		virtual bool elementCompleteSolution(Instance& instance, SolutionPtr solution, ElementPtr element) = 0;
 	};
 }
