@@ -11,7 +11,7 @@ namespace ConstructiveAlgorithm {
 
     problem::ElementPtr getElementRandomSelection(problem::Instance& instance, problem::SolutionPtr solution, double alpha, int k, std::function<int(int)> random_distribuiton);
 
-    void selectBestCandidates(problem::Problem& problem, std::vector<problem::SolutionPtr>& solutions, std::vector<problem::SolutionPtr>& candidates);
+    void selectBestCandidates(problem::Problem& problem, std::vector<problem::SolutionPtr>& solutions);
 
     problem::SolutionPtr greedyAlgorithm(problem::Problem& problem, problem::Instance& instance,
         std::function<problem::ElementPtr(problem::Instance&, std::shared_ptr<problem::Solution>)> selectionElementAlgorithm);

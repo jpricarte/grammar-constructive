@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 	};
 
 
-    auto solution = dynamic_pointer_cast<KnapsackSolution>(ConstructiveAlgorithm::multistartAlgorithmMaxIterations(problem, instance, algorithm, 10));
+    auto solution = dynamic_pointer_cast<KnapsackSolution>(ConstructiveAlgorithm::multistartAlgorithmMaxIterations(problem, instance, algorithm, 100));
     //problem::SolutionPtr solution = dynamic_pointer_cast<KnapsackSolution>(algorithm(problem, instance));
 
     cout << solution->getObjectiveValue() << " " << solution->getCurrentWeight() << endl;

@@ -24,31 +24,27 @@ problem::ElementPtr ConstructiveAlgorithm::getElementRandomSelection(problem::In
     return element;
 }
 
-void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vector<problem::SolutionPtr>& solutions, vector<problem::SolutionPtr>& candidates)
+void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vector<problem::SolutionPtr>& solutions)
 {
-    if (candidates.empty())
-        return;
-
-    int solutionSize = (int)solutions.size();
-    solutions.clear();
-
-    for (auto candidate : candidates)
+    for (auto solution : solutions)
     {
-        if (solutions.size() < solutionSize)
+        double bestValue = INFINITY;
+        problem::ElementPtr bestElement = nullptr;
+        for (auto candidate : solution->getIterationOptions())
         {
-            solutions.push_back(candidate);
-        }
-        else
-        {
-            for (int i = 0; i < solutionSize; i++)
+            auto value = problem.objectiveValue(solution, candidate);
+            if (value < bestValue) 
             {
-                if (problem.objectiveValue(candidate) < problem.objectiveValue(solutions.at(i)))
-                {
-                    solutions.at(i) = candidate;
-                    break;
-                }
+                bestValue = value;
+                bestElement = candidate;
             }
+		}
+        if (bestElement != nullptr)
+        {
+            solution->addElementToSolution(bestElement);
+            solution->cleanIterationOptions();
         }
+       
     }
 }
 
@@ -75,11 +71,9 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
     int expasionWidth)
 {
     vector<problem::SolutionPtr> beam{};
-    vector<problem::SolutionPtr> candidates{};
     problem::SolutionPtr bestSolution = nullptr;
 
     beam.reserve(beamWidth);
-    candidates.reserve(beamWidth * expasionWidth);
     for (int i = 0; i < beamWidth; i++)
     {
         beam.push_back(instance.initializeSolution());
@@ -104,14 +98,11 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
                 solution->addElementToVisited(choosedElement);
                 if (problem.isValid(instance, solution, choosedElement))
                 {
-                    auto newSolution = solution->clone();
-                    newSolution->addElementToSolution(choosedElement);
-                    candidates.push_back(newSolution);
+                    solution->addElementToIterationOptions(choosedElement);
                 }
             }
         }
-        selectBestCandidates(problem, beam, candidates);
-        candidates.clear();
+        selectBestCandidates(problem, beam);
     }
     return bestSolution;
 }

@@ -7,7 +7,9 @@ KnapsackSolution::KnapsackSolution(size_t numElements) : currentValue(0), curren
 {
 	this->solution = std::vector<problem::ElementPtr>();
 	this->solution.reserve(numElements);
-	this->solution.reserve(numElements);
+	this->candidates = std::vector<problem::ElementPtr>();
+	this->candidates.reserve(numElements);
+	this->options = std::vector<problem::ElementPtr>();
 	this->currentValue = 0;
 	this->currentWeight = 0;
 }
@@ -22,6 +24,7 @@ KnapsackSolution::KnapsackSolution(problem::Instance& instance)
 	{
 		this->candidates.push_back(element);
 	}
+	this->options = std::vector<problem::ElementPtr>();
 	this->firstVisited = this->candidates.end();
 	this->currentValue = 0;
 	this->currentWeight = 0;
@@ -190,6 +193,12 @@ double KnapsackProblem::objectiveValue(problem::SolutionPtr solution)
 	}
 
 	return -value;
+}
+
+double KnapsackProblem::objectiveValue(problem::SolutionPtr solution, problem::ElementPtr element)
+{
+	auto knapsackElement = std::static_pointer_cast<KnapsackElement>(element);
+	return solution->getObjectiveValue() + -(knapsackElement->value);
 }
 
 bool KnapsackProblem::isValid(problem::Instance& instance, problem::SolutionPtr solution, problem::ElementPtr element)
