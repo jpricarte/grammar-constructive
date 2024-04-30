@@ -7,8 +7,22 @@ KnapsackSolution::KnapsackSolution(size_t numElements) : currentValue(0), curren
 {
 	this->solution = std::vector<problem::ElementPtr>();
 	this->solution.reserve(numElements);
-	this->visited = std::set<problem::ElementPtr>();
 	this->solution.reserve(numElements);
+	this->currentValue = 0;
+	this->currentWeight = 0;
+}
+
+KnapsackSolution::KnapsackSolution(problem::Instance& instance)
+{
+	auto knapsackInstance = (KnapsackInstance&) instance;
+	this->solution = std::vector<problem::ElementPtr>();
+	this->solution.reserve(knapsackInstance.getElements().size());
+	this->candidates = std::vector<problem::ElementPtr>();
+	for (auto element : knapsackInstance.getElements())
+	{
+		this->candidates.push_back(element);
+	}
+	this->firstVisited = this->candidates.end();
 	this->currentValue = 0;
 	this->currentWeight = 0;
 }
@@ -28,32 +42,59 @@ void KnapsackSolution::addElementToSolution(problem::ElementPtr element)
 
 void KnapsackSolution::addElementToVisited(problem::ElementPtr element)
 {
-	this->visited.insert(element);
+	// TODO: create a alternative, receiving the iterator
+	auto it = std::find(this->candidates.begin(), this->candidates.end(), element);
+	std::rotate(it, it + 1, this->firstVisited);
+	this->firstVisited--;
+}
+
+void KnapsackSolution::addElementToIterationOptions(problem::ElementPtr element)
+{
+	this->options.push_back(element);
 }
 
 double KnapsackSolution::getObjectiveValue()
 {
-	return this->currentValue;
+	return -this->currentValue;
 }
 
-std::set<problem::ElementPtr> KnapsackSolution::getVisited()
+std::vector<problem::ElementPtr> KnapsackSolution::getVisited()
 {
-	return this->visited;
+	// return from the first visited to the end
+	return std::vector<problem::ElementPtr>(this->firstVisited, this->candidates.end());
 }
 
 int KnapsackSolution::getVisistedSize()
 {
-	return (int) this->visited.size();
+	// get number of elements from the first visited to the end
+	return std::distance(this->firstVisited, this->candidates.end());
 }
 
 bool KnapsackSolution::wasVisited(problem::ElementPtr element)
 {
-	return this->visited.contains(element);
+	// Verify if the element is between first visited and end
+	return std::find(this->firstVisited, this->candidates.end(), element) != this->candidates.end();
+}
+
+void KnapsackSolution::cleanIterationOptions()
+{
+	this->options.clear();
+}
+
+std::vector<problem::ElementPtr> KnapsackSolution::getCandidatesElements()
+{
+	// Return from the begin to the first visited
+	return std::vector<problem::ElementPtr>(this->candidates.begin(), this->firstVisited);
 }
 
 std::vector<problem::ElementPtr> KnapsackSolution::getSolution()
 {
 	return this->solution;
+}
+
+std::vector<problem::ElementPtr> KnapsackSolution::getIterationOptions()
+{
+	return this->options;
 }
 
 problem::SolutionPtr KnapsackSolution::clone()
@@ -63,10 +104,13 @@ problem::SolutionPtr KnapsackSolution::clone()
 	{
 		newSolution->addElementToSolution(element);
 	}
-	for (auto element : this->visited)
+	for (auto element : this->candidates)
 	{
-		newSolution->addElementToVisited(element);
+		newSolution->candidates.push_back(element);
 	}
+	newSolution->firstVisited = newSolution->candidates.end() - this->getVisistedSize();
+	newSolution->setCurrentValue(this->currentValue);
+	newSolution->setCurrentWeight(this->currentWeight);
 	return newSolution;
 }
 
@@ -124,22 +168,15 @@ void KnapsackInstance::sortItems()
 
 problem::SolutionPtr KnapsackInstance::initializeSolution()
 {
-	return std::make_shared<KnapsackSolution>(elements.size());
+	return std::make_shared<KnapsackSolution>(*this);
 }
 
 
 std::vector<problem::ElementPtr> KnapsackInstance::getCandidatesElements(problem::SolutionPtr solution)
 {
-	auto listCandidates = std::vector<problem::ElementPtr>();
-
-	for (auto element : this->elements)
-	{
-		if (not std::dynamic_pointer_cast<KnapsackSolution>(solution)->wasVisited(element))
-		{
-			listCandidates.push_back(element);
-		}
-	}
-	return listCandidates;
+	// Get the candidates from the solution
+	auto knapsackSolution = std::dynamic_pointer_cast<KnapsackSolution>(solution);
+	return knapsackSolution->getCandidatesElements();
 }
 
 
@@ -152,7 +189,7 @@ double KnapsackProblem::objectiveValue(problem::SolutionPtr solution)
 		value += element->value;
 	}
 
-	return value;
+	return -value;
 }
 
 bool KnapsackProblem::isValid(problem::Instance& instance, problem::SolutionPtr solution, problem::ElementPtr element)

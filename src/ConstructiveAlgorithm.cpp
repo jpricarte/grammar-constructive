@@ -10,13 +10,15 @@ problem::ElementPtr ConstructiveAlgorithm::getBestElement(problem::Instance& ins
     return listCandidates.front();
 }
 
-problem::ElementPtr ConstructiveAlgorithm::getElementAlphaSelection(problem::Instance& instance, problem::SolutionPtr solution, double alpha)
+problem::ElementPtr ConstructiveAlgorithm::getElementRandomSelection(problem::Instance& instance, problem::SolutionPtr solution, double alpha, int k, function<int(int)> random_distribuiton)
 {
     auto listCandidates = instance.getCandidatesElements(solution);
 
     auto element = listCandidates.front();
     if (rand() % 100 < (1 - alpha) * 100) {
-        element = listCandidates.at(rand() % listCandidates.size());
+        int max = (k <= 0 || k >= listCandidates.size()) ? listCandidates.size()-1 : k;
+        int pos = random_distribuiton(max);
+        element = listCandidates.at(pos);
     }
 
     return element;
@@ -69,7 +71,6 @@ problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Problem& pr
 problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem& problem, 
     problem::Instance& instance, 
     function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> selectionElementAlgorithm, 
-    function<void(problem::Problem&, vector<problem::SolutionPtr>&, vector<problem::SolutionPtr>&)> selectionCandidateAlgorithm, 
     int beamWidth, 
     int expasionWidth)
 {
@@ -109,7 +110,7 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
                 }
             }
         }
-        selectionCandidateAlgorithm(problem, beam, candidates);
+        selectBestCandidates(problem, beam, candidates);
         candidates.clear();
     }
     return bestSolution;
