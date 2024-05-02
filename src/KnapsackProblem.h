@@ -25,7 +25,7 @@ class KnapsackSolution : public problem::Solution {
 	std::vector<problem::ElementPtr> solution;
 	std::vector<problem::ElementPtr> candidates;
 	std::vector<problem::ElementPtr>::iterator firstVisited;
-	std::vector<problem::ElementPtr> options;
+	std::set<problem::ElementPtr> options;
 
 	double currentValue;
 	int currentWeight;
@@ -54,7 +54,7 @@ public:
 
 	std::vector<problem::ElementPtr> getSolution() override;
 
-	std::vector<problem::ElementPtr> getIterationOptions() override;
+	std::set<problem::ElementPtr> getIterationOptions() override;
 
 	int getCurrentWeight() const;
 

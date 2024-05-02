@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include <set>
 
 /**
 * @brief Namespace for the problem implementation
@@ -39,7 +40,7 @@ namespace problem {
 		// Return the elements that are part of the solution
 		virtual std::vector<ElementPtr> getSolution() = 0;
 		// It should work as a temporary memory, to store the possible candidates to be added in the solution, will be cleaned after each iteration
-		virtual std::vector<ElementPtr> getIterationOptions() = 0;
+		virtual std::set<ElementPtr> getIterationOptions() = 0;
 		// Clone the solution
 		virtual std::shared_ptr<Solution> clone() = 0;
 		// Clean options for the iteration

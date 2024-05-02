@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
 	};
 
     function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> elementselection = [&] (problem::Instance& i, problem::SolutionPtr s) -> problem::ElementPtr {
-        return ConstructiveAlgorithm::getElementRandomSelection(i, s, 0.2 , 2, random_distribuiton);
+        return ConstructiveAlgorithm::getElementRandomSelection(i, s, 0.6, 5, random_distribuiton);
     };
 
     function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm = [&] (problem::Problem& p, problem::Instance& i) {

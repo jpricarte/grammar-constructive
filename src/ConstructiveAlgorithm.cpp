@@ -14,6 +14,10 @@ problem::ElementPtr ConstructiveAlgorithm::getElementRandomSelection(problem::In
 {
     auto listCandidates = instance.getCandidatesElements(solution);
 
+    if (listCandidates.empty()) {
+		return nullptr;
+	}
+
     auto element = listCandidates.front();
     if (rand() % 100 < (1 - alpha) * 100) {
         int max = (k <= 0 || k >= listCandidates.size()) ? listCandidates.size()-1 : k;
@@ -26,25 +30,37 @@ problem::ElementPtr ConstructiveAlgorithm::getElementRandomSelection(problem::In
 
 void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vector<problem::SolutionPtr>& solutions)
 {
+    using Option = tuple<problem::SolutionPtr, problem::ElementPtr, double>;
+
+    int solutionSize = solutions.size();
+    vector<Option> bestOptions{};
+
     for (auto solution : solutions)
     {
-        double bestValue = INFINITY;
-        problem::ElementPtr bestElement = nullptr;
         for (auto candidate : solution->getIterationOptions())
         {
-            auto value = problem.objectiveValue(solution, candidate);
-            if (value < bestValue) 
-            {
-                bestValue = value;
-                bestElement = candidate;
-            }
-		}
-        if (bestElement != nullptr)
+            bestOptions.push_back(make_tuple(solution, candidate, problem.objectiveValue(solution)));
+		}       
+    }
+
+    if (not bestOptions.empty()) {
+        sort(bestOptions.begin(), bestOptions.end(), [](Option a, Option b) {
+            return get<2>(a) < get<2>(b);
+        });
+
+        solutions.clear();
+        for (int i = 0; i < solutionSize; i++)
         {
-            solution->addElementToSolution(bestElement);
-            solution->cleanIterationOptions();
+            if (bestOptions.size() <= i) break;
+
+            auto option = bestOptions.at(i);
+            auto solution = get<0>(option);
+            auto candidate = get<1>(option);
+            auto newSolution = solution->clone();
+            newSolution->addElementToSolution(candidate);
+            newSolution->addElementToVisited(candidate);
+            solutions.push_back(newSolution);
         }
-       
     }
 }
 
@@ -94,11 +110,23 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
             }
             else
             {
-                auto choosedElement = selectionElementAlgorithm(instance, solution);
-                solution->addElementToVisited(choosedElement);
-                if (problem.isValid(instance, solution, choosedElement))
+                for (int j = 0; j < expasionWidth; j++)
                 {
-                    solution->addElementToIterationOptions(choosedElement);
+                    auto choosedElement = selectionElementAlgorithm(instance, solution);
+
+                    if (choosedElement == nullptr) break;
+
+                    if (problem.isValid(instance, solution, choosedElement))
+                    {
+                        if (not solution->getIterationOptions().contains(choosedElement))
+                        {
+                            solution->addElementToIterationOptions(choosedElement);
+                        }
+                    }
+                    else
+                    {
+                        solution->addElementToVisited(choosedElement);
+                    }
                 }
             }
         }
