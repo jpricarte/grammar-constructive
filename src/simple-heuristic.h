@@ -10,3 +10,4 @@
 
 #include "KnapsackProblem.h"
 #include "ConstructiveAlgorithm.h"
+#include "parser.h"

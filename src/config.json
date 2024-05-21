@@ -1,0 +1,13 @@
+{
+  "type": "independent",
+  "internal-algorithm": {
+    "type": "greedy",
+    "priority": {
+      "alpha-value": 1,
+      "k-value": 0
+    }
+  },
+  "stop": {
+    "max-iterations": 20
+  }
+}

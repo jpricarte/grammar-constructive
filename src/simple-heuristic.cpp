@@ -14,6 +14,26 @@ int main(int argc, char* argv[])
     srand(0xc0ffe3);
     auto problem = KnapsackProblem();
     auto instance = KnapsackInstance(argv[1]);
+    auto configuration = AlgorithmConfiguration();
+    configuration.readConfiguration(argv[2]);
+
+    auto solution = dynamic_pointer_cast<KnapsackSolution>(configuration.run(problem, instance));
+    cout << solution->getObjectiveValue() << " " << solution->getCurrentWeight() << endl;
+    for (auto element : solution->getSolution())
+    {
+        auto knapsackElement = dynamic_pointer_cast<KnapsackElement>(element);
+        cout << knapsackElement->value << " " << knapsackElement->weight << endl;
+    }
+    
+    return 0;
+}
+
+
+int maunal_main(int argc, char* argv[])
+{
+    srand(0xc0ffe3);
+    auto problem = KnapsackProblem();
+    auto instance = KnapsackInstance(argv[1]);
     default_random_engine generator;
 
     function<int(int)> random_distribuiton = [&](int max) -> int {
@@ -22,17 +42,17 @@ int main(int argc, char* argv[])
 	};
 
     function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> elementselection = [&] (problem::Instance& i, problem::SolutionPtr s) -> problem::ElementPtr {
-        return ConstructiveAlgorithm::getElementRandomSelection(i, s, 0.6, 5, random_distribuiton);
+        return ConstructiveAlgorithm::getElementRandomSelection(i, s, 1, 0, random_distribuiton);
     };
 
     function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm = [&] (problem::Problem& p, problem::Instance& i) {
-        return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, elementselection, 2, 5);
+        return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, elementselection, 1, 1);
         //return ConstructiveAlgorithm::greedyAlgorithm(p, i, elementselection);
 	};
 
 
-    auto solution = dynamic_pointer_cast<KnapsackSolution>(ConstructiveAlgorithm::multistartAlgorithmMaxIterations(problem, instance, algorithm, 100));
-    //problem::SolutionPtr solution = dynamic_pointer_cast<KnapsackSolution>(algorithm(problem, instance));
+    //auto solution = dynamic_pointer_cast<KnapsackSolution>(ConstructiveAlgorithm::multistartAlgorithmMaxIterations(problem, instance, algorithm, 100));
+    auto solution = dynamic_pointer_cast<KnapsackSolution>(algorithm(problem, instance));
 
     cout << solution->getObjectiveValue() << " " << solution->getCurrentWeight() << endl;
     for (auto element : solution->getSolution())
