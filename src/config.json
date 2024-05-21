@@ -1,13 +1,15 @@
 {
   "type": "independent",
   "internal-algorithm": {
-    "type": "greedy",
+    "type": "beamsearch",
+    "beam-width": 4,
+    "expansion-width": 2,
     "priority": {
-      "alpha-value": 1,
-      "k-value": 0
+      "alpha-value": 0.6,
+      "k-value": 5
     }
   },
   "stop": {
-    "max-iterations": 20
+    "max-iterations": 10
   }
 }

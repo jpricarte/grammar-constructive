@@ -58,16 +58,18 @@ void AlgorithmConfiguration::parseBeamsearch(json& algorithmConfig)
 	beamParams = shared_ptr<BeamSearchParams>(new BeamSearchParams());
 	if (algorithmConfig.contains("beam-width"))
 	{
-		beamParams->beamWidth = this->configuration["beam-width"];
+		int width = algorithmConfig["beam-width"];
+		beamParams->beamWidth = width;
 	}
 	else
 	{
 		beamParams->beamWidth = 1;
 	}
 
-	if (this->configuration.contains("expansion-width"))
+	if (algorithmConfig.contains("expansion-width"))
 	{
-		beamParams->expansionWidth = this->configuration["expansion-width"];
+		int width = algorithmConfig["expansion-width"];
+		beamParams->expansionWidth = width;
 	}
 	else
 	{
@@ -81,11 +83,11 @@ void AlgorithmConfiguration::parseBeamsearch(json& algorithmConfig)
 
 void AlgorithmConfiguration::parseIndependent(json& algorithmConfig)
 {
-	assert(this->configuration.contains("internal-algorithm"));
-	assert(this->configuration.contains("stop"));
+	assert(algorithmConfig.contains("internal-algorithm"));
+	assert(algorithmConfig.contains("stop"));
 
-	parseAlgorithmType(this->configuration["internal-algorithm"]);
-	parseStopCriteria(this->configuration["stop"]);
+	parseAlgorithmType(algorithmConfig["internal-algorithm"]);
+	parseStopCriteria(algorithmConfig["stop"]);
 	
 	this->algorithm = [&](problem::Problem& p, problem::Instance& i) {
 		return ConstructiveAlgorithm::multistartAlgorithmMaxIterations(p, i, this->baseAlgorithm, this->stopCriteria->maxIterations);
