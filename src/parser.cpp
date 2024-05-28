@@ -46,9 +46,9 @@ void AlgorithmConfiguration::parseGreedy(json& algorithmConfig)
     assert(algorithmConfig.contains("priority"));
 	parsePriority(algorithmConfig);
 
-	this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i) {
+	/*this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i) {
 		return ConstructiveAlgorithm::greedyAlgorithm(p, i, this->elementSelection);
-	};
+	};*/
 }
 
 void AlgorithmConfiguration::parseBeamsearch(json& algorithmConfig)
@@ -77,9 +77,9 @@ void AlgorithmConfiguration::parseBeamsearch(json& algorithmConfig)
 		beamParams->expansionWidth = 1;
 	}
 
-	this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i) {
-		return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, this->elementSelection, beamParams->beamWidth, beamParams->expansionWidth);
-	};
+	//this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i) {
+	//	//return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, this->elementSelection, beamParams->beamWidth, beamParams->expansionWidth);
+	//};
 }
 
 void AlgorithmConfiguration::parseIndependent(json& algorithmConfig)
@@ -134,9 +134,9 @@ void AlgorithmConfiguration::parsePriority(json& algorithmConfig)
 	}
 	else assert(false);
 
-	this->elementSelection = [&](problem::Instance& i, problem::SolutionPtr s) -> problem::ElementPtr {
+	/*this->elementSelection = [&](problem::Instance& i, problem::SolutionPtr s) -> problem::ElementPtr {
 		return ConstructiveAlgorithm::getElementRandomSelection(i, s, alpha, kValue, this->random_distribuiton);
-	};
+	};*/
 }
 
 void AlgorithmConfiguration::parseStopCriteria(json& algorithmConfig)

@@ -26,7 +26,7 @@ class AlgorithmConfiguration {
 	std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm;
 	std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> baseAlgorithm;
 	
-	selection::SelectorPtr<problem::ElementPtr> elementSelector;
+	selection::SelectorPtr elementSelector;
 
 	std::function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> elementSelection;
 	std::function<int(int)> random_distribuiton;

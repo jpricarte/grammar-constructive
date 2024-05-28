@@ -4,28 +4,15 @@
 using namespace std;
 using namespace ConstructiveAlgorithm;
 
-problem::ElementPtr ConstructiveAlgorithm::getBestElement(problem::Instance& instance, problem::SolutionPtr solution)
+problem::ElementPtr ConstructiveAlgorithm::getBestElement(problem::Instance& instance, problem::SolutionPtr solution, selection::SelectorPtr selector)
 {
     auto listCandidates = instance.getCandidatesElements(solution);
     return listCandidates.front();
 }
 
-problem::ElementPtr ConstructiveAlgorithm::getElementRandomSelection(problem::Instance& instance, problem::SolutionPtr solution, double alpha, int k, function<int(int)> random_distribuiton)
+problem::ElementPtr ConstructiveAlgorithm::getElementRandomSelection(problem::Instance& instance, problem::SolutionPtr solution, selection::SelectorPtr selector)
 {
-    auto listCandidates = instance.getCandidatesElements(solution);
-
-    if (listCandidates.empty()) {
-		return nullptr;
-	}
-
-    auto element = listCandidates.front();
-    if (rand() % 100 < (1 - alpha) * 100) {
-        int max = (k <= 0 || k >= listCandidates.size()) ? listCandidates.size()-1 : k;
-        int pos = random_distribuiton(max);
-        element = listCandidates.at(pos);
-    }
-
-    return element;
+    return selector->selectElement(instance, solution);
 }
 
 void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vector<problem::SolutionPtr>& solutions)
@@ -64,13 +51,12 @@ void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vect
     }
 }
 
-problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Problem& problem, problem::Instance& instance, 
-    function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> selectionElementAlgorithm)
+problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Problem& problem, problem::Instance& instance, selection::SelectorPtr selector)
 {
     auto solution = instance.initializeSolution();
     while (not problem.isComplete(instance, solution))
     {
-        auto choosedElement = selectionElementAlgorithm(instance, solution);
+        auto choosedElement = selector->selectElement(instance, solution);
         if (problem.isValid(instance, solution, choosedElement))
         {
             solution->addElementToSolution(choosedElement);
@@ -80,11 +66,7 @@ problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Problem& pr
     return solution;
 }
 
-problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem& problem, 
-    problem::Instance& instance, 
-    function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> selectionElementAlgorithm, 
-    int beamWidth, 
-    int expasionWidth)
+problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem& problem, problem::Instance& instance, selection::SelectorPtr selector, int beamWidth, int expasionWidth)
 {
     vector<problem::SolutionPtr> beam{};
     problem::SolutionPtr bestSolution = nullptr;
@@ -112,7 +94,7 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
             {
                 for (int j = 0; j < expasionWidth; j++)
                 {
-                    auto choosedElement = selectionElementAlgorithm(instance, solution);
+                    auto choosedElement = selector->selectElement(instance, solution);
 
                     if (choosedElement == nullptr) break;
 

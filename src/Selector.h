@@ -4,19 +4,16 @@
 #include "Problem.h"
 
 namespace selection {
-	template <typename T>
 	class Selector
 	{
 	protected:
-		std::map<T, double> probabilities;
-		std::default_random_engine generator;
+		std::map<problem::ElementPtr, double> probabilities;
 	public:
 		virtual void updateProbabilitiesInternal(problem::Instance& instance, problem::SolutionPtr solution) = 0;
 		virtual void updateProbabilitiesIteration(problem::Instance& instance, problem::SolutionPtr solution) = 0;
-		virtual T selectElement(problem::Instance& instance, problem::SolutionPtr solution) = 0;
+		virtual problem::ElementPtr selectElement(problem::Instance& instance, problem::SolutionPtr solution) = 0;
 	};
 
-	template <typename T>
-	using SelectorPtr = std::shared_ptr<Selector<T>>;
+	using SelectorPtr = std::shared_ptr<Selector>;
 };
 

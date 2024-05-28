@@ -6,8 +6,7 @@
 
 namespace selection {
 
-	template <typename T>
-	class GreedySelector : public Selector<T>
+	class GreedySelector : public Selector
 	{
 	public:
 		GreedySelector() = default;
@@ -15,24 +14,25 @@ namespace selection {
 
 		inline void updateProbabilitiesIteration(problem::Instance& instance, problem::SolutionPtr solution) override { /*Do nothing*/ };
 
-		T selectElement(problem::Instance& instance, problem::SolutionPtr solution) override;
+		problem::ElementPtr selectElement(problem::Instance& instance, problem::SolutionPtr solution) override;
 	};
 
-	template <typename T>
-	class RandomSelector : public Selector<T>
+	class RandomSelector : public Selector
 	{
 	private:
 		int kValue;
 		double alphaValue;
 		std::uniform_int_distribution<int> distribution;
+		std::default_random_engine generator;
+
 
 	public:
-		inline RandomSelector(int kValue, double alphaValue) : kValue(kValue), alphaValue(alphaValue) {};
+		inline RandomSelector(int kValue, double alphaValue) : kValue(kValue), alphaValue(alphaValue), generator(std::default_random_engine()) {};
 
 		inline void updateProbabilitiesInternal(problem::Instance& instance, problem::SolutionPtr solution) override { /*Do nothing*/ };
 
 		inline void updateProbabilitiesIteration(problem::Instance& instance, problem::SolutionPtr solution) override { /*Do nothing*/ };
 
-		T selectElement(problem::Instance& instance, problem::SolutionPtr solution) override;
+		problem::ElementPtr selectElement(problem::Instance& instance, problem::SolutionPtr solution) override;
 	};
 };	

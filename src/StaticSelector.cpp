@@ -2,8 +2,7 @@
 
 using namespace selection;
 
-template<typename T>
-T GreedySelector<T>::selectElement(problem::Instance& instance, problem::SolutionPtr solution)
+problem::ElementPtr GreedySelector::selectElement(problem::Instance& instance, problem::SolutionPtr solution)
 {
 	auto listCandidates = instance.getCandidatesElements(solution);
 
@@ -15,8 +14,7 @@ T GreedySelector<T>::selectElement(problem::Instance& instance, problem::Solutio
     }
 }
 
-template<typename T>
-T RandomSelector<T>::selectElement(problem::Instance& instance, problem::SolutionPtr solution)
+problem::ElementPtr RandomSelector::selectElement(problem::Instance& instance, problem::SolutionPtr solution)
 {
     auto listCandidates = instance.getCandidatesElements(solution);
 
@@ -25,9 +23,9 @@ T RandomSelector<T>::selectElement(problem::Instance& instance, problem::Solutio
     }
 
     auto element = listCandidates.front();
-    if (rand() % 100 < (1 - this->alphaValue) * 100) {
-        int max = (this->kValue <= 0 || this->kValue >= listCandidates.size()) ? listCandidates.size() - 1 : this->kValue;
-        this->distribuition = uniform_int_distribution<int>(0, max);
+    if (rand() % 100 < static_cast<int>((1 - this->alphaValue) * 100)) {
+        auto max = (this->kValue <= 0 || this->kValue >= listCandidates.size()) ? listCandidates.size() - 1 : this->kValue;
+        this->distribution = std::uniform_int_distribution<int>(0, static_cast<int>(max));
         int pos = distribution(this->generator);
         element = listCandidates.at(pos);
     }

@@ -9,7 +9,7 @@
 using namespace std;
 
 
-int main(int argc, char* argv[])
+int new_main(int argc, char* argv[])
 {
     srand(0xc0ffe3);
     auto problem = KnapsackProblem();
@@ -29,25 +29,18 @@ int main(int argc, char* argv[])
 }
 
 
-int maunal_main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
     srand(0xc0ffe3);
     auto problem = KnapsackProblem();
     auto instance = KnapsackInstance(argv[1]);
     default_random_engine generator;
 
-    function<int(int)> random_distribuiton = [&](int max) -> int {
-        uniform_int_distribution<int> distribution(0, max);
-		return distribution(generator);
-	};
-
-    function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> elementSelection = [&] (problem::Instance& i, problem::SolutionPtr s) -> problem::ElementPtr {
-        return ConstructiveAlgorithm::getElementRandomSelection(i, s, 1, 0, random_distribuiton);
-    };
+    auto selector = make_shared<selection::RandomSelector>(0, 0);
 
     function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm = [&] (problem::Problem& p, problem::Instance& i) {
-        return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, elementSelection, 1, 1);
-        //return ConstructiveAlgorithm::greedyAlgorithm(p, i, elementSelection);
+        //return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, selector, 4, 4);
+        return ConstructiveAlgorithm::greedyAlgorithm(p, i, selector);
 	};
 
 

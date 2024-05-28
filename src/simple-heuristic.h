@@ -12,3 +12,4 @@
 #include "ConstructiveAlgorithm.h"
 #include "parser.h"
 #include "Selector.h"
+#include "StaticSelector.h"
