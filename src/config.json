@@ -10,6 +10,6 @@
     }
   },
   "stop": {
-    "max-iterations": 10
+    "max-iterations": 10 
   }
 }

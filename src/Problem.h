@@ -33,7 +33,7 @@ namespace problem {
 		virtual void addElementToIterationOptions(ElementPtr element) = 0;
 		// Get the objective value of the solution (if is a maximization problem, return -value)
 		virtual double getObjectiveValue() = 0;
-		// Return if the element was visited
+		// Return if the element was visited (deprecated)
 		virtual bool wasVisited(ElementPtr element) = 0;
 		// Return the candidates elements to be added to the solution (must be valid candidates in the current state)
 		virtual std::vector<ElementPtr> getCandidatesElements() = 0;

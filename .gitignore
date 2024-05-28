@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 # Ignore instances
 instances/
+
+# Ignore output
+output.txt

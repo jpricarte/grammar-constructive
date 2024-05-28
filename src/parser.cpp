@@ -1,4 +1,5 @@
 #include "parser.h"
+#include "StaticSelector.h"
 #include <fstream>
 #include <cassert>
 #include <random>
@@ -46,7 +47,7 @@ void AlgorithmConfiguration::parseGreedy(json& algorithmConfig)
 	parsePriority(algorithmConfig);
 
 	this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i) {
-		return ConstructiveAlgorithm::greedyAlgorithm(p, i, this->elementselection);
+		return ConstructiveAlgorithm::greedyAlgorithm(p, i, this->elementSelection);
 	};
 }
 
@@ -77,7 +78,7 @@ void AlgorithmConfiguration::parseBeamsearch(json& algorithmConfig)
 	}
 
 	this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i) {
-		return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, this->elementselection, beamParams->beamWidth, beamParams->expansionWidth);
+		return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, this->elementSelection, beamParams->beamWidth, beamParams->expansionWidth);
 	};
 }
 
@@ -133,7 +134,7 @@ void AlgorithmConfiguration::parsePriority(json& algorithmConfig)
 	}
 	else assert(false);
 
-	this->elementselection = [&](problem::Instance& i, problem::SolutionPtr s) -> problem::ElementPtr {
+	this->elementSelection = [&](problem::Instance& i, problem::SolutionPtr s) -> problem::ElementPtr {
 		return ConstructiveAlgorithm::getElementRandomSelection(i, s, alpha, kValue, this->random_distribuiton);
 	};
 }

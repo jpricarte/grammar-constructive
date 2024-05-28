@@ -11,3 +11,4 @@
 #include "KnapsackProblem.h"
 #include "ConstructiveAlgorithm.h"
 #include "parser.h"
+#include "Selector.h"

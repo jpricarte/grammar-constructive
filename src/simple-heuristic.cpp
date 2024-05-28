@@ -41,13 +41,13 @@ int maunal_main(int argc, char* argv[])
 		return distribution(generator);
 	};
 
-    function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> elementselection = [&] (problem::Instance& i, problem::SolutionPtr s) -> problem::ElementPtr {
+    function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> elementSelection = [&] (problem::Instance& i, problem::SolutionPtr s) -> problem::ElementPtr {
         return ConstructiveAlgorithm::getElementRandomSelection(i, s, 1, 0, random_distribuiton);
     };
 
     function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm = [&] (problem::Problem& p, problem::Instance& i) {
-        return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, elementselection, 1, 1);
-        //return ConstructiveAlgorithm::greedyAlgorithm(p, i, elementselection);
+        return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, elementSelection, 1, 1);
+        //return ConstructiveAlgorithm::greedyAlgorithm(p, i, elementSelection);
 	};
 
 

@@ -4,6 +4,7 @@
 #include <random>
 #include "ConstructiveAlgorithm.h"
 #include "Problem.h"
+#include "Selector.h"
 #include "../submodule/json/single_include/nlohmann/json.hpp"
 
 struct BeamSearchParams {
@@ -24,7 +25,10 @@ class AlgorithmConfiguration {
 	
 	std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm;
 	std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> baseAlgorithm;
-	std::function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> elementselection;
+	
+	selection::SelectorPtr<problem::ElementPtr> elementSelector;
+
+	std::function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> elementSelection;
 	std::function<int(int)> random_distribuiton;
 	std::default_random_engine generator;
 
