@@ -31,6 +31,8 @@ namespace problem {
 		virtual void addElementToVisited(ElementPtr element) = 0;
 		// Add a element to iteration options as a valid candidate, it will be used to evaluate multiple candidates in the same iteration
 		virtual void addElementToIterationOptions(ElementPtr element) = 0;
+		// Get the quality of a given element in the solution (whatever that means to the problem)
+		virtual double getElementQuality(ElementPtr element) = 0;
 		// Get the objective value of the solution (if is a maximization problem, return -value)
 		virtual double getObjectiveValue() = 0;
 		// Return if the element was visited (deprecated)

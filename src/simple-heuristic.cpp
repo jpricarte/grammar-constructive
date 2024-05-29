@@ -9,7 +9,7 @@
 using namespace std;
 
 
-int new_main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
     srand(0xc0ffe3);
     auto problem = KnapsackProblem();
@@ -29,7 +29,7 @@ int new_main(int argc, char* argv[])
 }
 
 
-int main(int argc, char* argv[])
+int old_main(int argc, char* argv[])
 {
     srand(0xc0ffe3);
     auto problem = KnapsackProblem();

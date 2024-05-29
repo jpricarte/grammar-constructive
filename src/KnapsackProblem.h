@@ -42,6 +42,8 @@ public:
 
 	void addElementToIterationOptions(problem::ElementPtr element) override;
 
+	double getElementQuality(problem::ElementPtr element) override;
+
 	bool wasVisited(problem::ElementPtr element) override;
 
 	void cleanIterationOptions() override;

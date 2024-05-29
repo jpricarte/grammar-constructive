@@ -56,6 +56,11 @@ void KnapsackSolution::addElementToIterationOptions(problem::ElementPtr element)
 	this->options.insert(element);
 }
 
+double KnapsackSolution::getElementQuality(problem::ElementPtr element)
+{
+	return 1 / std::static_pointer_cast<KnapsackElement>(element)->weight;
+}
+
 double KnapsackSolution::getObjectiveValue()
 {
 	return -this->currentValue;

@@ -46,9 +46,9 @@ void AlgorithmConfiguration::parseGreedy(json& algorithmConfig)
     assert(algorithmConfig.contains("priority"));
 	parsePriority(algorithmConfig);
 
-	/*this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i) {
-		return ConstructiveAlgorithm::greedyAlgorithm(p, i, this->elementSelection);
-	};*/
+	this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i) {
+		return ConstructiveAlgorithm::greedyAlgorithm(p, i, this->elementSelector);
+	};
 }
 
 void AlgorithmConfiguration::parseBeamsearch(json& algorithmConfig)
@@ -77,9 +77,9 @@ void AlgorithmConfiguration::parseBeamsearch(json& algorithmConfig)
 		beamParams->expansionWidth = 1;
 	}
 
-	//this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i) {
-	//	//return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, this->elementSelection, beamParams->beamWidth, beamParams->expansionWidth);
-	//};
+	this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i) {
+		return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, this->elementSelector, beamParams->beamWidth, beamParams->expansionWidth);
+	};
 }
 
 void AlgorithmConfiguration::parseIndependent(json& algorithmConfig)
@@ -100,43 +100,19 @@ void AlgorithmConfiguration::parsePriority(json& algorithmConfig)
 	auto priorityConfig = algorithmConfig["priority"];
 
 	double alpha;
-	if (priorityConfig.contains("alpha-value"))
+	if (priorityConfig.contains("type"))
 	{
-		alpha = priorityConfig["alpha-value"];
-	}
-	else
-	{
-		alpha = 1; // Always select the best element
-	}
-
-	int kValue;
-	if (priorityConfig.contains("k-value"))
-	{
-		kValue = priorityConfig["k-value"];
-	}
-	else
-	{
-		kValue = 0; // Select between all elements
-	}
-
-	string distribution = "";
-	if (priorityConfig.contains("distribution"))
-	{
-		distribution = priorityConfig["distribution"];
-	}
-
-	if (distribution == "uniform" or distribution.empty())
-	{
-		this->random_distribuiton = [&](int max) -> int {
-			uniform_int_distribution<int> distribution(0, max);
-			return distribution(generator);
-		};
+		if (priorityConfig["type"] == "greedy")
+		{
+			parseGreedySelection(algorithmConfig);
+		}
+		else if (priorityConfig["type"] == "random")
+		{
+			parseRandomSelection(algorithmConfig);
+		}
+		else assert(false);
 	}
 	else assert(false);
-
-	/*this->elementSelection = [&](problem::Instance& i, problem::SolutionPtr s) -> problem::ElementPtr {
-		return ConstructiveAlgorithm::getElementRandomSelection(i, s, alpha, kValue, this->random_distribuiton);
-	};*/
 }
 
 void AlgorithmConfiguration::parseStopCriteria(json& algorithmConfig)
@@ -164,4 +140,18 @@ void AlgorithmConfiguration::parseStopCriteria(json& algorithmConfig)
 	{
 		assert(false);
 	}
+}
+
+void AlgorithmConfiguration::parseGreedySelection(nlohmann::json& algorithmConfig)
+{
+	elementSelector = static_pointer_cast<selection::Selector>(make_shared<selection::GreedySelector>());
+}
+
+void AlgorithmConfiguration::parseRandomSelection(nlohmann::json& algorithmConfig)
+{
+	auto config = algorithmConfig["priority"];
+	double alpha = config["alpha-value"];
+	int kValue = config["k-value"];
+
+	elementSelector = static_pointer_cast<selection::Selector>(make_shared<selection::RandomSelector>(alpha, kValue));
 }

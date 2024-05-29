@@ -5,11 +5,12 @@
     "beam-width": 4,
     "expansion-width": 2,
     "priority": {
+      "type":  "random",
       "alpha-value": 0.6,
       "k-value": 5
     }
   },
   "stop": {
-    "max-iterations": 10 
+    "max-iterations": 1 
   }
 }

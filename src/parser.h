@@ -25,12 +25,7 @@ class AlgorithmConfiguration {
 	
 	std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm;
 	std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> baseAlgorithm;
-	
 	selection::SelectorPtr elementSelector;
-
-	std::function<problem::ElementPtr(problem::Instance&, problem::SolutionPtr)> elementSelection;
-	std::function<int(int)> random_distribuiton;
-	std::default_random_engine generator;
 
 	// Params struct, may be empty
 	BeamSearchParamsPtr beamParams = nullptr;
@@ -43,6 +38,9 @@ class AlgorithmConfiguration {
 	void parseIndependent(nlohmann::json& algorithmConfig);
 
 	void parsePriority(nlohmann::json& algorithmConfig);
+	void parseGreedySelection(nlohmann::json& algorithmConfig);
+	void parseRandomSelection(nlohmann::json& algorithmConfig);
+
 	void parseStopCriteria(nlohmann::json& algorithmConfig);
 
 	public:

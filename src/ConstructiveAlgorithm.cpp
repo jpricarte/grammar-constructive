@@ -4,17 +4,6 @@
 using namespace std;
 using namespace ConstructiveAlgorithm;
 
-problem::ElementPtr ConstructiveAlgorithm::getBestElement(problem::Instance& instance, problem::SolutionPtr solution, selection::SelectorPtr selector)
-{
-    auto listCandidates = instance.getCandidatesElements(solution);
-    return listCandidates.front();
-}
-
-problem::ElementPtr ConstructiveAlgorithm::getElementRandomSelection(problem::Instance& instance, problem::SolutionPtr solution, selection::SelectorPtr selector)
-{
-    return selector->selectElement(instance, solution);
-}
-
 void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vector<problem::SolutionPtr>& solutions)
 {
     using Option = tuple<problem::SolutionPtr, problem::ElementPtr, double>;
