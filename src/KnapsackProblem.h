@@ -100,6 +100,4 @@ public:
 	bool isValid(problem::Instance& instance, problem::SolutionPtr solution, problem::ElementPtr element) override;
 
 	bool isComplete(problem::Instance& instance, problem::SolutionPtr solution) override;
-
-	bool elementCompleteSolution(problem::Instance& instance, problem::SolutionPtr solution, problem::ElementPtr element) override;
 };

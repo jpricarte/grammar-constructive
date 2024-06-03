@@ -221,11 +221,3 @@ bool KnapsackProblem::isComplete(problem::Instance& instance, problem::SolutionP
 	auto& knapsackInstance = (KnapsackInstance&) instance;
 	return knapsackInstance.getElements().size() <= knapSackSolution->getVisistedSize();
 }
-
-bool KnapsackProblem::elementCompleteSolution(problem::Instance& instance, problem::SolutionPtr solution, problem::ElementPtr element)
-{
-	auto knapSackSolution = std::dynamic_pointer_cast<KnapsackSolution>(solution);
-	auto& knapsackInstance = (KnapsackInstance&)instance;
-	// If the element is the last one, the solution is complete
-	return knapsackInstance.getElements().size() == knapSackSolution->getVisistedSize() - 1;
-}

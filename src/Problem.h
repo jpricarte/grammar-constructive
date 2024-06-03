@@ -73,6 +73,5 @@ namespace problem {
 		virtual double objectiveValue(SolutionPtr solution, ElementPtr element) = 0;
 		virtual bool isValid(Instance& instance, SolutionPtr solution, ElementPtr element) = 0;
 		virtual bool isComplete(Instance& instance, SolutionPtr solution) = 0;
-		virtual bool elementCompleteSolution(Instance& instance, SolutionPtr solution, ElementPtr element) = 0;
 	};
 }
