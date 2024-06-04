@@ -35,7 +35,7 @@ class AlgorithmConfiguration {
 
 	void parseGreedy(nlohmann::json& algorithmConfig);
 	void parseBeamsearch(nlohmann::json& algorithmConfig);
-	void parseIndependent(nlohmann::json& algorithmConfig);
+	void parseInterated(nlohmann::json& algorithmConfig);
 
 	void parsePriority(nlohmann::json& algorithmConfig);
 	void parseGreedySelection(nlohmann::json& algorithmConfig);

@@ -29,9 +29,9 @@ void AlgorithmConfiguration::parseAlgorithmType(json& algorithmConfig)
 		parseBeamsearch(algorithmConfig);
 		this->algorithm = this->baseAlgorithm;
 	}
-	else if (algorithmConfig["type"] == "independent")
+	else if (algorithmConfig["type"] == "iterated")
 	{
-		parseIndependent(algorithmConfig);
+		parseInterated(algorithmConfig);
 	}
 	else assert(false);
 }
@@ -82,7 +82,7 @@ void AlgorithmConfiguration::parseBeamsearch(json& algorithmConfig)
 	};
 }
 
-void AlgorithmConfiguration::parseIndependent(json& algorithmConfig)
+void AlgorithmConfiguration::parseInterated(json& algorithmConfig)
 {
 	assert(algorithmConfig.contains("internal-algorithm"));
 	assert(algorithmConfig.contains("stop"));
