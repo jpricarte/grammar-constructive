@@ -23,6 +23,8 @@ namespace problem {
 	*/
 
 	class Solution {
+	protected:
+		std::set<problem::ElementPtr> options;
 	public:
 		Solution() = default;
 		// Set the element as part of the solution

@@ -8,7 +8,7 @@ void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vect
 {
     using Option = tuple<problem::SolutionPtr, problem::ElementPtr, double>;
 
-    int solutionSize = solutions.size();
+    auto solutionSize = solutions.size();
     vector<Option> bestOptions{};
 
     for (auto solution : solutions)
@@ -68,7 +68,7 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
 
     while (not beam.empty())
     {
-        for (int i = beam.size() - 1; i >= 0; i--)
+        for (auto i = static_cast<int>(beam.size()) - 1; i >= 0; i--)
         {
             auto solution = beam.at(i);
             if (problem.isComplete(instance, solution))
@@ -112,13 +112,16 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithmMaxIterations(pro
     int numIterations)
 {
     problem::SolutionPtr bestSolution = nullptr;
+    double bestVal = INFINITY;
 	for (int i = 0; i < numIterations; i++)
 	{
 		auto solution = algorithm(problem, instance);
-		if (bestSolution == nullptr or problem.objectiveValue(solution) < problem.objectiveValue(bestSolution))
-		{
-			bestSolution = solution;
-		}
+        double val = problem.objectiveValue(solution);
+        if (bestSolution == nullptr or val < bestVal)
+        {
+            bestSolution = solution;
+            bestVal = val;
+        }
 	}
 	return bestSolution;
 }

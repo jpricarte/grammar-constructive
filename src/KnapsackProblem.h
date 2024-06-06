@@ -25,7 +25,6 @@ class KnapsackSolution : public problem::Solution {
 	std::vector<problem::ElementPtr> solution;
 	std::vector<problem::ElementPtr> candidates;
 	std::vector<problem::ElementPtr>::iterator firstVisited;
-	std::set<problem::ElementPtr> options;
 
 	double currentValue;
 	int currentWeight;

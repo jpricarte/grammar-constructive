@@ -1,16 +1,17 @@
 {
   "type": "iterated",
   "internal-algorithm": {
-    "type": "beamsearch",
-    "beam-width": 4,
-    "expansion-width": 2,
+    "type": "greedy",
+    "beam-width": 1,
+    "expansion-width": 1,
     "priority": {
-      "type":  "random",
-      "alpha-value": 0.6,
-      "k-value": 5
+      "type": "greedy",
+      "alpha-value": 0.0,
+      "k-value": 0
     }
   },
   "stop": {
-    "max-iterations": 1 
+    "max-iterations": 1,
+    "max-no-improvement-iterations": 0
   }
 }

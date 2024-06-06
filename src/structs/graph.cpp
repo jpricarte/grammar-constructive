@@ -19,7 +19,7 @@ void Graph::read(string ifname) {
 }
 
 void Graph::read(istream& in) {
-    in >> nNodes >> nEdges >> nColors >> nLabels;
+    in >> nNodes >> nEdges >> nColors >> nMaxColors;
     nodeDegree.resize(nNodes);
 
     vector<unsigned> sourceVec, destinationVec, colorVec;
@@ -91,7 +91,7 @@ void Graph::compute_ce() {
 // store spanning forest edges of color `c` in ce[c]
 void Graph::compute_sf() {
     for (auto i = 0u; i != nColors; i++) {
-        ce[i].clear();
+
         sf_color(i);
     }
 }

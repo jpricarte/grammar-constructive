@@ -7,9 +7,13 @@
 
 struct UnionFind {
     std::vector<int> parent; // parent[i]=-r: i is root of rank r-1
-    unsigned numComponents;        // inv.: nc == # { p[i]<0 } == # roots
+    unsigned numComponents;  // inv.: nc == # { p[i]<0 } == # roots
 
-    UnionFind(int n) : parent(n, -1), numComponents(n) {}
+    UnionFind() : numComponents(0) {};
+    UnionFind(int n) : parent(n, -1), numComponents(n) {};
+    UnionFind(struct UnionFind const &uf) : numComponents(uf.numComponents) {
+        parent = uf.parent;
+    };
 
     int find(int _e) {
         if (parent[_e] < 0)
@@ -36,9 +40,11 @@ struct UnionFind {
                 parent[e]--;
             numComponents--;
         }
+        else 
+            e = e;
     }
 
     unsigned nComp() const { return numComponents; }
 
-    unsigned size() const { return parent.size(); }
+    unsigned size() const { return (unsigned) parent.size(); }
 };

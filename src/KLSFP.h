@@ -7,16 +7,29 @@
 
 class KLSFElement : public problem::Element
 {
+public:
+	unsigned int color;
 	std::shared_ptr<std::vector<Edge>> edgeList;
+	inline KLSFElement(unsigned int color, std::shared_ptr<std::vector<Edge>> edgeList) : color(color), edgeList(edgeList) {};
+
+	bool operator<(const KLSFElement& other) {
+		// The element with the most edges is the one that will be choosed
+		return edgeList->size() > other.edgeList->size();
+	};
 };
+using KLSFElementPtr = std::shared_ptr<KLSFElement>;
 
 class KLSFSolution : public problem::Solution
 {
-	std::vector<problem::ElementPtr> usedColors;
-	std::vector<problem::ElementPtr> allColors;
-	unsigned int usedColors; // The number of used colors (Stopping condition)
+	std::vector<problem::ElementPtr> solution;
+	std::vector<problem::ElementPtr> candidates;
+	std::vector<problem::ElementPtr>::iterator firstVisited;
+	unsigned int numColors; // The number of used colors (Stopping condition)
 	UnionFind components; // Union-Find structure to keep track of the components
+
 public:
+	KLSFSolution(problem::Instance& instance);
+	KLSFSolution(KLSFSolution& other);
 	void addElementToSolution(problem::ElementPtr element) override;
 	void addElementToVisited(problem::ElementPtr element) override;
 	void addElementToIterationOptions(problem::ElementPtr element) override;
@@ -28,14 +41,22 @@ public:
 	std::vector<problem::ElementPtr> getCandidatesElements() override;
 	std::vector<problem::ElementPtr> getSolution() override;
 	std::set<problem::ElementPtr> getIterationOptions() override;
+	int getVisistedSize();
+	inline unsigned int getNumColors() { return numColors; };
+	inline UnionFind getComponents() { return components; };
+	void printGraph();
 };
 
 class KLSFInstance : public problem::Instance
 {
 	Graph &graph;
+	std::vector<problem::ElementPtr> colors;
 public:
+	KLSFInstance(Graph &graph);
 	problem::SolutionPtr initializeSolution() override;
 	std::vector<problem::ElementPtr> getCandidatesElements(problem::SolutionPtr solution) override;
+	Graph& getGraph();
+	std::vector<problem::ElementPtr> getColors();
 };
 
 class KLSFProblem : public problem::Problem

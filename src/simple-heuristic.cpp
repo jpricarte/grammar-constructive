@@ -8,8 +8,36 @@
 
 using namespace std;
 
+int autoKLSFP(int argc, char* argv[]);
 
 int main(int argc, char* argv[])
+{
+	if (argc < 3)
+	{
+		cout << "Usage: " << argv[0] << " <instance> <configuration>" << endl;
+		return 1;
+	}
+
+    return autoKLSFP(argc, argv);
+    //return autoKnapsack(argc, argv);
+    //return manualKnapsack(argc, argv);
+}
+
+int autoKLSFP(int argc, char* argv[])
+{
+    srand(0xc0ffe3);
+    auto problem = KLSFProblem();
+    auto graph = Graph(argv[1]);
+    auto instance = KLSFInstance(graph);
+    auto configuration = AlgorithmConfiguration();
+    configuration.readConfiguration(argv[2]);
+
+    auto solution = dynamic_pointer_cast<KLSFSolution>(configuration.run(problem, instance));
+    cout << solution->getObjectiveValue() << endl;
+    return 0;
+}
+
+int autoKnapsack(int argc, char* argv[])
 {
     srand(0xc0ffe3);
     auto problem = KnapsackProblem();
@@ -29,7 +57,7 @@ int main(int argc, char* argv[])
 }
 
 
-int old_main(int argc, char* argv[])
+int manualKnapsack(int argc, char* argv[])
 {
     srand(0xc0ffe3);
     auto problem = KnapsackProblem();

@@ -99,7 +99,6 @@ void AlgorithmConfiguration::parsePriority(json& algorithmConfig)
 {
 	auto priorityConfig = algorithmConfig["priority"];
 
-	double alpha;
 	if (priorityConfig.contains("type"))
 	{
 		if (priorityConfig["type"] == "greedy")
