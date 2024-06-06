@@ -22,10 +22,6 @@ public:
 
 
 class KnapsackSolution : public problem::Solution {
-	std::vector<problem::ElementPtr> solution;
-	std::vector<problem::ElementPtr> candidates;
-	std::vector<problem::ElementPtr>::iterator firstVisited;
-
 	double currentValue;
 	int currentWeight;
 
@@ -37,29 +33,15 @@ public:
 
 	void addElementToSolution(problem::ElementPtr element) override;
 
-	void addElementToVisited(problem::ElementPtr element) override;
-
-	void addElementToIterationOptions(problem::ElementPtr element) override;
-
 	double getElementQuality(problem::ElementPtr element) override;
-
-	bool wasVisited(problem::ElementPtr element) override;
-
-	void cleanIterationOptions() override;
 
 	double getObjectiveValue() override;
 
 	problem::SolutionPtr clone() override;
 
-	std::vector<problem::ElementPtr> getCandidatesElements() override;
-
 	std::vector<problem::ElementPtr> getSolution() override;
 
-	std::set<problem::ElementPtr> getIterationOptions() override;
-
 	int getCurrentWeight() const;
-
-	std::vector<problem::ElementPtr> getVisited();
 
 	int getVisistedSize();
 

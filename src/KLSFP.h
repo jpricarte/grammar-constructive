@@ -21,26 +21,19 @@ using KLSFElementPtr = std::shared_ptr<KLSFElement>;
 
 class KLSFSolution : public problem::Solution
 {
-	std::vector<problem::ElementPtr> solution;
-	std::vector<problem::ElementPtr> candidates;
-	std::vector<problem::ElementPtr>::iterator firstVisited;
 	unsigned int numColors; // The number of used colors (Stopping condition)
 	UnionFind components; // Union-Find structure to keep track of the components
 
 public:
 	KLSFSolution(problem::Instance& instance);
 	KLSFSolution(KLSFSolution& other);
+
 	void addElementToSolution(problem::ElementPtr element) override;
-	void addElementToVisited(problem::ElementPtr element) override;
-	void addElementToIterationOptions(problem::ElementPtr element) override;
 	double getElementQuality(problem::ElementPtr element) override;
-	bool wasVisited(problem::ElementPtr element) override;
-	void cleanIterationOptions() override;
 	double getObjectiveValue() override;
 	problem::SolutionPtr clone() override;
-	std::vector<problem::ElementPtr> getCandidatesElements() override;
 	std::vector<problem::ElementPtr> getSolution() override;
-	std::set<problem::ElementPtr> getIterationOptions() override;
+
 	int getVisistedSize();
 	inline unsigned int getNumColors() { return numColors; };
 	inline UnionFind getComponents() { return components; };

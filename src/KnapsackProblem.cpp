@@ -43,19 +43,6 @@ void KnapsackSolution::addElementToSolution(problem::ElementPtr element)
 	this->currentWeight += knapsackElement->weight;
 }
 
-void KnapsackSolution::addElementToVisited(problem::ElementPtr element)
-{
-	// TODO: create a alternative, receiving the iterator
-	auto it = std::find(this->candidates.begin(), this->candidates.end(), element);
-	std::rotate(it, it + 1, this->firstVisited);
-	this->firstVisited--;
-}
-
-void KnapsackSolution::addElementToIterationOptions(problem::ElementPtr element)
-{
-	this->options.insert(element);
-}
-
 double KnapsackSolution::getElementQuality(problem::ElementPtr element)
 {
 	return 1 / std::static_pointer_cast<KnapsackElement>(element)->weight;
@@ -66,43 +53,15 @@ double KnapsackSolution::getObjectiveValue()
 	return -this->currentValue;
 }
 
-std::vector<problem::ElementPtr> KnapsackSolution::getVisited()
-{
-	// return from the first visited to the end
-	return std::vector<problem::ElementPtr>(this->firstVisited, this->candidates.end());
-}
-
 int KnapsackSolution::getVisistedSize()
 {
 	// get number of elements from the first visited to the end
 	return std::distance(this->firstVisited, this->candidates.end());
 }
 
-bool KnapsackSolution::wasVisited(problem::ElementPtr element)
-{
-	// Verify if the element is between first visited and end
-	return std::find(this->firstVisited, this->candidates.end(), element) != this->candidates.end();
-}
-
-void KnapsackSolution::cleanIterationOptions()
-{
-	this->options.clear();
-}
-
-std::vector<problem::ElementPtr> KnapsackSolution::getCandidatesElements()
-{
-	// Return from the begin to the first visited
-	return std::vector<problem::ElementPtr>(this->candidates.begin(), this->firstVisited);
-}
-
 std::vector<problem::ElementPtr> KnapsackSolution::getSolution()
 {
 	return this->solution;
-}
-
-std::set<problem::ElementPtr> KnapsackSolution::getIterationOptions()
-{
-	return this->options;
 }
 
 problem::SolutionPtr KnapsackSolution::clone()

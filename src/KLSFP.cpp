@@ -31,8 +31,7 @@ KLSFSolution::KLSFSolution(KLSFSolution& other)
 
 void KLSFSolution::addElementToSolution(problem::ElementPtr element)
 {
-	// Add the color to the solution
-	this->solution.push_back(element);
+	Solution::addElementToSolution(element);
 	// Update the number of colors
 	this->numColors++;
 	// Update the connected components
@@ -42,21 +41,6 @@ void KLSFSolution::addElementToSolution(problem::ElementPtr element)
 	{
 		this->components.unite(u, v);
 	}
-}
-
-void KLSFSolution::addElementToVisited(problem::ElementPtr element)
-{
-	// Send the colors to the visited set
-	// TODO: create a alternative, receiving the iterator
-	auto it = std::find(this->candidates.begin(), this->candidates.end(), element);
-	std::rotate(it, it + 1, this->firstVisited);
-	this->firstVisited--;
-}
-
-void KLSFSolution::addElementToIterationOptions(problem::ElementPtr element)
-{
-	// Add the color to the iteration options vector
-	this->options.insert(element);
 }
 
 double KLSFSolution::getElementQuality(problem::ElementPtr element)
@@ -72,18 +56,6 @@ double KLSFSolution::getElementQuality(problem::ElementPtr element)
 	return (double) auxUF.numComponents;
 }
 
-bool KLSFSolution::wasVisited(problem::ElementPtr element)
-{
-	// Return true if the color was visited (added to solution or doesn't reduce the number of connected components)
-	return false;
-}
-
-void KLSFSolution::cleanIterationOptions()
-{
-	// Clear the iteration options vector
-	this->options.clear();
-}
-
 double KLSFSolution::getObjectiveValue()
 {
 	// Returns the number of connected components in the solution
@@ -96,22 +68,10 @@ problem::SolutionPtr KLSFSolution::clone()
 	return make_shared<KLSFSolution>(*this);
 }
 
-std::vector<problem::ElementPtr> KLSFSolution::getCandidatesElements()
-{
-	// return from the first visited to the end
-	return std::vector<problem::ElementPtr>(this->candidates.begin(), this->firstVisited);
-}
-
 std::vector<problem::ElementPtr> KLSFSolution::getSolution()
 {
 	// Return the colors in the solution
 	return this->solution;
-}
-
-std::set<problem::ElementPtr> KLSFSolution::getIterationOptions()
-{
-	// Returns the options saved to be added in the option
-	return this->options;
 }
 
 int KLSFSolution::getVisistedSize()

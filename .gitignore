@@ -367,5 +367,3 @@ instances/
 
 # Ignore output
 #output.txt
-src/DependentSelector.h
-scripts/auto_config.json
