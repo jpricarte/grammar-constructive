@@ -2,12 +2,8 @@
   "type": "iterated",
   "internal-algorithm": {
     "type": "greedy",
-    "beam-width": 1,
-    "expansion-width": 1,
     "priority": {
-      "type": "greedy",
-      "alpha-value": 0.0,
-      "k-value": 0
+      "type": "greedy"
     }
   },
   "stop": {

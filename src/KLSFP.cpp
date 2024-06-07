@@ -74,6 +74,17 @@ std::vector<problem::ElementPtr> KLSFSolution::getSolution()
 	return this->solution;
 }
 
+std::vector<problem::ElementPtr> KLSFSolution::getCandidatesElements()
+{
+	auto options = problem::Solution::getCandidatesElements();
+
+	// sort using the quality of the elements
+	std::sort(options.begin(), options.end(), [this](problem::ElementPtr a, problem::ElementPtr b) {
+		return this->getElementQuality(a) < this->getElementQuality(b);
+	});
+	return options;
+}
+
 int KLSFSolution::getVisistedSize()
 {
 	// get number of elements from the first visited to the end

@@ -4,6 +4,7 @@
 #include "structs/union-find.hpp"
 #include "Problem.h"
 #include <vector>
+#include <map>
 
 class KLSFElement : public problem::Element
 {
@@ -23,6 +24,7 @@ class KLSFSolution : public problem::Solution
 {
 	unsigned int numColors; // The number of used colors (Stopping condition)
 	UnionFind components; // Union-Find structure to keep track of the components
+	std::map<problem::ElementPtr, double> elementQuality; // The quality of each element
 
 public:
 	KLSFSolution(problem::Instance& instance);
@@ -33,6 +35,7 @@ public:
 	double getObjectiveValue() override;
 	problem::SolutionPtr clone() override;
 	std::vector<problem::ElementPtr> getSolution() override;
+	std::vector<problem::ElementPtr> getCandidatesElements() override;
 
 	int getVisistedSize();
 	inline unsigned int getNumColors() { return numColors; };
