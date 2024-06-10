@@ -91,7 +91,7 @@ void Graph::compute_ce() {
 // store spanning forest edges of color `c` in ce[c]
 void Graph::compute_sf() {
     for (auto i = 0u; i != nColors; i++) {
-
+        ce[i].clear();
         sf_color(i);
     }
 }
