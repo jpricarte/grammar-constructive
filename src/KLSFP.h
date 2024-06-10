@@ -1,6 +1,6 @@
 #pragma once
 
-#include "structs/Graph.hpp"
+#include "structs/graph.hpp"
 #include "structs/union-find.hpp"
 #include "Problem.h"
 #include <vector>
