@@ -34,13 +34,6 @@ int autoKLSFP(int argc, char* argv[])
 
     auto solution = dynamic_pointer_cast<KLSFSolution>(configuration.run(problem, instance));
     cout << solution->getObjectiveValue() << endl;
-    
-    for (auto color : solution->getSolution()) {
-        auto c = dynamic_pointer_cast<KLSFElement>(color);
-        cout << c->color << endl;
-    }
-
-    solution->printGraph();
 
     return 0;
 }

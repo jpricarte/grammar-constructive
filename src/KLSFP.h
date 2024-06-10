@@ -35,7 +35,6 @@ public:
 	double getObjectiveValue() override;
 	problem::SolutionPtr clone() override;
 	std::vector<problem::ElementPtr> getSolution() override;
-	std::vector<problem::ElementPtr> getCandidatesElements() override;
 
 	int getVisistedSize();
 	inline unsigned int getNumColors() { return numColors; };

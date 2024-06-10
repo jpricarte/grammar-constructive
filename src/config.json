@@ -1,13 +1,8 @@
 {
-  "type": "iterated",
-  "internal-algorithm": {
-    "type": "greedy",
-    "priority": {
-      "type": "greedy"
-    }
-  },
-  "stop": {
-    "max-iterations": 1,
-    "max-no-improvement-iterations": 0
+  "type": "greedy",
+  "priority": {
+    "type": "random",
+    "alpha-value": 0.8,
+    "k-value": 0
   }
 }

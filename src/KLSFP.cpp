@@ -41,19 +41,32 @@ void KLSFSolution::addElementToSolution(problem::ElementPtr element)
 	{
 		this->components.unite(u, v);
 	}
+	// Sort the elements again
+	elementQuality.clear();
+	std::sort(this->candidates.begin(), this->firstVisited, [this](problem::ElementPtr a, problem::ElementPtr b) {
+		return this->getElementQuality(a) < this->getElementQuality(b);
+	});
 }
 
 double KLSFSolution::getElementQuality(problem::ElementPtr element)
 {
-	// Return the number of edges or connected componets
-	auto klsfElement = static_pointer_cast<KLSFElement>(element);
-	auto auxUF = UnionFind(this->components);
-	auto edges = *(klsfElement->edgeList);
-	for (Edge edge : edges)
+	if (elementQuality.contains(element))
 	{
-		auxUF.unite(edge.first, edge.second);
+		return elementQuality[element];
 	}
-	return (double) auxUF.numComponents;
+	else
+	{
+		// Return the number of edges or connected componets
+		auto klsfElement = static_pointer_cast<KLSFElement>(element);
+		auto auxUF = UnionFind(this->components);
+		auto edges = *(klsfElement->edgeList);
+		for (Edge edge : edges)
+		{
+			auxUF.unite(edge.first, edge.second);
+		}
+		elementQuality[element] = (double) auxUF.numComponents;
+		return (double) auxUF.numComponents;
+	}
 }
 
 double KLSFSolution::getObjectiveValue()
@@ -64,7 +77,6 @@ double KLSFSolution::getObjectiveValue()
 
 problem::SolutionPtr KLSFSolution::clone()
 {
-	// TBD what to do
 	return make_shared<KLSFSolution>(*this);
 }
 
@@ -72,17 +84,6 @@ std::vector<problem::ElementPtr> KLSFSolution::getSolution()
 {
 	// Return the colors in the solution
 	return this->solution;
-}
-
-std::vector<problem::ElementPtr> KLSFSolution::getCandidatesElements()
-{
-	auto options = problem::Solution::getCandidatesElements();
-
-	// sort using the quality of the elements
-	std::sort(options.begin(), options.end(), [this](problem::ElementPtr a, problem::ElementPtr b) {
-		return this->getElementQuality(a) < this->getElementQuality(b);
-	});
-	return options;
 }
 
 int KLSFSolution::getVisistedSize()
