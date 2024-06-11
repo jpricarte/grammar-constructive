@@ -109,6 +109,10 @@ void AlgorithmConfiguration::parsePriority(json& algorithmConfig)
 		{
 			parseRandomSelection(algorithmConfig);
 		}
+		else if (priorityConfig["type"] == "weighted")
+		{
+			parseWeightedSelection(algorithmConfig);
+		}
 		else assert(false);
 	}
 	else assert(false);
@@ -153,4 +157,13 @@ void AlgorithmConfiguration::parseRandomSelection(nlohmann::json& algorithmConfi
 	int kValue = config["k-value"];
 
 	elementSelector = static_pointer_cast<selection::Selector>(make_shared<selection::RandomSelector>(alpha, kValue));
+}
+
+void AlgorithmConfiguration::parseWeightedSelection(nlohmann::json& algorithmConfig)
+{
+	auto config = algorithmConfig["priority"];
+	double alpha = config["alpha-value"];
+	int kValue = config["k-value"];
+
+	elementSelector = static_pointer_cast<selection::Selector>(make_shared<selection::WeightedRandomSelector>(alpha, kValue));
 }

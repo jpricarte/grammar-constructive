@@ -34,6 +34,7 @@ class AlgorithmConfiguration {
 	void parsePriority(nlohmann::json& algorithmConfig);
 	void parseGreedySelection(nlohmann::json& algorithmConfig);
 	void parseRandomSelection(nlohmann::json& algorithmConfig);
+	void parseWeightedSelection(nlohmann::json& algorithmConfig);
 
 	void parseStopCriteria(nlohmann::json& algorithmConfig);
 

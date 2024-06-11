@@ -5,7 +5,7 @@
     "beam-width": 4,
     "expansion-width": 2,
     "priority": {
-      "type": "random",
+      "type": "weighted",
       "alpha-value": 0.8,
       "k-value": 10
     }
