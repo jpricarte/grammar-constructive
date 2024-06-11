@@ -108,14 +108,16 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
 
 problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithmMaxIterations(problem::Problem& problem, 
     problem::Instance& instance, 
-    function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm,
+    function<problem::SolutionPtr(problem::Problem&, problem::Instance&, selection::SelectorPtr elementSelector)> algorithm,
+    selection::SelectorPtr elementSelector,
     StopCriteriaPtr stopCriteria)
 {
     problem::SolutionPtr bestSolution = nullptr;
     double bestVal = INFINITY;
+    elementSelector->initialize(instance, instance.initializeSolution());
     for (int i = 0, countNoImprovement = 0; (i < stopCriteria->maxIterations) && (countNoImprovement < stopCriteria->maxNoImprovementIterations); i++)
 	{
-		auto solution = algorithm(problem, instance);
+		auto solution = algorithm(problem, instance, elementSelector);
         double val = problem.objectiveValue(solution);
         if (bestSolution == nullptr or val < bestVal)
         {
@@ -127,8 +129,7 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithmMaxIterations(pro
         {
             countNoImprovement++;
         }
-
-        
+        elementSelector->updateProbabilitiesIteration(instance, solution);
 	}
 	return bestSolution;
 }

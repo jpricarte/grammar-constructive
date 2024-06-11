@@ -1,11 +1,14 @@
 {
   "type": "iterated",
   "internal-algorithm": {
-    "type": "beamsearch",
+    "type": "greedy",
     "beam-width": 4,
     "expansion-width": 2,
     "priority": {
-      "type": "weighted"
+      "type": "pheromone",
+      "alpha-value": 0.8,
+      "beta-value": 0.2,
+      "phi-value": 0.1
     }
   },
   "stop": {

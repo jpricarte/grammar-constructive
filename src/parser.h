@@ -17,8 +17,8 @@ class AlgorithmConfiguration {
 	
 	nlohmann::json configuration;
 	
-	std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm;
-	std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> baseAlgorithm;
+	std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&, selection::SelectorPtr elementSelector)> algorithm;
+	std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&, selection::SelectorPtr elementSelector)> baseAlgorithm;
 	selection::SelectorPtr elementSelector;
 
 	// Params struct, may be empty
@@ -35,6 +35,7 @@ class AlgorithmConfiguration {
 	void parseGreedySelection(nlohmann::json& algorithmConfig);
 	void parseRandomSelection(nlohmann::json& algorithmConfig);
 	void parseWeightedSelection(nlohmann::json& algorithmConfig);
+	void parsePheromoneSelection(nlohmann::json& algorithmConfig);
 
 	void parseStopCriteria(nlohmann::json& algorithmConfig);
 

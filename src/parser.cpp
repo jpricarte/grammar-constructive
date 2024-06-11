@@ -1,5 +1,6 @@
 #include "parser.h"
 #include "StaticSelector.h"
+#include "DependentSelector.h"
 #include <fstream>
 #include <cassert>
 #include <random>
@@ -38,7 +39,7 @@ void AlgorithmConfiguration::parseAlgorithmType(json& algorithmConfig)
 
 problem::SolutionPtr AlgorithmConfiguration::run(problem::Problem& problem, problem::Instance& instance)
 {
-	return algorithm(problem, instance);
+	return algorithm(problem, instance, elementSelector);
 }
 
 void AlgorithmConfiguration::parseGreedy(json& algorithmConfig)
@@ -46,8 +47,8 @@ void AlgorithmConfiguration::parseGreedy(json& algorithmConfig)
     assert(algorithmConfig.contains("priority"));
 	parsePriority(algorithmConfig);
 
-	this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i) {
-		return ConstructiveAlgorithm::greedyAlgorithm(p, i, this->elementSelector);
+	this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i, selection::SelectorPtr s) {
+		return ConstructiveAlgorithm::greedyAlgorithm(p, i, s);
 	};
 }
 
@@ -77,8 +78,8 @@ void AlgorithmConfiguration::parseBeamsearch(json& algorithmConfig)
 		beamParams->expansionWidth = 1;
 	}
 
-	this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i) {
-		return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, this->elementSelector, beamParams->beamWidth, beamParams->expansionWidth);
+	this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i, selection::SelectorPtr s) {
+		return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, s, beamParams->beamWidth, beamParams->expansionWidth);
 	};
 }
 
@@ -90,8 +91,8 @@ void AlgorithmConfiguration::parseInterated(json& algorithmConfig)
 	parseAlgorithmType(algorithmConfig["internal-algorithm"]);
 	parseStopCriteria(algorithmConfig["stop"]);
 	
-	this->algorithm = [&](problem::Problem& p, problem::Instance& i) {
-		return ConstructiveAlgorithm::multistartAlgorithmMaxIterations(p, i, this->baseAlgorithm, this->stopCriteria);
+	this->algorithm = [&](problem::Problem& p, problem::Instance& i, selection::SelectorPtr s) {
+		return ConstructiveAlgorithm::multistartAlgorithmMaxIterations(p, i, this->baseAlgorithm, s, this->stopCriteria);
 	};
 }
 
@@ -112,6 +113,10 @@ void AlgorithmConfiguration::parsePriority(json& algorithmConfig)
 		else if (priorityConfig["type"] == "weighted")
 		{
 			parseWeightedSelection(algorithmConfig);
+		}
+		else if (priorityConfig["type"] == "pheromone")
+		{
+			parsePheromoneSelection(algorithmConfig);
 		}
 		else assert(false);
 	}
@@ -164,4 +169,14 @@ void AlgorithmConfiguration::parseWeightedSelection(nlohmann::json& algorithmCon
 	auto config = algorithmConfig["priority"];
 
 	elementSelector = static_pointer_cast<selection::Selector>(make_shared<selection::WeightedRandomSelector>());
+}
+
+void AlgorithmConfiguration::parsePheromoneSelection(nlohmann::json& algorithmConfig)
+{
+	auto config = algorithmConfig["priority"];
+	double alpha = config["alpha-value"];
+	double beta = config["beta-value"];
+	double phi = config["phi-value"];
+
+	elementSelector = static_pointer_cast<selection::Selector>(make_shared<selection::PheromoneSelector>(alpha, beta, phi));
 }
