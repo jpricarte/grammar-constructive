@@ -12,7 +12,7 @@ endif()
 project ("simple-heuristic")
 
 # Adicione a origem ao executável deste projeto.
-add_executable (simple-heuristic "src/simple-heuristic.cpp" "src/simple-heuristic.h" "src/ConstructiveAlgorithm.h" "src/Problem.h" "src/KnapsackProblem.h" "src/KnapsackProblem.cpp" "src/ConstructiveAlgorithm.cpp" "src/parser.h" "src/parser.cpp" "src/Selector.h" "src/StaticSelector.h" "src/StaticSelector.cpp"  "src/KLSFP.h" "src/KLSFP.cpp" "src/structs/graph.hpp" "src/structs/graph.cpp" "src/structs/union-find.hpp" "src/Problem.cpp")
+add_executable (simple-heuristic "src/simple-heuristic.cpp" "src/simple-heuristic.h" "src/ConstructiveAlgorithm.h" "src/Problem.h" "src/KnapsackProblem.h" "src/KnapsackProblem.cpp" "src/ConstructiveAlgorithm.cpp" "src/parser.h" "src/parser.cpp" "src/Selector.h" "src/StaticSelector.h" "src/StaticSelector.cpp"  "src/KLSFP.h" "src/KLSFP.cpp" "src/structs/graph.hpp" "src/structs/graph.cpp" "src/structs/union-find.hpp" "src/Problem.cpp" "src/DependentSelector.h" "src/DependentSelector.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET simple-heuristic PROPERTY CXX_STANDARD 20)

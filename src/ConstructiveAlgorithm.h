@@ -23,6 +23,7 @@ namespace ConstructiveAlgorithm {
     std::shared_ptr<problem::Solution> multistartAlgorithmMaxIterations(problem::Problem& problem, 
         problem::Instance& instance,
         std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm,
+
         StopCriteriaPtr numIterations);
 
 }

@@ -7,8 +7,9 @@ namespace selection {
 	class Selector
 	{
 	protected:
-		std::map<problem::ElementPtr, double> probabilities;
+		std::default_random_engine generator;
 	public:
+		virtual void initialize(problem::Instance& instance, problem::SolutionPtr solution) = 0;
 		virtual void updateProbabilitiesInternal(problem::Instance& instance, problem::SolutionPtr solution) = 0;
 		virtual void updateProbabilitiesIteration(problem::Instance& instance, problem::SolutionPtr solution) = 0;
 		virtual problem::ElementPtr selectElement(problem::Instance& instance, problem::SolutionPtr solution) = 0;

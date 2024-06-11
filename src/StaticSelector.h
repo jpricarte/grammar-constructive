@@ -10,6 +10,9 @@ namespace selection {
 	{
 	public:
 		GreedySelector() = default;
+		
+		inline void initialize(problem::Instance& instance, problem::SolutionPtr solution) override { /*Do nothing*/ };
+
 		inline void updateProbabilitiesInternal(problem::Instance& instance, problem::SolutionPtr solution) override { /*Do nothing*/ };
 
 		inline void updateProbabilitiesIteration(problem::Instance& instance, problem::SolutionPtr solution) override { /*Do nothing*/ };
@@ -29,6 +32,8 @@ namespace selection {
 	public:
 		inline RandomSelector(int kValue, double alphaValue) : kValue(kValue), alphaValue(alphaValue), generator(std::default_random_engine()) {};
 
+		inline void initialize(problem::Instance& instance, problem::SolutionPtr solution) override { /*Do nothing*/ };
+
 		inline void updateProbabilitiesInternal(problem::Instance& instance, problem::SolutionPtr solution) override { /*Do nothing*/ };
 
 		inline void updateProbabilitiesIteration(problem::Instance& instance, problem::SolutionPtr solution) override { /*Do nothing*/ };
@@ -44,6 +49,8 @@ namespace selection {
 
 	public:
 		inline WeightedRandomSelector() : generator(std::default_random_engine()) {};
+
+		inline void initialize(problem::Instance& instance, problem::SolutionPtr solution) override { /*Do nothing*/ };
 
 		inline void updateProbabilitiesInternal(problem::Instance& instance, problem::SolutionPtr solution) override { /*Do nothing*/ };
 

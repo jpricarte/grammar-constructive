@@ -127,6 +127,8 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithmMaxIterations(pro
         {
             countNoImprovement++;
         }
+
+        
 	}
 	return bestSolution;
 }
