@@ -39,20 +39,16 @@ problem::ElementPtr selection::WeightedRandomSelector::selectElement(problem::In
 
     if (listCandidates.empty()) {
         return nullptr;
+    }     
+    std::vector<double> weights;
+    for (auto element : listCandidates) 
+    {
+        weights.push_back(solution->getElementQuality(element));
     }
-    
-	auto element = listCandidates.front();
-	if (rand() % 100 < static_cast<int>((1 - this->alphaValue) * 100)) {       
-        std::vector<double> weights;
-        for (auto element : listCandidates) 
-        {
-            weights.push_back(solution->getElementQuality(element));
-        }
         
-        std::discrete_distribution<> distribution(weights.begin(), weights.end());
-        int pos = distribution(this->generator);
-        element = listCandidates.at(pos);
-	}
+    std::discrete_distribution<> distribution(weights.begin(), weights.end());
+    int pos = distribution(this->generator);
+    auto element = listCandidates.at(pos);
 
 	return element;
 }

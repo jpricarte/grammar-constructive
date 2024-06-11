@@ -39,13 +39,11 @@ namespace selection {
 	class WeightedRandomSelector : public Selector
 	{
 	private:
-		int kValue;
-		double alphaValue;
 		std::uniform_real_distribution<double> distribution;
 		std::default_random_engine generator;
 
 	public:
-		inline WeightedRandomSelector(int kValue, double alphaValue) : kValue(kValue), alphaValue(alphaValue), generator(std::default_random_engine()) {};
+		inline WeightedRandomSelector() : generator(std::default_random_engine()) {};
 
 		inline void updateProbabilitiesInternal(problem::Instance& instance, problem::SolutionPtr solution) override { /*Do nothing*/ };
 

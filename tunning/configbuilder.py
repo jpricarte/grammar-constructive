@@ -18,7 +18,7 @@ Params:
             - max-iterations: INTEGER - How many iterations before stop (0=do not use this method)
             - max-no-improv:  INTEGER - How many iterations without improvement before stop (0=do not use this method)
         Algorithm: The same options as above (excluding I, of course)
-2. Priority: (G, R, P) - Will config the priority algorithm for the next element. It could be Greedy, Randomized or by Pheromones
+2. Priority: (G, R, W, P) - Will config the priority algorithm for the next element. It could be Greedy, Randomized or by Pheromones
     Random params:
     - alpha: [0, 1] - Represents the possibility of get the best element as the next one (1=greedy, 0=full random)
     - k: INTEGER    - Represents the window of elements to be selected as random (1=greedy, 0=all possible elements)
@@ -95,6 +95,8 @@ def parse_random_priority(args_list):
     k_value = int(args_list[2])
     return {"type":  "random", "alpha-value": alpha_value, "k-value": k_value}
 
+def parse_weighted_priority(args_list):
+    return {"type": "weighted"}
 
 def parse_pheromone_priority(args_list):
     raise Exception("Not implemented")
@@ -105,10 +107,12 @@ def parse_priority(args, output, has_internal):
         priority_params = parse_greedy_algorithm(args.priority)
     elif args.priority[0] == 'R':
         priority_params = parse_random_priority(args.priority)
+    elif args.priority[0] == 'W':
+        priority_params = parse_weighted_priority(args.priority)
     elif args.priority[0] == 'P':
         priority_params = parse_pheromone_priority(args.priority)
     else:
-        raise argparse.ArgumentError(None, 'The algorithm must be G, R or P')
+        raise argparse.ArgumentError(None, 'The algorithm must be G, R, W or P')
     
     if (has_internal):
         output["internal-algorithm"]["priority"] = priority_params
@@ -121,7 +125,7 @@ def main():
     parser = argparse.ArgumentParser(description='Config Builder')
     parser.add_argument('-a', '--algorithm', nargs='+', required=True, help='Select the base algorithm (G, B, I)')
     parser.add_argument('-i', '--internal_algorithm', nargs='+', required=False, help='Select the internal algorithm')
-    parser.add_argument('-p', '--priority', nargs='+', required=True, help='Config the priority algorithm for the next element (G, R, P)')
+    parser.add_argument('-p', '--priority', nargs='+', required=True, help='Config the priority algorithm for the next element (G, R, W, P)')
     parser.add_argument('-o', '--output', nargs='+', required=False, help='Specify the output filename')
 
     args = parser.parse_args()

@@ -40,6 +40,6 @@ int_beam_width  ""                   i (2, 8)       | algorithm == "I" & interna
 int_exp_width   ""                   i (2, 8)       | algorithm == "I" & internal_alg == "B"
 
 # Priority
-priority        "-p "                c ("G", "R")
+priority        "-p "                c ("G", "R", "W")
 alpha_val       ""                   r (0, 0.99)    | priority == "R"
 k_val           ""                   i (2, 20)      | priority == "R"
