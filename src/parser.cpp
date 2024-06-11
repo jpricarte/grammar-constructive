@@ -91,7 +91,7 @@ void AlgorithmConfiguration::parseInterated(json& algorithmConfig)
 	parseStopCriteria(algorithmConfig["stop"]);
 	
 	this->algorithm = [&](problem::Problem& p, problem::Instance& i) {
-		return ConstructiveAlgorithm::multistartAlgorithmMaxIterations(p, i, this->baseAlgorithm, this->stopCriteria->maxIterations);
+		return ConstructiveAlgorithm::multistartAlgorithmMaxIterations(p, i, this->baseAlgorithm, this->stopCriteria);
 	};
 }
 
@@ -116,7 +116,7 @@ void AlgorithmConfiguration::parsePriority(json& algorithmConfig)
 
 void AlgorithmConfiguration::parseStopCriteria(json& algorithmConfig)
 {
-	stopCriteria = shared_ptr<StopCriteria>(new StopCriteria());
+	stopCriteria = shared_ptr<ConstructiveAlgorithm::StopCriteria>(new ConstructiveAlgorithm::StopCriteria());
 	if (algorithmConfig.contains("max-iterations"))
 	{
 		stopCriteria->maxIterations = algorithmConfig["max-iterations"];

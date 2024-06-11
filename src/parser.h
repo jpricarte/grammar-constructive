@@ -13,12 +13,6 @@ struct BeamSearchParams {
 };
 using BeamSearchParamsPtr = std::shared_ptr<BeamSearchParams>;
 
-struct StopCriteria {
-	int maxIterations;
-	int maxNoImprovementIterations;
-};
-using StopCriteriaPtr = std::shared_ptr<StopCriteria>;
-
 class AlgorithmConfiguration {
 	
 	nlohmann::json configuration;
@@ -29,7 +23,7 @@ class AlgorithmConfiguration {
 
 	// Params struct, may be empty
 	BeamSearchParamsPtr beamParams = nullptr;
-	StopCriteriaPtr stopCriteria = nullptr;
+	ConstructiveAlgorithm::StopCriteriaPtr stopCriteria = nullptr;
 
 	void parseAlgorithmType(nlohmann::json& algorithmConfig);
 

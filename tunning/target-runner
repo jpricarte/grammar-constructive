@@ -39,7 +39,7 @@ CONFIG_BUILDER="python3 configbuilder.py -o ${CONFIG_FILE} ${CONFIG_PARAMS}"
 
 # EDIT THIS: Path to your executable
 EXE=./simple-heuristic 
-EXE_PARAMS="${INSTANCE} ${CONFIG_FILE}"
+EXE_PARAMS="${SEED} ${INSTANCE} ${CONFIG_FILE}"
 # EDIT THIS: Specify how parameters are given to your executable
 
 if [ ! -x "$(command -v ${EXE})" ]; then

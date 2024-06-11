@@ -8,6 +8,12 @@
 
 namespace ConstructiveAlgorithm {
 
+    struct StopCriteria {
+        int maxIterations;
+        int maxNoImprovementIterations;
+    };
+    using StopCriteriaPtr = std::shared_ptr<StopCriteria>;
+
     void selectBestCandidates(problem::Problem& problem, std::vector<problem::SolutionPtr>& solutions);
 
     problem::SolutionPtr greedyAlgorithm(problem::Problem& problem, problem::Instance& instance, selection::SelectorPtr selector);
@@ -17,6 +23,6 @@ namespace ConstructiveAlgorithm {
     std::shared_ptr<problem::Solution> multistartAlgorithmMaxIterations(problem::Problem& problem, 
         problem::Instance& instance,
         std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm,
-        int numIterations);
+        StopCriteriaPtr numIterations);
 
 }
