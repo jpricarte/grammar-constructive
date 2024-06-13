@@ -1,18 +1,10 @@
 {
-  "type": "iterated",
-  "internal-algorithm": {
-    "type": "greedy",
-    "beam-width": 4,
-    "expansion-width": 2,
-    "priority": {
-      "type": "pheromone",
-      "alpha-value": 0.8,
-      "beta-value": 0.2,
-      "phi-value": 0.1
-    }
-  },
-  "stop": {
-    "max-iterations": 120,
-    "max-no-improvement-iterations": 30
+  "type": "beamsearch",
+  "beam-width": 5,
+  "expansion-width": 3,
+  "priority": {
+    "type": "random",
+    "alpha-value": 0.3735,
+    "k-value": 19
   }
 }

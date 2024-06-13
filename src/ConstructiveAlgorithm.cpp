@@ -4,6 +4,12 @@
 using namespace std;
 using namespace ConstructiveAlgorithm;
 
+
+bool ConstructiveAlgorithm::StopCriteria::shouldStop(int numIterations, int numNoImprov)
+{
+    return (numIterations < this->maxIterations && numNoImprov < this->maxNoImprovementIterations);
+}
+
 void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vector<problem::SolutionPtr>& solutions)
 {
     using Option = tuple<problem::SolutionPtr, problem::ElementPtr, double>;
@@ -108,28 +114,68 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
 
 problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithmMaxIterations(problem::Problem& problem, 
     problem::Instance& instance, 
-    function<problem::SolutionPtr(problem::Problem&, problem::Instance&, selection::SelectorPtr elementSelector)> algorithm,
+    function<problem::SolutionPtr(problem::Problem&, problem::Instance&, selection::SelectorPtr)> algorithm,
     selection::SelectorPtr elementSelector,
     StopCriteriaPtr stopCriteria)
 {
     problem::SolutionPtr bestSolution = nullptr;
     double bestVal = INFINITY;
     elementSelector->initialize(instance, instance.initializeSolution());
-    for (int i = 0, countNoImprovement = 0; (i < stopCriteria->maxIterations) && (countNoImprovement < stopCriteria->maxNoImprovementIterations); i++)
+    int iterations = 0, countNoImprovement = 0;
+    while (!stopCriteria->shouldStop(iterations, countNoImprovement))
 	{
 		auto solution = algorithm(problem, instance, elementSelector);
         double val = problem.objectiveValue(solution);
-        if (bestSolution == nullptr or val < bestVal)
-        {
+        if (bestSolution == nullptr or val < bestVal) {
             bestSolution = solution;
             bestVal = val;
             countNoImprovement = 0;
         }
-        else
-        {
+        else {
             countNoImprovement++;
         }
+        iterations++;
+
         elementSelector->updateProbabilitiesIteration(instance, solution);
 	}
 	return bestSolution;
 }
+
+problem::SolutionPtr ConstructiveAlgorithm::antColonyAlgorithm(problem::Problem& problem, 
+    problem::Instance& instance,
+    function<problem::SolutionPtr(problem::Problem&, problem::Instance&, selection::SelectorPtr)> algorithm,
+    selection::SelectorPtr elementSelector,
+    StopCriteriaPtr stopCriteria,
+    int numAnts)
+{
+    vector<problem::SolutionPtr> ants;
+    int iterations = 0, countNoImprovement = 0;
+    while (!stopCriteria->shouldStop(iterations, countNoImprovement)) 
+    {
+        ants.clear();
+        for (int i = 0; i < numAnts; i++)
+        {
+            ants.push_back(algorithm(problem, instance, elementSelector));
+        }
+
+        for (auto ant : ants) 
+        {
+            elementSelector->updateProbabilitiesIteration(instance, ant);
+        }
+    }
+
+    // Return the minimal element
+    double minValue = INFINITY;
+    problem::SolutionPtr bestAnt = nullptr;
+
+    for (auto ant : ants) 
+    {
+        double solutionValue = ant->getObjectiveValue();
+        if (solutionValue < minValue) {
+            minValue = solutionValue;
+            bestAnt = ant;
+        }
+    }
+    return bestAnt;
+}
+

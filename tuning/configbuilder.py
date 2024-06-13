@@ -99,7 +99,12 @@ def parse_weighted_priority(args_list):
     return {"type": "weighted"}
 
 def parse_pheromone_priority(args_list):
-    raise Exception("Not implemented")
+    if len(args_list) != 4:
+        raise argparse.ArgumentError(None, 'Pheromone priority usage: -p P <alpha> <beta> <phi>')
+    alpha_value = float(args_list[1])
+    beta_value = float(args_list[2])
+    phi_value = float(args_list[3])
+    return {"type": "pheromone", "alpha-value": alpha_value, "beta-value": beta_value, "phi-value": phi_value}
 
 
 def parse_priority(args, output, has_internal):

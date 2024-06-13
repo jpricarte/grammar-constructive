@@ -126,8 +126,8 @@ problem::SolutionPtr KLSFInstance::initializeSolution()
 std::vector<problem::ElementPtr> KLSFInstance::getCandidatesElements(problem::SolutionPtr solution)
 {
 	// Return from the begin to the first visited
-	auto klsfSolution = static_pointer_cast<KLSFSolution>(solution);
-	return klsfSolution->getCandidatesElements();
+	auto result = solution->getCandidatesElements();
+	return result;
 }
 
 Graph& KLSFInstance::getGraph()

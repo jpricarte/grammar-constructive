@@ -34,6 +34,10 @@ void AlgorithmConfiguration::parseAlgorithmType(json& algorithmConfig)
 	{
 		parseInterated(algorithmConfig);
 	}
+	else if (algorithmConfig["type"] == "ant-colony")
+	{
+		parseAntColony(algorithmConfig);
+	}
 	else assert(false);
 }
 
@@ -93,6 +97,21 @@ void AlgorithmConfiguration::parseInterated(json& algorithmConfig)
 	
 	this->algorithm = [&](problem::Problem& p, problem::Instance& i, selection::SelectorPtr s) {
 		return ConstructiveAlgorithm::multistartAlgorithmMaxIterations(p, i, this->baseAlgorithm, s, this->stopCriteria);
+	};
+}
+
+void AlgorithmConfiguration::parseAntColony(nlohmann::json& algorithmConfig)
+{
+	assert(algorithmConfig.contains("internal-algorithm"));
+	assert(algorithmConfig.contains("stop"));
+	assert(algorithmConfig.contains("num-ants"));
+
+	parseAlgorithmType(algorithmConfig["internalAlgorithm"]);
+	parseStopCriteria(algorithmConfig["stop"]);
+	double numAnts = algorithmConfig["num-ants"];
+
+	this->algorithm = [&](problem::Problem& p, problem::Instance& i, selection::SelectorPtr s) {
+		return ConstructiveAlgorithm::antColonyAlgorithm(p, i, this->baseAlgorithm, s, this->stopCriteria, numAnts);
 	};
 }
 
