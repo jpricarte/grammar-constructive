@@ -366,4 +366,10 @@ FodyWeavers.xsd
 instances/
 
 # Ignore output
-#output.txt
+output.txt
+src/config.json
+scripts/auto_config.json
+tuning/configbuilder.py
+tuning/instances-list.txt
+tuning/irace.Rdata
+tuning/simple-heuristic
