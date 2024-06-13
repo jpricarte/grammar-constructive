@@ -22,13 +22,13 @@ namespace ConstructiveAlgorithm {
 
     problem::SolutionPtr beamsearchAlgorithm(problem::Problem& problem, problem::Instance& instance, selection::SelectorPtr selector, int beamWidth, int expasionWidth);
 
-    problem::SolutionPtr multistartAlgorithmMaxIterations(problem::Problem& problem,
+    problem::SolutionPtr multistartAlgorithm(problem::Problem& problem,
         problem::Instance& instance,
         std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&, selection::SelectorPtr)> algorithm,
         selection::SelectorPtr elementSelector,
         StopCriteriaPtr stopCriteria);
 
-    problem::SolutionPtr multistartAlgorithmMaxIterations(problem::Problem& problem, problem::Instance& instance,
+    problem::SolutionPtr multistartAlgorithm(problem::Problem& problem, problem::Instance& instance,
         std::function<problem::SolutionPtr(problem::Problem&, problem::Instance&, selection::SelectorPtr)> algorithm,
         selection::SelectorPtr elementSelector,
         StopCriteriaPtr stopCriteria,

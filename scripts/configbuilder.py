@@ -72,7 +72,7 @@ def parse_iterated_algorithm(args):
     algorithm = {"type": "iterated", "internal-algorithm": internal_algorithm, "stop": stop_criteria}
     if len(args.algorithm) == 4:
         num_solutions = args.algorithm[3]
-        algorithm["num-solutions"] = num_solutions
+        algorithm["num-solutions"] = int(num_solutions)
     return algorithm
 
 

@@ -7,7 +7,7 @@ using namespace ConstructiveAlgorithm;
 
 bool ConstructiveAlgorithm::StopCriteria::shouldStop(int numIterations, int numNoImprov)
 {
-    return (numIterations < this->maxIterations && numNoImprov < this->maxNoImprovementIterations);
+    return (numIterations >= this->maxIterations or numNoImprov >= this->maxNoImprovementIterations);
 }
 
 void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vector<problem::SolutionPtr>& solutions)
@@ -112,7 +112,7 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
     return bestSolution;
 }
 
-problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithmMaxIterations(problem::Problem& problem, 
+problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithm(problem::Problem& problem, 
     problem::Instance& instance, 
     function<problem::SolutionPtr(problem::Problem&, problem::Instance&, selection::SelectorPtr)> algorithm,
     selection::SelectorPtr elementSelector,
@@ -141,7 +141,7 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithmMaxIterations(pro
 	return bestSolution;
 }
 
-problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithmMaxIterations(problem::Problem& problem,
+problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithm(problem::Problem& problem,
     problem::Instance& instance,
     function<problem::SolutionPtr(problem::Problem&, problem::Instance&, selection::SelectorPtr)> algorithm,
     selection::SelectorPtr elementSelector,
@@ -149,31 +149,33 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithmMaxIterations(pro
     int numSolutions)
 {
     vector<problem::SolutionPtr> ants;
-    int iterations = 0, countNoImprovement = 0;
+    int iterations = 0, countNoImprovement = 0, bestValue = INFINITY;
+    problem::SolutionPtr bestAnt = nullptr;
+
     while (!stopCriteria->shouldStop(iterations, countNoImprovement)) 
     {
         ants.clear();
+        bool improved = false;
         for (int i = 0; i < numSolutions; i++)
         {
             ants.push_back(algorithm(problem, instance, elementSelector));
+            double val = ants[i]->getObjectiveValue();
+            if (bestAnt == nullptr or val < bestValue) {
+                bestAnt = ants[i];
+                bestValue = val;
+                countNoImprovement = 0;
+                improved = true;
+            }
         }
+        if (!improved)
+        {
+            countNoImprovement++;
+        }
+        iterations++;
 
         for (auto ant : ants) 
         {
             elementSelector->updateProbabilitiesIteration(instance, ant);
-        }
-    }
-
-    // Return the minimal element
-    double minValue = INFINITY;
-    problem::SolutionPtr bestAnt = nullptr;
-
-    for (auto ant : ants) 
-    {
-        double solutionValue = ant->getObjectiveValue();
-        if (solutionValue < minValue) {
-            minValue = solutionValue;
-            bestAnt = ant;
         }
     }
     return bestAnt;

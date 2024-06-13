@@ -95,13 +95,13 @@ void AlgorithmConfiguration::parseInterated(json& algorithmConfig)
 	{
 		this->numSolutions = algorithmConfig["num-solutions"];
 		this->algorithm = [&](problem::Problem& p, problem::Instance& i, selection::SelectorPtr s) {
-			return ConstructiveAlgorithm::multistartAlgorithmMaxIterations(p, i, this->baseAlgorithm, s, this->stopCriteria, this->numSolutions);
+			return ConstructiveAlgorithm::multistartAlgorithm(p, i, this->baseAlgorithm, s, this->stopCriteria, this->numSolutions);
 		};
 	}
 	else
 	{
 		this->algorithm = [&](problem::Problem& p, problem::Instance& i, selection::SelectorPtr s) {
-			return ConstructiveAlgorithm::multistartAlgorithmMaxIterations(p, i, this->baseAlgorithm, s, this->stopCriteria);
+			return ConstructiveAlgorithm::multistartAlgorithm(p, i, this->baseAlgorithm, s, this->stopCriteria);
 		};
 	}
 }
