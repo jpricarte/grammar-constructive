@@ -34,10 +34,6 @@ void AlgorithmConfiguration::parseAlgorithmType(json& algorithmConfig)
 	{
 		parseInterated(algorithmConfig);
 	}
-	else if (algorithmConfig["type"] == "ant-colony")
-	{
-		parseAntColony(algorithmConfig);
-	}
 	else assert(false);
 }
 
@@ -94,25 +90,20 @@ void AlgorithmConfiguration::parseInterated(json& algorithmConfig)
 
 	parseAlgorithmType(algorithmConfig["internal-algorithm"]);
 	parseStopCriteria(algorithmConfig["stop"]);
-	
-	this->algorithm = [&](problem::Problem& p, problem::Instance& i, selection::SelectorPtr s) {
-		return ConstructiveAlgorithm::multistartAlgorithmMaxIterations(p, i, this->baseAlgorithm, s, this->stopCriteria);
-	};
-}
 
-void AlgorithmConfiguration::parseAntColony(nlohmann::json& algorithmConfig)
-{
-	assert(algorithmConfig.contains("internal-algorithm"));
-	assert(algorithmConfig.contains("stop"));
-	assert(algorithmConfig.contains("num-ants"));
-
-	parseAlgorithmType(algorithmConfig["internalAlgorithm"]);
-	parseStopCriteria(algorithmConfig["stop"]);
-	double numAnts = algorithmConfig["num-ants"];
-
-	this->algorithm = [&](problem::Problem& p, problem::Instance& i, selection::SelectorPtr s) {
-		return ConstructiveAlgorithm::antColonyAlgorithm(p, i, this->baseAlgorithm, s, this->stopCriteria, numAnts);
-	};
+	if (algorithmConfig.contains("num-solutions") and (algorithmConfig["num-solutions"] > 1))
+	{
+		this->numSolutions = algorithmConfig["num-solutions"];
+		this->algorithm = [&](problem::Problem& p, problem::Instance& i, selection::SelectorPtr s) {
+			return ConstructiveAlgorithm::multistartAlgorithmMaxIterations(p, i, this->baseAlgorithm, s, this->stopCriteria, this->numSolutions);
+		};
+	}
+	else
+	{
+		this->algorithm = [&](problem::Problem& p, problem::Instance& i, selection::SelectorPtr s) {
+			return ConstructiveAlgorithm::multistartAlgorithmMaxIterations(p, i, this->baseAlgorithm, s, this->stopCriteria);
+		};
+	}
 }
 
 void AlgorithmConfiguration::parsePriority(json& algorithmConfig)

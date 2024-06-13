@@ -24,13 +24,14 @@ class AlgorithmConfiguration {
 	// Params struct, may be empty
 	BeamSearchParamsPtr beamParams = nullptr;
 	ConstructiveAlgorithm::StopCriteriaPtr stopCriteria = nullptr;
+	
+	int numSolutions;
 
 	void parseAlgorithmType(nlohmann::json& algorithmConfig);
 
 	void parseGreedy(nlohmann::json& algorithmConfig);
 	void parseBeamsearch(nlohmann::json& algorithmConfig);
 	void parseInterated(nlohmann::json& algorithmConfig);
-	void parseAntColony(nlohmann::json& algorithmConfig);
 
 	void parsePriority(nlohmann::json& algorithmConfig);
 	void parseGreedySelection(nlohmann::json& algorithmConfig);

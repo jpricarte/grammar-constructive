@@ -8,13 +8,14 @@ import json
 
 '''
 Params:
-1. algorithm: (G, B, I) - Select the base algorithm. It could be:
+1. algorithm: (G, B, I, A) - Select the base algorithm. It could be:
     G (Greedy): Non-iterated algorithm. Create a single solution, using a single option to create the next step.
     B (Beam Search): Non-iterated algorithm. Create a group of solutions and return the best one. In each step, expand many possible partial solutions and expand the N-best ones
         - beam-width:      INTEGER - How many solutions will be kept
         - expansion-width: INTEGER - How many new solutions will be seek
     I (iterated): Will use some stopping criteria and another algorithm to create the solution multiple times
         Stopping criterias (The algorithm will stop in the first activated)
+            - num-solutions:  INTEGER - How many solutions will be generated in each iteration
             - max-iterations: INTEGER - How many iterations before stop (0=do not use this method)
             - max-no-improv:  INTEGER - How many iterations without improvement before stop (0=do not use this method)
         Algorithm: The same options as above (excluding I, of course)
@@ -62,14 +63,17 @@ def parse_internal_algorithm(args):
 def parse_iterated_algorithm(args):
     if args.internal_algorithm == None:
         raise argparse.ArgumentError(None, 'It must use the internal algorithm (-i) option')
-    if len(args.algorithm) != 3:
+    if len(args.algorithm) < 3:
         raise argparse.ArgumentError(None, 'Iterated usage: I <max_iter> <max_no_improv> -i [options]')
     max_iter = int(args.algorithm[1])
     max_no_improv = int(args.algorithm[2])
     stop_criteria = {"max-iterations": max_iter, "max-no-improvement-iterations": max_no_improv}
     internal_algorithm = parse_internal_algorithm(args)
-    
-    return {"type": "iterated", "internal-algorithm": internal_algorithm, "stop": stop_criteria}
+    algorithm = {"type": "iterated", "internal-algorithm": internal_algorithm, "stop": stop_criteria}
+    if len(args.algorithm) == 4:
+        num_solutions = args.algorithm[3]
+        algorithm["num-solutions"] = num_solutions
+    return algorithm
 
 
 def parse_algorithm(args):
@@ -78,7 +82,6 @@ def parse_algorithm(args):
     elif args.algorithm[0] == 'B':
         return parse_beam_search_algorithm(args.algorithm), False
     elif args.algorithm[0] == 'I':
-        # Iterated algorithm
         return parse_iterated_algorithm(args), True
     else:
         raise argparse.ArgumentError(None, 'The algorithm must be G, B or I')
@@ -99,7 +102,7 @@ def parse_weighted_priority(args_list):
     return {"type": "weighted"}
 
 def parse_pheromone_priority(args_list):
-    if len(arg_list) != 4:
+    if len(args_list) != 4:
         raise argparse.ArgumentError(None, 'Pheromone priority usage: -p P <alpha> <beta> <phi>')
     alpha_value = float(args_list[1])
     beta_value = float(args_list[2])

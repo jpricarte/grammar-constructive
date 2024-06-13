@@ -141,19 +141,19 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithmMaxIterations(pro
 	return bestSolution;
 }
 
-problem::SolutionPtr ConstructiveAlgorithm::antColonyAlgorithm(problem::Problem& problem, 
+problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithmMaxIterations(problem::Problem& problem,
     problem::Instance& instance,
     function<problem::SolutionPtr(problem::Problem&, problem::Instance&, selection::SelectorPtr)> algorithm,
     selection::SelectorPtr elementSelector,
     StopCriteriaPtr stopCriteria,
-    int numAnts)
+    int numSolutions)
 {
     vector<problem::SolutionPtr> ants;
     int iterations = 0, countNoImprovement = 0;
     while (!stopCriteria->shouldStop(iterations, countNoImprovement)) 
     {
         ants.clear();
-        for (int i = 0; i < numAnts; i++)
+        for (int i = 0; i < numSolutions; i++)
         {
             ants.push_back(algorithm(problem, instance, elementSelector));
         }
