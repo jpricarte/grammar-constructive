@@ -1,0 +1,6 @@
+[submodule "instances/knapsack"]
+	path = instances/knapsack
+	url = git@github.com:likr/kplib.git
+[submodule "submodule/json"]
+	path = submodule/json
+	url = git@github.com:nlohmann/json.git
