@@ -7,6 +7,7 @@
 #include <cassert>
 #include <queue>
 #include <numeric>
+#include <algorithm>
 
 using namespace std;
 

@@ -3,4 +3,4 @@
 	url = git@github.com:likr/kplib.git
 [submodule "submodule/json"]
 	path = submodule/json
-	url = git@github.com:nlohmann/json.git
+	url = https://github.com/nlohmann/json.git
