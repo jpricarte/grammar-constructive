@@ -68,6 +68,10 @@ public:
 	problem::SolutionPtr initializeSolution() override;
 
 	std::vector<problem::ElementPtr> getCandidatesElements(problem::SolutionPtr solution) override;
+
+	bool isValid(problem::SolutionPtr solution, problem::ElementPtr element) override;
+
+	bool isComplete(problem::SolutionPtr solution) override;
 };
 
 class KnapsackProblem : public problem::Problem {

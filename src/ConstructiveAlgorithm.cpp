@@ -53,10 +53,24 @@ void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vect
 problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Problem& problem, problem::Instance& instance, selection::SelectorPtr selector)
 {
     auto solution = instance.initializeSolution();
-    while (not problem.isComplete(instance, solution))
+    while (not instance.isComplete(solution))
     {
         auto choosedElement = selector->selectElement(instance, solution);
-        if (problem.isValid(instance, solution, choosedElement))
+        if (instance.isValid(solution, choosedElement))
+        {
+            solution->addElementToSolution(choosedElement);
+        }
+        solution->addElementToVisited(choosedElement);
+    }
+    return solution;
+}
+
+problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Instance& instance, problem::SolutionPtr solution, selection::SelectorPtr selector)
+{
+    while (not instance.isComplete(solution))
+    {
+        auto choosedElement = selector->selectElement(instance, solution);
+        if (instance.isValid(solution, choosedElement))
         {
             solution->addElementToSolution(choosedElement);
         }

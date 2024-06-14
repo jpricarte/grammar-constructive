@@ -138,6 +138,21 @@ std::vector<problem::ElementPtr> KLSFInstance::getCandidatesElements(problem::So
 	return result;
 }
 
+bool KLSFInstance::isValid(problem::SolutionPtr solution, problem::ElementPtr element)
+{
+	auto klsfSolution = static_pointer_cast<KLSFSolution>(solution);
+	// Returns true if the element can be added to the solution
+	return this->getGraph().nMaxColors > klsfSolution->getNumColors();
+}
+
+bool KLSFInstance::isComplete(problem::SolutionPtr solution)
+{
+	// Returns true if the solution contains min(k, numColors) colors
+	auto klsfSolution = static_pointer_cast<KLSFSolution>(solution);
+	// Returns true if an element can't be added to the solution
+	return this->getGraph().nMaxColors <= klsfSolution->getNumColors();
+}
+
 Graph& KLSFInstance::getGraph()
 {
 	return this->graph;

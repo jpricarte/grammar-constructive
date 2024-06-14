@@ -20,6 +20,8 @@ namespace ConstructiveAlgorithm {
 
     problem::SolutionPtr greedyAlgorithm(problem::Problem& problem, problem::Instance& instance, selection::SelectorPtr selector);
 
+    problem::SolutionPtr greedyAlgorithm(problem::Instance& instance, problem::SolutionPtr solution, selection::SelectorPtr selector);
+
     problem::SolutionPtr beamsearchAlgorithm(problem::Problem& problem, problem::Instance& instance, selection::SelectorPtr selector, int beamWidth, int expasionWidth);
 
     problem::SolutionPtr multistartAlgorithm(problem::Problem& problem,

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Selector.h"
+#include "StaticSelector.h"
 #include "Problem.h"
 #include <map>
 #include <vector>
@@ -21,6 +22,19 @@ namespace selection {
 		void initialize(problem::Instance& instance, problem::SolutionPtr solution) override;
 		void updateProbabilitiesInternal(problem::Instance& instance, problem::SolutionPtr solution) override;
 		void updateProbabilitiesIteration(problem::Instance& instance, problem::SolutionPtr solution) override;
+
+		problem::ElementPtr selectElement(problem::Instance& instance, problem::SolutionPtr solution) override;
+	};
+
+	class PilotSelector : public Selector
+	{
+		selection::SelectorPtr baseSelector;
+	public:
+		PilotSelector();
+
+		inline void initialize(problem::Instance& instance, problem::SolutionPtr solution) override {};
+		inline void updateProbabilitiesInternal(problem::Instance& instance, problem::SolutionPtr solution) override {};
+		inline void updateProbabilitiesIteration(problem::Instance& instance, problem::SolutionPtr solution) override {};
 
 		problem::ElementPtr selectElement(problem::Instance& instance, problem::SolutionPtr solution) override;
 	};

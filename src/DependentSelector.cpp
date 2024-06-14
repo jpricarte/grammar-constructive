@@ -1,4 +1,5 @@
 #include "DependentSelector.h"
+#include "ConstructiveAlgorithm.h"
 #include <algorithm>
 
 void selection::PheromoneSelector::initialize(problem::Instance& instance, problem::SolutionPtr solution)
@@ -48,4 +49,30 @@ problem::ElementPtr selection::PheromoneSelector::selectElement(problem::Instanc
 	int pos = distribution(this->generator);
 
 	return listCandidates.at(pos);	
+}
+
+selection::PilotSelector::PilotSelector()
+{
+	baseSelector = std::make_shared<GreedySelector>();
+}
+
+problem::ElementPtr selection::PilotSelector::selectElement(problem::Instance& instance, problem::SolutionPtr solution)
+{
+	double bestVal = INFINITY;
+	problem::ElementPtr bestElement = nullptr;
+	auto listCandidates = solution->getCandidatesElements();
+	for (auto candidate : listCandidates)
+	{
+		auto possibleSolution = solution->clone();
+		possibleSolution->addElementToSolution(candidate);
+		possibleSolution = ConstructiveAlgorithm::greedyAlgorithm(instance, solution, baseSelector);
+		double val = possibleSolution->getObjectiveValue();
+		if (val < bestVal)
+		{
+			bestVal = val;
+			bestElement = candidate;
+		}
+	}
+
+	return bestElement;
 }

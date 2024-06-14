@@ -146,6 +146,20 @@ std::vector<problem::ElementPtr> KnapsackInstance::getCandidatesElements(problem
 	return knapsackSolution->getCandidatesElements();
 }
 
+bool KnapsackInstance::isValid(problem::SolutionPtr solution, problem::ElementPtr element)
+{
+	auto knapsackElement = std::static_pointer_cast<KnapsackElement>(element);
+	auto knapsackSolution = std::static_pointer_cast<KnapsackSolution>(solution);
+
+	return ((knapsackSolution->getCurrentWeight() + knapsackElement->weight) <= this->getCapacity());
+}
+
+bool KnapsackInstance::isComplete(problem::SolutionPtr solution)
+{
+	auto knapSackSolution = std::dynamic_pointer_cast<KnapsackSolution>(solution);
+	return this->getElements().size() <= knapSackSolution->getVisistedSize();
+}
+
 
 double KnapsackProblem::objectiveValue(problem::SolutionPtr solution)
 {

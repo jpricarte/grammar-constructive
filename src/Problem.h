@@ -73,6 +73,8 @@ namespace problem {
 	public:
 		virtual SolutionPtr initializeSolution() = 0;
 		virtual std::vector<ElementPtr> getCandidatesElements(SolutionPtr solution) = 0;
+		virtual bool isValid(SolutionPtr solution, ElementPtr element) = 0;
+		virtual bool isComplete(SolutionPtr solution) = 0;
 	};
 
 	/**

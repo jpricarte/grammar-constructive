@@ -50,8 +50,11 @@ public:
 	KLSFInstance(Graph &graph);
 	problem::SolutionPtr initializeSolution() override;
 	std::vector<problem::ElementPtr> getCandidatesElements(problem::SolutionPtr solution) override;
+	bool isValid(problem::SolutionPtr solution, problem::ElementPtr element) override;
+	bool isComplete(problem::SolutionPtr solution) override;
 	Graph& getGraph();
 	std::vector<problem::ElementPtr> getColors();
+
 };
 
 class KLSFProblem : public problem::Problem
