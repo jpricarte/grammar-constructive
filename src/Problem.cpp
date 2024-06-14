@@ -1,5 +1,7 @@
 #include "Problem.h"
 
+#include <algorithm>
+
 using namespace problem;
 
 void Solution::addElementToSolution(ElementPtr element)

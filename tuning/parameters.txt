@@ -34,9 +34,9 @@ exp_width       ""                   i (2, 8)       | algorithm == "B"
 # Iterated params
 max_iter        ""                   i (10, 100)    | algorithm == "I"
 max_no_imp      ""                   i (0, 30)      | algorithm == "I"
+num_solutions	""					 i (1, 10)		| algorithm == "I"
 ## Internal algorithm (In iterated)
 internal_alg    "-i "                c ("G", "B")   | algorithm == "I"
-num_solutions	""					 i (1, 10)		| algorithm == "I"
 int_beam_width  ""                   i (2, 8)       | algorithm == "I" & internal_alg == "B"
 int_exp_width   ""                   i (2, 8)       | algorithm == "I" & internal_alg == "B"
 
