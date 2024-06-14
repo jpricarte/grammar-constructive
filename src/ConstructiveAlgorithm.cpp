@@ -149,7 +149,8 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithm(problem::Problem
     int numSolutions)
 {
     vector<problem::SolutionPtr> ants;
-    int iterations = 0, countNoImprovement = 0, bestValue = INFINITY;
+    int iterations = 0, countNoImprovement = 0;
+    double bestValue = INFINITY;
     problem::SolutionPtr bestAnt = nullptr;
 
     while (!stopCriteria->shouldStop(iterations, countNoImprovement)) 
