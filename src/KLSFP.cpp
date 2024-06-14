@@ -1,5 +1,6 @@
 #include "KLSFP.h"
 #include <random>
+#include "Problem.h"
 
 using namespace std;
 
@@ -27,11 +28,14 @@ KLSFSolution::KLSFSolution(KLSFSolution& other)
 	this->candidates = other.candidates;
 	this->solution = other.solution;
 	this->firstVisited = this->candidates.end() - other.getVisistedSize();
+	this->elementQuality = other.elementQuality;
 }
 
 void KLSFSolution::addElementToSolution(problem::ElementPtr element)
 {
 	Solution::addElementToSolution(element);
+	// Increase operations global counter
+	gOperationCounter++;
 	// Update the number of colors
 	this->numColors++;
 	// Update the connected components
@@ -56,6 +60,9 @@ double KLSFSolution::getElementQuality(problem::ElementPtr element)
 	}
 	else
 	{
+		// Increase operations global counter
+		gOperationCounter++;
+
 		// Return the number of edges or connected componets
 		auto klsfElement = static_pointer_cast<KLSFElement>(element);
 		auto auxUF = UnionFind(this->components);
@@ -65,6 +72,7 @@ double KLSFSolution::getElementQuality(problem::ElementPtr element)
 			auxUF.unite(edge.first, edge.second);
 		}
 		elementQuality[element] = (double) auxUF.numComponents;
+
 		return (double) auxUF.numComponents;
 	}
 }
@@ -148,6 +156,9 @@ double KLSFProblem::objectiveValue(problem::SolutionPtr solution)
 
 double KLSFProblem::objectiveValue(problem::SolutionPtr solution, problem::ElementPtr element)
 {
+	// Increase operations global counter
+	gOperationCounter++;
+
 	auto klsfSolution = static_pointer_cast <KLSFSolution>(solution);
 	UnionFind auxUF(klsfSolution->getComponents());
 

@@ -2,6 +2,7 @@
 //
 
 #include "simple-heuristic.h"
+#include "Problem.h"
 
 #include <functional>
 #include <random>
@@ -33,6 +34,7 @@ int autoKLSFP(int argc, char* argv[])
     configuration.readConfiguration(argv[3]);
 
     auto solution = dynamic_pointer_cast<KLSFSolution>(configuration.run(problem, instance));
+    cout << gOperationCounter << endl;
     cout << solution->getObjectiveValue() << endl;
 
     return 0;
@@ -54,34 +56,5 @@ int autoKnapsack(int argc, char* argv[])
         cout << knapsackElement->value << " " << knapsackElement->weight << endl;
     }
     
-    return 0;
-}
-
-
-int manualKnapsack(int argc, char* argv[])
-{
-    srand(0xc0ffe3);
-    auto problem = KnapsackProblem();
-    auto instance = KnapsackInstance(argv[2]);
-    default_random_engine generator;
-
-    auto selector = make_shared<selection::RandomSelector>(0, 0);
-
-    function<problem::SolutionPtr(problem::Problem&, problem::Instance&)> algorithm = [&] (problem::Problem& p, problem::Instance& i) {
-        //return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, selector, 4, 4);
-        return ConstructiveAlgorithm::greedyAlgorithm(p, i, selector);
-	};
-
-
-    //auto solution = dynamic_pointer_cast<KnapsackSolution>(ConstructiveAlgorithm::multistartAlgorithm(problem, instance, algorithm, 100));
-    auto solution = dynamic_pointer_cast<KnapsackSolution>(algorithm(problem, instance));
-
-    cout << solution->getObjectiveValue() << " " << solution->getCurrentWeight() << endl;
-    for (auto element : solution->getSolution())
-    {
-		auto knapsackElement = dynamic_pointer_cast<KnapsackElement>(element);
-		cout << knapsackElement->value << " " << knapsackElement->weight << endl;
-	}
-
     return 0;
 }

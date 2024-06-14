@@ -1,13 +1,17 @@
 #include "ConstructiveAlgorithm.h"
 #include <random>
+#include <iostream>
 
 using namespace std;
 using namespace ConstructiveAlgorithm;
 
+#define DEBUG 1
+
 
 bool ConstructiveAlgorithm::StopCriteria::shouldStop(int numIterations, int numNoImprov)
 {
-    return (numIterations >= this->maxIterations or numNoImprov >= this->maxNoImprovementIterations);
+    return ((this->maxIterations > 0) and (numIterations >= this->maxIterations)) // stop if we use maxIterations and reach maxIterations
+        or ((this->maxNoImprov > 0) and (numNoImprov >= this->maxNoImprov));    // stip if we use maxNoImprove and reach maxNoImprov
 }
 
 void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vector<problem::SolutionPtr>& solutions)
@@ -138,7 +142,8 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithm(problem::Problem
 
         elementSelector->updateProbabilitiesIteration(instance, solution);
 	}
-	return bestSolution;
+    cout << iterations << " " << countNoImprovement << endl;
+    return bestSolution;
 }
 
 problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithm(problem::Problem& problem,
@@ -179,6 +184,8 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithm(problem::Problem
             elementSelector->updateProbabilitiesIteration(instance, ant);
         }
     }
+    if (DEBUG)
+        cout << iterations << " " << countNoImprovement << endl;
     return bestAnt;
 }
 

@@ -4,6 +4,8 @@
 
 using namespace problem;
 
+uint64_t gOperationCounter = 0;
+
 void Solution::addElementToSolution(ElementPtr element)
 {
 	// Add the color to the solution
@@ -46,5 +48,5 @@ void Solution::cleanIterationOptions()
 int Solution::getVisistedSize()
 {
 	// get number of elements from the first visited to the end
-	return std::distance(this->firstVisited, this->candidates.end());
+	return (int) std::distance(this->firstVisited, this->candidates.end());
 }

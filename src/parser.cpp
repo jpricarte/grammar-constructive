@@ -147,14 +147,14 @@ void AlgorithmConfiguration::parseStopCriteria(json& algorithmConfig)
 
 	if (algorithmConfig.contains("max-no-improvement-iterations"))
 	{
-		stopCriteria->maxNoImprovementIterations = algorithmConfig["max-no-improvement-iterations"];
+		stopCriteria->maxNoImprov = algorithmConfig["max-no-improvement-iterations"];
 	}
 	else
 	{
-		stopCriteria->maxNoImprovementIterations = 0;
+		stopCriteria->maxNoImprov = 0;
 	}
 
-	if (stopCriteria->maxIterations == 0 and stopCriteria->maxNoImprovementIterations == 0)
+	if (stopCriteria->maxIterations == 0 and stopCriteria->maxNoImprov == 0)
 	{
 		assert(false);
 	}

@@ -10,7 +10,7 @@ namespace ConstructiveAlgorithm {
 
     struct StopCriteria {
         int maxIterations;
-        int maxNoImprovementIterations;
+        int maxNoImprov;
 
         bool shouldStop(int numIterations, int numNoImprov);
     };

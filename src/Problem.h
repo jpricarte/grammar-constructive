@@ -4,12 +4,13 @@
 #include <memory>
 #include <set>
 
+extern uint64_t gOperationCounter;
+
 /**
 * @brief Namespace for the problem implementation
 * @details This namespace contains all the abstract classes needed to define a problem and use it in a heuristic algorithm
 */
 namespace problem {
-
 	struct Element {
 		virtual ~Element() = default;
 	};
