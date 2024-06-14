@@ -19,7 +19,7 @@ Params:
             - max-iterations: INTEGER - How many iterations before stop (0=do not use this method)
             - max-no-improv:  INTEGER - How many iterations without improvement before stop (0=do not use this method)
         Algorithm: The same options as above (excluding I, of course)
-2. Priority: (G, R, W, P) - Will config the priority algorithm for the next element. It could be Greedy, Randomized or by Pheromones
+2. Priority: (G, R, W, Ph, Pi) - Will config the priority algorithm for the next element. It could be Greedy, Randomized, by Pheromones or Pilot method
     Random params:
     - alpha: [0, 1] - Represents the possibility of get the best element as the next one (1=greedy, 0=full random)
     - k: INTEGER    - Represents the window of elements to be selected as random (1=greedy, 0=all possible elements)
@@ -34,7 +34,7 @@ Input examples:
 2. Beam-search(3, 4) with Greedy priority
     input: python configbuild.py -a B 3 4 -p G 
 3. Iterated(2000, 10) Beam-search(2, 3) with Pheromones(0.4, 0.6, 0.9)
-    input: python configbuild.py -a I 2000 10 -i B 2 3 -p P 0.4 0.6 0.9
+    input: python configbuild.py -a I 2000 10 -i B 2 3 -p Ph 0.4 0.6 0.9
 '''
 
 
@@ -103,12 +103,14 @@ def parse_weighted_priority(args_list):
 
 def parse_pheromone_priority(args_list):
     if len(args_list) != 4:
-        raise argparse.ArgumentError(None, 'Pheromone priority usage: -p P <alpha> <beta> <phi>')
+        raise argparse.ArgumentError(None, 'Pheromone priority usage: -p Ph <alpha> <beta> <phi>')
     alpha_value = float(args_list[1])
     beta_value = float(args_list[2])
     phi_value = float(args_list[3])
     return {"type": "pheromone", "alpha-value": alpha_value, "beta-value": beta_value, "phi-value": phi_value}
 
+def parse_pilot_priority(args_list):
+    return {"type:" "pilot"}
 
 def parse_priority(args, output, has_internal):
     if args.priority[0] == 'G':
@@ -117,10 +119,12 @@ def parse_priority(args, output, has_internal):
         priority_params = parse_random_priority(args.priority)
     elif args.priority[0] == 'W':
         priority_params = parse_weighted_priority(args.priority)
-    elif args.priority[0] == 'P':
+    elif args.priority[0] == 'Ph':
         priority_params = parse_pheromone_priority(args.priority)
+    elif args.priority[0] == 'Pi':
+        priority_params = parse_pilot_priority(args.priority)
     else:
-        raise argparse.ArgumentError(None, 'The algorithm must be G, R, W or P')
+        raise argparse.ArgumentError(None, 'The algorithm must be G, R, W, Ph or Pi')
     
     if (has_internal):
         output["internal-algorithm"]["priority"] = priority_params
@@ -133,7 +137,7 @@ def main():
     parser = argparse.ArgumentParser(description='Config Builder')
     parser.add_argument('-a', '--algorithm', nargs='+', required=True, help='Select the base algorithm (G, B, I)')
     parser.add_argument('-i', '--internal_algorithm', nargs='+', required=False, help='Select the internal algorithm')
-    parser.add_argument('-p', '--priority', nargs='+', required=True, help='Config the priority algorithm for the next element (G, R, W, P)')
+    parser.add_argument('-p', '--priority', nargs='+', required=True, help='Config the priority algorithm for the next element (G, R, W, Ph, Pi)')
     parser.add_argument('-o', '--output', nargs='+', required=False, help='Specify the output filename')
 
     args = parser.parse_args()

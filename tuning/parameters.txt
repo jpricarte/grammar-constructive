@@ -41,9 +41,9 @@ int_beam_width  ""                   i (2, 8)       | algorithm == "I" & interna
 int_exp_width   ""                   i (2, 8)       | algorithm == "I" & internal_alg == "B"
 
 # Priority
-priority        "-p "                c ("G", "R", "W", "P")
+priority        "-p "                c ("G", "R", "W", "Ph", "Pi")
 alpha_val       ""                   r (0, 0.99)    | priority == "R"
 k_val           ""                   i (2, 20)      | priority == "R"
-alpha_phero     ""                   r (0, 1)       | priority == "P"
-beta_phero      ""                   r (0, 1)       | priority == "P"
-phi_phero       ""                   r (0, 1)       | priority == "P"
+alpha_phero     ""                   r (0, 1)       | priority == "Ph"
+beta_phero      ""                   r (0, 1)       | priority == "Ph"
+phi_phero       ""                   r (0, 1)       | priority == "Ph"
