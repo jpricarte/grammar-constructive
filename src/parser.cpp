@@ -197,5 +197,6 @@ void AlgorithmConfiguration::parsePheromoneSelection(nlohmann::json& algorithmCo
 
 void AlgorithmConfiguration::parsePilotSelection(nlohmann::json& algorithmConfig)
 {
-	elementSelector = static_pointer_cast<selection::Selector>(make_shared<selection::PilotSelector>());
+	double kValue = algorithmConfig["priority"]["k-value"];
+	elementSelector = static_pointer_cast<selection::Selector>(make_shared<selection::PilotSelector>(kValue));
 }

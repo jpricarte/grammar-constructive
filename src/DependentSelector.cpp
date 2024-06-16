@@ -51,7 +51,7 @@ problem::ElementPtr selection::PheromoneSelector::selectElement(problem::Instanc
 	return listCandidates.at(pos);	
 }
 
-selection::PilotSelector::PilotSelector()
+selection::PilotSelector::PilotSelector(int KValue) : kValue(KValue)
 {
 	baseSelector = std::make_shared<GreedySelector>();
 }
@@ -61,8 +61,10 @@ problem::ElementPtr selection::PilotSelector::selectElement(problem::Instance& i
 	double bestVal = INFINITY;
 	problem::ElementPtr bestElement = nullptr;
 	auto listCandidates = solution->getCandidatesElements();
-	for (auto candidate : listCandidates)
+	int minRange = std::min(kValue, (int)listCandidates.size());
+	for (int i = 0; i < minRange; i++)
 	{
+		auto candidate = solution->getCandidatesElements().at(i);
 		auto possibleSolution = solution->clone();
 		possibleSolution->addElementToSolution(candidate);
 		possibleSolution = ConstructiveAlgorithm::greedyAlgorithm(instance, possibleSolution, baseSelector);

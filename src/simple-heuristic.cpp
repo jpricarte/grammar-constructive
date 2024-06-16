@@ -34,7 +34,7 @@ int autoKLSFP(int argc, char* argv[])
     configuration.readConfiguration(argv[3]);
 
     auto solution = dynamic_pointer_cast<KLSFSolution>(configuration.run(problem, instance));
-    cout << gOperationCounter << endl;
+    //cout << gOperationCounter << endl;
     cout << solution->getObjectiveValue() << endl;
 
     return 0;

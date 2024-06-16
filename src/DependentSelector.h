@@ -28,9 +28,10 @@ namespace selection {
 
 	class PilotSelector : public Selector
 	{
+		int kValue;
 		selection::SelectorPtr baseSelector;
 	public:
-		PilotSelector();
+		PilotSelector(int kValue);
 
 		inline void initialize(problem::Instance& instance, problem::SolutionPtr solution) override {};
 		inline void updateProbabilitiesInternal(problem::Instance& instance, problem::SolutionPtr solution) override {};
