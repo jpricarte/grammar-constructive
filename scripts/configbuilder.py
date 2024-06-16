@@ -110,7 +110,10 @@ def parse_pheromone_priority(args_list):
     return {"type": "pheromone", "alpha-value": alpha_value, "beta-value": beta_value, "phi-value": phi_value}
 
 def parse_pilot_priority(args_list):
-    return {"type:" "pilot"}
+    if len(args_list) != 2:
+        raise argparse.ArgumentError(None, 'Pilot priority usage: -p Pi <k>')
+    k_value = int(args_list[1])
+    return {"type": "pilot", "k-value": k_value}
 
 def parse_priority(args, output, has_internal):
     if args.priority[0] == 'G':

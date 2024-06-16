@@ -128,6 +128,10 @@ void AlgorithmConfiguration::parsePriority(json& algorithmConfig)
 		{
 			parsePheromoneSelection(algorithmConfig);
 		}
+		else if (priorityConfig["type"] == "pilot")
+		{
+			parsePilotSelection(algorithmConfig);
+		}
 		else assert(false);
 	}
 	else assert(false);
@@ -189,4 +193,9 @@ void AlgorithmConfiguration::parsePheromoneSelection(nlohmann::json& algorithmCo
 	double phi = config["phi-value"];
 
 	elementSelector = static_pointer_cast<selection::Selector>(make_shared<selection::PheromoneSelector>(alpha, beta, phi));
+}
+
+void AlgorithmConfiguration::parsePilotSelection(nlohmann::json& algorithmConfig)
+{
+	elementSelector = static_pointer_cast<selection::Selector>(make_shared<selection::PilotSelector>());
 }

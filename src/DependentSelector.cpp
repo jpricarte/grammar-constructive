@@ -65,7 +65,7 @@ problem::ElementPtr selection::PilotSelector::selectElement(problem::Instance& i
 	{
 		auto possibleSolution = solution->clone();
 		possibleSolution->addElementToSolution(candidate);
-		possibleSolution = ConstructiveAlgorithm::greedyAlgorithm(instance, solution, baseSelector);
+		possibleSolution = ConstructiveAlgorithm::greedyAlgorithm(instance, possibleSolution, baseSelector);
 		double val = possibleSolution->getObjectiveValue();
 		if (val < bestVal)
 		{

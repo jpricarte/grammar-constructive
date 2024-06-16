@@ -38,6 +38,7 @@ class AlgorithmConfiguration {
 	void parseRandomSelection(nlohmann::json& algorithmConfig);
 	void parseWeightedSelection(nlohmann::json& algorithmConfig);
 	void parsePheromoneSelection(nlohmann::json& algorithmConfig);
+	void parsePilotSelection(nlohmann::json& algorithmConfig);
 
 	void parseStopCriteria(nlohmann::json& algorithmConfig);
 
