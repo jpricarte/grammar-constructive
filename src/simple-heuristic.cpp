@@ -10,6 +10,7 @@
 using namespace std;
 
 int autoKLSFP(int argc, char* argv[]);
+int autoKnapsack(int argc, char* argv[]);
 
 int main(int argc, char* argv[])
 {
@@ -21,7 +22,6 @@ int main(int argc, char* argv[])
 
     return autoKLSFP(argc, argv);
     //return autoKnapsack(argc, argv);
-    //return manualKnapsack(argc, argv);
 }
 
 int autoKLSFP(int argc, char* argv[])
@@ -49,12 +49,7 @@ int autoKnapsack(int argc, char* argv[])
     configuration.readConfiguration(argv[3]);
 
     auto solution = dynamic_pointer_cast<KnapsackSolution>(configuration.run(problem, instance));
-    cout << solution->getObjectiveValue() << " " << solution->getCurrentWeight() << endl;
-    for (auto element : solution->getSolution())
-    {
-        auto knapsackElement = dynamic_pointer_cast<KnapsackElement>(element);
-        cout << knapsackElement->value << " " << knapsackElement->weight << endl;
-    }
+    cout << solution->getObjectiveValue() << endl;
     
     return 0;
 }
