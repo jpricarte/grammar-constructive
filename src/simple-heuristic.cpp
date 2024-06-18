@@ -2,15 +2,9 @@
 //
 
 #include "simple-heuristic.h"
-#include "Problem.h"
 
-#include <functional>
-#include <random>
 
 using namespace std;
-
-int autoKLSFP(int argc, char* argv[]);
-int autoKnapsack(int argc, char* argv[]);
 
 int main(int argc, char* argv[])
 {

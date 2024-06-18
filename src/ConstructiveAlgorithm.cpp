@@ -1,5 +1,5 @@
 #include "ConstructiveAlgorithm.h"
-#include <random>
+#include <algorithm>
 #include <iostream>
 
 using namespace std;
