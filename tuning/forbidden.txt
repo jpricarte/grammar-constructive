@@ -10,5 +10,10 @@
 ##
 ## Examples of valid logical operators are: ==  !=  >=  <=  >  <  &  |  !  %in%
 
-algorithm == "B" & priority == "G"
-algorithm == "I" & priority == "G"
+# Don't use exact selection for multiple construction algorithm
+alg == "B" & p_alg == "G"
+alg == "I" & p_alg == "G"
+alg == "I" & p_alg == "Pi"
+
+# Avoid large expansions on beam search when using pilot method
+p_alg == "Pi" & (beam_w > 2 | beam_e > 2)
