@@ -6,8 +6,6 @@
 #include <iostream>
 #include <vector>
 
-// TODO: Referencie os cabeçalhos adicionais de que seu programa precisa aqui.
-
 #include "KnapsackProblem.h"
 #include "KLSFP.h"
 #include "ConstructiveAlgorithm.h"

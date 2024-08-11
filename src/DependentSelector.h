@@ -40,3 +40,5 @@ namespace selection {
 		problem::ElementPtr selectElement(problem::Instance& instance, problem::SolutionPtr solution) override;
 	};
 };
+
+

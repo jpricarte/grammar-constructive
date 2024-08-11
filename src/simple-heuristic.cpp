@@ -3,6 +3,8 @@
 
 #include "simple-heuristic.h"
 
+// Defined global in Problem.h
+uint64_t gOperationCounter = 0;
 
 using namespace std;
 

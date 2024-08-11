@@ -140,6 +140,15 @@ void AlgorithmConfiguration::parsePriority(json& algorithmConfig)
 void AlgorithmConfiguration::parseStopCriteria(json& algorithmConfig)
 {
 	stopCriteria = shared_ptr<ConstructiveAlgorithm::StopCriteria>(new ConstructiveAlgorithm::StopCriteria());
+
+	if (algorithmConfig.contains("max-budget"))
+	{
+		stopCriteria->maxBudget = algorithmConfig["max-budget"];
+	}
+	else
+	{
+		stopCriteria->maxBudget = algorithmConfig["max-budget"];
+	}
 	if (algorithmConfig.contains("max-iterations"))
 	{
 		stopCriteria->maxIterations = algorithmConfig["max-iterations"];

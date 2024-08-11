@@ -11,6 +11,7 @@ namespace ConstructiveAlgorithm {
     struct StopCriteria {
         int maxIterations;
         int maxNoImprov;
+        uint64_t maxBudget;
 
         bool shouldStop(int numIterations, int numNoImprov);
     };

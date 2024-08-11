@@ -7,11 +7,12 @@ using namespace ConstructiveAlgorithm;
 
 #define DEBUG 1
 
-
+// gOperationCounter defined global in Problem.h
 bool ConstructiveAlgorithm::StopCriteria::shouldStop(int numIterations, int numNoImprov)
 {
-    return ((this->maxIterations > 0) and (numIterations >= this->maxIterations)) // stop if we use maxIterations and reach maxIterations
-        or ((this->maxNoImprov > 0) and (numNoImprov >= this->maxNoImprov));    // stip if we use maxNoImprove and reach maxNoImprov
+        return ((this->maxIterations > 0) and (numIterations >= this->maxIterations)) // stop if we use maxIterations and reach maxIterations
+            or ((this->maxNoImprov > 0) and (numNoImprov >= this->maxNoImprov))       // stop if we use maxNoImprove and reach maxNoImprov
+            or ((this->maxBudget > 0) and (gOperationCounter >= maxBudget));          // stop if we use maxBudget and reach maxBudget
 }
 
 void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vector<problem::SolutionPtr>& solutions)

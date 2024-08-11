@@ -4,8 +4,6 @@
 
 using namespace problem;
 
-uint64_t gOperationCounter = 0;
-
 void Solution::addElementToSolution(ElementPtr element)
 {
 	// Add the color to the solution
