@@ -27,7 +27,7 @@ void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vect
         for (auto candidate : solution->getIterationOptions())
         {
             bestOptions.push_back(make_tuple(solution, candidate, problem.objectiveValue(solution)));
-		}       
+        }
     }
 
     if (not bestOptions.empty()) {
@@ -77,6 +77,7 @@ problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Instance& i
         }
         solution->addElementToVisited(choosedElement);
     }
+
     return solution;
 }
 

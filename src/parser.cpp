@@ -4,7 +4,7 @@
 #include <fstream>
 #include <cassert>
 #include <random>
-
+#include <iostream>
 using namespace std;
 using namespace nlohmann;
 
@@ -12,7 +12,6 @@ void AlgorithmConfiguration::readConfiguration(std::string filename)
 {
 	ifstream file(filename);
 	this->configuration = json::parse(file);
-
 	parseAlgorithmType(this->configuration);
 }
 
@@ -87,7 +86,6 @@ void AlgorithmConfiguration::parseInterated(json& algorithmConfig)
 {
 	assert(algorithmConfig.contains("internal-algorithm"));
 	assert(algorithmConfig.contains("stop"));
-
 	parseAlgorithmType(algorithmConfig["internal-algorithm"]);
 	parseStopCriteria(algorithmConfig["stop"]);
 
@@ -147,7 +145,7 @@ void AlgorithmConfiguration::parseStopCriteria(json& algorithmConfig)
 	}
 	else
 	{
-		stopCriteria->maxBudget = algorithmConfig["max-budget"];
+		stopCriteria->maxBudget = 0;
 	}
 	if (algorithmConfig.contains("max-iterations"))
 	{

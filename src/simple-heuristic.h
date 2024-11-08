@@ -13,7 +13,8 @@
 #include "Selector.h"
 #include "StaticSelector.h"
 #include "structs/graph.hpp"
+#include "FSSP.h"
 
-
+int autoFSSP(int argc, char* argv[]);
 int autoKLSFP(int argc, char* argv[]);
 int autoKnapsack(int argc, char* argv[]);

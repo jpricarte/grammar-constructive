@@ -4,3 +4,6 @@
 [submodule "submodule/json"]
 	path = submodule/json
 	url = https://github.com/nlohmann/json.git
+[submodule "submodule/fssp"]
+	path = submodule/fssp
+	url = git@github.com:jpricarte/fssp.git

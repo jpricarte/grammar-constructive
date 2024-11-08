@@ -36,7 +36,7 @@ public:
 	problem::SolutionPtr clone() override;
 	std::vector<problem::ElementPtr> getSolution() override;
 
-	int getVisistedSize();
+	int getVisistedSize() override;
 	inline unsigned int getNumColors() { return numColors; };
 	inline UnionFind getComponents() { return components; };
 	void printGraph();
@@ -61,7 +61,7 @@ class KLSFProblem : public problem::Problem
 {
 public:
 	double objectiveValue(problem::SolutionPtr solution) override;
-	double objectiveValue(problem::SolutionPtr solution, problem::ElementPtr element) override;
+	double objectiveValue(problem::SolutionPtr solution, problem::ElementPtr element);
 	bool isValid(problem::Instance& instance, problem::SolutionPtr solution, problem::ElementPtr element) override;
 	bool isComplete(problem::Instance& instance, problem::SolutionPtr solution) override;
 };

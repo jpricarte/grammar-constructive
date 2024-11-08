@@ -2,11 +2,16 @@
 //
 
 #include "simple-heuristic.h"
+#include "../submodule/fssp/instance.hpp"
+#include "Problem.h"
+#include <fstream>
+#include <filesystem>
 
 // Defined global in Problem.h
 uint64_t gOperationCounter = 0;
 
 using namespace std;
+namespace fs = std::filesystem;
 
 int main(int argc, char* argv[])
 {
@@ -16,8 +21,27 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-    return autoKLSFP(argc, argv);
-    //return autoKnapsack(argc, argv);
+	return autoFSSP(argc, argv);
+    // return autoKLSFP(argc, argv);
+    // return autoKnapsack(argc, argv);
+}
+
+int autoFSSP(int argc, char* argv[])
+{
+    srand(1);
+    string instanceName = argv[2];
+    std::ifstream isInstance(instanceName);
+    InstanceFSSP instanceFSSP{isInstance};
+
+    auto problem = FSSProblem();
+    auto instance = FSSInstance(instanceFSSP);
+    auto configuration = AlgorithmConfiguration();
+    configuration.readConfiguration(argv[3]);
+    auto solution = static_pointer_cast<KLSFSolution>(configuration.run(problem, instance));
+
+    cout << static_pointer_cast<KLSFSolution>(solution)->getObjectiveValue() << endl;
+
+    return 0;
 }
 
 int autoKLSFP(int argc, char* argv[])
@@ -31,7 +55,8 @@ int autoKLSFP(int argc, char* argv[])
 
     auto solution = dynamic_pointer_cast<KLSFSolution>(configuration.run(problem, instance));
     //cout << gOperationCounter << endl;
-    cout << solution->getObjectiveValue() << endl;
+    // config,instance,obj_val,operations
+    cout << fs::path(argv[3]).filename() << "," << fs::path(argv[2]).filename() << "," << solution->getObjectiveValue() << ","<< gOperationCounter << endl;
 
     return 0;
 }

@@ -43,6 +43,8 @@ namespace problem {
 		virtual std::vector<ElementPtr> getCandidatesElements();
 		// It should work as a temporary memory, to store the possible candidates to be added in the solution, will be cleaned after each iteration
 		virtual std::set<ElementPtr> getIterationOptions();
+		// Get the number of elements in solution;
+		virtual int getSolutionSize();
 		// Get number of elements in visited
 		virtual int getVisistedSize();
 		// Clean options for the iteration
@@ -85,7 +87,6 @@ namespace problem {
 	class Problem {
 	public:
 		virtual double objectiveValue(SolutionPtr solution) = 0;
-		virtual double objectiveValue(SolutionPtr solution, ElementPtr element) = 0;
 		virtual bool isValid(Instance& instance, SolutionPtr solution, ElementPtr element) = 0;
 		virtual bool isComplete(Instance& instance, SolutionPtr solution) = 0;
 	};

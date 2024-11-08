@@ -8,6 +8,9 @@ void Solution::addElementToSolution(ElementPtr element)
 {
 	// Add the color to the solution
 	this->solution.push_back(element);
+	std::sort(this->candidates.begin(), this->firstVisited, [this](problem::ElementPtr a, problem::ElementPtr b) {
+		return this->getElementQuality(a) < this->getElementQuality(b);
+	});
 }
 
 void Solution::addElementToVisited(ElementPtr element)
@@ -41,6 +44,10 @@ void Solution::cleanIterationOptions()
 {
 	// Clear the iteration options vector
 	this->options.clear();
+}
+
+int Solution::getSolutionSize() {
+	return this->solution.size();
 }
 
 int Solution::getVisistedSize()

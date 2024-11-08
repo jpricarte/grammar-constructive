@@ -1,5 +1,5 @@
 #include "StaticSelector.h"
-
+#include <iostream>
 using namespace selection;
 
 problem::ElementPtr GreedySelector::selectElement(problem::Instance& instance, problem::SolutionPtr solution)
@@ -27,6 +27,7 @@ problem::ElementPtr RandomSelector::selectElement(problem::Instance& instance, p
         auto max = (this->kValue <= 0 || this->kValue >= listCandidates.size()) ? listCandidates.size() - 1 : this->kValue;
         this->distribution = std::uniform_int_distribution<int>(1, static_cast<int>(max));
         int pos = distribution(this->generator);
+        if (listCandidates.size() == 1) pos = 0;
         element = listCandidates.at(pos);
     }
 

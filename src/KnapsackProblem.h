@@ -43,7 +43,7 @@ public:
 
 	int getCurrentWeight() const;
 
-	int getVisistedSize();
+	int getVisistedSize() override;
 
 	inline void setCurrentValue(double value) { this->currentValue = value;  };
 
@@ -80,7 +80,7 @@ public:
 
 	double objectiveValue(problem::SolutionPtr solution) override;
 
-	double objectiveValue(problem::SolutionPtr solution, problem::ElementPtr element) override;
+	double objectiveValue(problem::SolutionPtr solution, problem::ElementPtr element);
 
 	bool isValid(problem::Instance& instance, problem::SolutionPtr solution, problem::ElementPtr element) override;
 
