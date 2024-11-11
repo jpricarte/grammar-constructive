@@ -1,0 +1,6 @@
+{
+    "type": "greedy",
+    "priority": {
+        "type": "greedy"
+    }
+}

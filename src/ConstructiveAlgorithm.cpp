@@ -158,7 +158,8 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithm(problem::Problem
 
         elementSelector->updateProbabilitiesIteration(instance, solution);
 	}
-    cout << iterations << " " << countNoImprovement << endl;
+	if (DEBUG)
+        cout << iterations << " " << countNoImprovement << endl;
     return bestSolution;
 }
 

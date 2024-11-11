@@ -27,6 +27,8 @@ Params:
     - alpha: [0, 1] - Represents the weight of the pheromones in the probability
     - beta:  [0, 1] - Represents the weight of the quality in the probability
     - phi:   [0, 1] - Represents the evaporation rate, i.e.: how much of the pheromone will remain for the next iteration (0=all, 1=nothing)
+    Pilot params:
+    - k: INTEGER    - Represents the depth of the pilot method (0=go all the way down)
 
 Input examples:
 1. Greedy with Randomized(0.8, 5) priority

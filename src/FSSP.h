@@ -7,13 +7,8 @@
 
 struct FSSElement : public problem::Element {
     int jobNumber;
-    double bValue;
 
-    inline FSSElement(int jobNumber, double bValue) :jobNumber(jobNumber), bValue(bValue) {};
-
-    bool operator<(const FSSElement& other) {
-        return bValue < other.bValue;
-    };
+    inline FSSElement(int jobNumber) :jobNumber(jobNumber) {};
 };
 
 class FSSSolution : public problem::Solution {

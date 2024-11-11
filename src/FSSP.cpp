@@ -26,7 +26,6 @@ FSSSolution::FSSSolution(problem::Instance& parentInstance) : problem::Solution(
 }
 
 std::vector<problem::ElementPtr> FSSSolution::getSolution() {
-    // Return the colors in the solution
     return this->solution;
 }
 
@@ -35,13 +34,20 @@ void FSSSolution::addElementToSolution(problem::ElementPtr element) {
     std::sort(this->candidates.begin(), this->firstVisited, [this](problem::ElementPtr a, problem::ElementPtr b) {
         return this->getElementQuality(a) < this->getElementQuality(b);
     });
+
+    auto fssElement = std::static_pointer_cast<FSSElement>(element);
+    auto fssInstance = (FSSInstance&) this->parentInstance;
+    this->bsSolution.addi(fssElement->jobNumber, fssInstance.getBaseInstance());
 }
 
 double FSSSolution::getElementQuality(problem::ElementPtr element) {
     auto fssElement = std::static_pointer_cast<FSSElement>(element);
     auto fssInstance = (FSSInstance&)this->parentInstance;
-    fssElement->bValue = this->bsSolution.Bvalue(fssElement->jobNumber, fssInstance.getBaseInstance());
-    return fssElement->bValue;
+    auto bsInstance = fssInstance.getBaseInstance();
+    if (this->solution.size()==0)
+        return this->bsSolution.Ivalue(fssElement->jobNumber, bsInstance);
+    else
+        return this->bsSolution.Bvalue(fssElement->jobNumber, bsInstance);
 }
 
 double FSSSolution::getObjectiveValue() {
@@ -64,7 +70,7 @@ FSSInstance::FSSInstance(InstanceFSSP bsInstance) : bsInstance(bsInstance) {
     this->numJobs = bsInstance.n;
     this->numMachines = bsInstance.m;
     for (int i=0; i<this->numJobs; i++) {
-        jobs.push_back(make_shared<FSSElement>(i, -1));
+        jobs.push_back(make_shared<FSSElement>(i));
     }
 }
 

@@ -7,6 +7,8 @@
 #include <fstream>
 #include <filesystem>
 
+#define DEBUG 0
+
 // Defined global in Problem.h
 uint64_t gOperationCounter = 0;
 
@@ -28,7 +30,7 @@ int main(int argc, char* argv[])
 
 int autoFSSP(int argc, char* argv[])
 {
-    srand(1);
+    srand(atoi(argv[1]));
     string instanceName = argv[2];
     std::ifstream isInstance(instanceName);
     InstanceFSSP instanceFSSP{isInstance};
@@ -37,9 +39,16 @@ int autoFSSP(int argc, char* argv[])
     auto instance = FSSInstance(instanceFSSP);
     auto configuration = AlgorithmConfiguration();
     configuration.readConfiguration(argv[3]);
-    auto solution = static_pointer_cast<KLSFSolution>(configuration.run(problem, instance));
+    auto solution = static_pointer_cast<FSSSolution>(configuration.run(problem, instance));
 
-    cout << static_pointer_cast<KLSFSolution>(solution)->getObjectiveValue() << endl;
+    cout << solution->getObjectiveValue() << endl;
+
+    if (DEBUG)
+    {
+        for (int i=0; i<solution->getSolution().size(); i++)
+            cout << static_pointer_cast<FSSElement>(solution->getSolution()[i])->jobNumber << " ";
+        cout << endl;
+    }
 
     return 0;
 }
