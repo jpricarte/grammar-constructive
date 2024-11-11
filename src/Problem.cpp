@@ -31,7 +31,16 @@ void Solution::addElementToIterationOptions(ElementPtr element)
 std::vector<ElementPtr> Solution::getCandidatesElements()
 {
 	// return from the first visited to the end
-	return std::vector<ElementPtr>(this->candidates.begin(), this->firstVisited);
+	std::vector<ElementPtr> candidates{};
+	for (auto it = this->candidates.begin(); it != this->firstVisited; ++it)
+	{
+		auto element = *(it.base());
+		if (!this->getIterationOptions().contains(element))
+		{
+			candidates.push_back(element);
+		}
+	}
+	return candidates;
 }
 
 std::set<ElementPtr> Solution::getIterationOptions()

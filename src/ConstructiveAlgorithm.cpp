@@ -1,6 +1,7 @@
 #include "ConstructiveAlgorithm.h"
 #include <algorithm>
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 using namespace ConstructiveAlgorithm;
@@ -15,11 +16,10 @@ bool ConstructiveAlgorithm::StopCriteria::shouldStop(int numIterations, int numN
             or ((this->maxBudget > 0) and (gOperationCounter >= maxBudget));          // stop if we use maxBudget and reach maxBudget
 }
 
-void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vector<problem::SolutionPtr>& solutions)
+void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vector<problem::SolutionPtr>& solutions, int beamWidth)
 {
     using Option = tuple<problem::SolutionPtr, problem::ElementPtr, double>;
 
-    auto solutionSize = solutions.size();
     vector<Option> bestOptions{};
 
     for (auto solution : solutions)
@@ -36,10 +36,9 @@ void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vect
         });
 
         solutions.clear();
-        for (int i = 0; i < solutionSize; i++)
+        auto iterationLimit = min(beamWidth, (int) bestOptions.size());
+        for (int i = 0; i < iterationLimit; i++)
         {
-            if (bestOptions.size() <= i) break;
-
             auto option = bestOptions.at(i);
             auto solution = get<0>(option);
             auto candidate = get<1>(option);
@@ -111,7 +110,10 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
                 {
                     auto choosedElement = selector->selectElement(instance, solution);
 
-                    if (choosedElement == nullptr) break;
+                    if (choosedElement == nullptr)
+                    {
+                        break;
+                    }
 
                     if (problem.isValid(instance, solution, choosedElement))
                     {
@@ -127,7 +129,7 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
                 }
             }
         }
-        selectBestCandidates(problem, beam);
+        selectBestCandidates(problem, beam, beamWidth);
     }
     return bestSolution;
 }

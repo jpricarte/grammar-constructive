@@ -17,7 +17,7 @@ namespace ConstructiveAlgorithm {
     };
     using StopCriteriaPtr = std::shared_ptr<StopCriteria>;
 
-    void selectBestCandidates(problem::Problem& problem, std::vector<problem::SolutionPtr>& solutions);
+    void selectBestCandidates(problem::Problem& problem, std::vector<problem::SolutionPtr>& solutions, int beamWidth);
 
     problem::SolutionPtr greedyAlgorithm(problem::Problem& problem, problem::Instance& instance, selection::SelectorPtr selector);
 
