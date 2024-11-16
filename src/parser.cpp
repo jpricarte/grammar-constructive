@@ -181,8 +181,7 @@ void AlgorithmConfiguration::parseRandomSelection(nlohmann::json& algorithmConfi
 	auto config = algorithmConfig["priority"];
 	double alpha = config["alpha-value"];
 	int kValue = config["k-value"];
-
-	elementSelector = static_pointer_cast<selection::Selector>(make_shared<selection::RandomSelector>(alpha, kValue));
+	elementSelector = static_pointer_cast<selection::Selector>(make_shared<selection::RandomSelector>(kValue, alpha));
 }
 
 void AlgorithmConfiguration::parseWeightedSelection(nlohmann::json& algorithmConfig)

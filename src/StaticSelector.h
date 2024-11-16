@@ -30,7 +30,7 @@ namespace selection {
 
 
 	public:
-		inline RandomSelector(int kValue, double alphaValue) : kValue(kValue), alphaValue(alphaValue), generator(std::default_random_engine()) {};
+		inline RandomSelector(int kValue, double alpha) : kValue(kValue), alphaValue(alpha), generator(std::default_random_engine()) {};
 
 		inline void initialize(problem::Instance& instance, problem::SolutionPtr solution) override { /*Do nothing*/ };
 
