@@ -26,7 +26,7 @@ void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vect
     {
         for (auto candidate : solution->getIterationOptions())
         {
-            bestOptions.push_back(make_tuple(solution, candidate, problem.objectiveValue(solution)));
+            bestOptions.push_back(make_tuple(solution, candidate, solution->getElementQuality(candidate)));
         }
     }
 
@@ -96,6 +96,7 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
         for (auto i = static_cast<int>(beam.size()) - 1; i >= 0; i--)
         {
             auto solution = beam.at(i);
+            solution->cleanIterationOptions();
             if (problem.isComplete(instance, solution))
             {
                 if (bestSolution == nullptr or problem.objectiveValue(solution) < problem.objectiveValue(bestSolution))

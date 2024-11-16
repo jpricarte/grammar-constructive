@@ -12,6 +12,8 @@ struct FSSElement : public problem::Element {
 };
 
 class FSSSolution : public problem::Solution {
+private:
+    const uint16_t findJiFromJobNumber(const int& jobNumber);
 public:
     beamnode bsSolution;
     problem::Instance& parentInstance;

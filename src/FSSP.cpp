@@ -5,6 +5,17 @@
 
 /* Solution */
 
+const uint16_t FSSSolution::findJiFromJobNumber(const int& jobNumber)
+{
+    for (auto i=bsSolution.n1; i<bsSolution.n2; i++) {
+        if (bsSolution.pi[i]==jobNumber)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
 FSSSolution::FSSSolution(FSSSolution& other) : bsSolution(other.bsSolution), parentInstance(other.parentInstance), objectiveValue(other.objectiveValue)
 {
     this->candidates = other.candidates;
@@ -37,7 +48,9 @@ void FSSSolution::addElementToSolution(problem::ElementPtr element) {
 
     auto fssElement = std::static_pointer_cast<FSSElement>(element);
     auto fssInstance = (FSSInstance&) this->parentInstance;
-    this->bsSolution.addi(fssElement->jobNumber, fssInstance.getBaseInstance());
+    //TODO: mapear jobNumber com ji do bsSolution
+    auto ji = findJiFromJobNumber(fssElement->jobNumber);
+    this->bsSolution.addi(ji, fssInstance.getBaseInstance());
 }
 
 double FSSSolution::getElementQuality(problem::ElementPtr element) {
@@ -52,10 +65,17 @@ double FSSSolution::getElementQuality(problem::ElementPtr element) {
 
 double FSSSolution::getObjectiveValue() {
     auto bsInstance = ((FSSInstance&)parentInstance).getBaseInstance();
+    // for (int i=0; i<solution.size(); i++)
+    // {
+    //     auto e = static_pointer_cast<FSSElement>(solution[i]);
+    //     std::cout << e->jobNumber << " ";
+    // }
     auto ns = PFSSolution(bsInstance);
     ns.pi = this->bsSolution.pi;
     ns.computeFlowtime(bsInstance);
     this->objectiveValue = ns.ms;
+    // std::cout << this->objectiveValue << std::endl;
+
     return this->objectiveValue;
 }
 
@@ -70,7 +90,7 @@ FSSInstance::FSSInstance(InstanceFSSP bsInstance) : bsInstance(bsInstance) {
     this->numJobs = bsInstance.n;
     this->numMachines = bsInstance.m;
     for (int i=0; i<this->numJobs; i++) {
-        jobs.push_back(make_shared<FSSElement>(i));
+        jobs.push_back(make_shared<FSSElement>(i+1));
     }
 }
 
