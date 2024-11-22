@@ -29,7 +29,8 @@ forbiddenFile = "./forbidden.txt"
 ## Directory where training instances are located; either absolute path or
 ## relative to current directory. If no trainInstancesFiles is provided, all
 ## the files in trainInstancesDir will be listed as instances.
-trainInstancesDir = "../instances/klsfp/train"
+#trainInstancesDir = "../instances/klsfp/train"
+trainInstancesDir = "./instances"
 # trainInstancesDir = "../instances/knapsack/00Uncorrelated/n05000/train"
 
 ## File that contains a list of training instances and optionally additional
