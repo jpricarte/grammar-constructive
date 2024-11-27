@@ -6,7 +6,7 @@
 using namespace std;
 using namespace ConstructiveAlgorithm;
 
-#define DEBUG 1
+#define DEBUG 0
 
 // gOperationCounter defined global in Problem.h
 bool ConstructiveAlgorithm::StopCriteria::shouldStop(int numIterations, int numNoImprov)
@@ -26,7 +26,7 @@ void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vect
     {
         for (auto candidate : solution->getIterationOptions())
         {
-            bestOptions.push_back(make_tuple(solution, candidate, solution->getElementQuality(candidate)));
+            bestOptions.push_back(make_tuple(solution, candidate, problem.objectiveValue(solution, candidate)));
         }
     }
 

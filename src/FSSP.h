@@ -49,6 +49,7 @@ public:
 
 class FSSProblem : public problem::Problem {
     double objectiveValue(problem::SolutionPtr solution) override;
+    double objectiveValue(problem::SolutionPtr solution, problem::ElementPtr element) override;
     bool isValid(problem::Instance& instance, problem::SolutionPtr solution, problem::ElementPtr element) override;
     bool isComplete(problem::Instance& instance, problem::SolutionPtr solution) override;
 };

@@ -7,7 +7,7 @@
 
 const uint16_t FSSSolution::findJiFromJobNumber(const int& jobNumber)
 {
-    for (auto i=bsSolution.n1; i<bsSolution.n2; i++) {
+    for (auto i=0; i<bsSolution.pi.size(); i++) {
         if (bsSolution.pi[i]==jobNumber)
         {
             return i;
@@ -42,11 +42,11 @@ std::vector<problem::ElementPtr> FSSSolution::getSolution() {
 
 void FSSSolution::addElementToSolution(problem::ElementPtr element) {
     this->solution.push_back(element);
+    auto fssElement = static_pointer_cast<FSSElement>(element);
     std::sort(this->candidates.begin(), this->firstVisited, [this](problem::ElementPtr a, problem::ElementPtr b) {
         return this->getElementQuality(a) < this->getElementQuality(b);
     });
 
-    auto fssElement = std::static_pointer_cast<FSSElement>(element);
     auto fssInstance = (FSSInstance&) this->parentInstance;
     //TODO: mapear jobNumber com ji do bsSolution
     auto ji = findJiFromJobNumber(fssElement->jobNumber);
@@ -55,27 +55,23 @@ void FSSSolution::addElementToSolution(problem::ElementPtr element) {
 
 double FSSSolution::getElementQuality(problem::ElementPtr element) {
     auto fssElement = std::static_pointer_cast<FSSElement>(element);
+    auto ji = findJiFromJobNumber(fssElement->jobNumber);
     auto fssInstance = (FSSInstance&)this->parentInstance;
     auto bsInstance = fssInstance.getBaseInstance();
     if (this->solution.size()==0)
-        return this->bsSolution.Ivalue(fssElement->jobNumber, bsInstance);
+        return this->bsSolution.Ivalue(ji, bsInstance);
     else
-        return this->bsSolution.Bvalue(fssElement->jobNumber, bsInstance);
+        return this->bsSolution.Bvalue(ji, bsInstance);
 }
 
 double FSSSolution::getObjectiveValue() {
-    auto bsInstance = ((FSSInstance&)parentInstance).getBaseInstance();
-    // for (int i=0; i<solution.size(); i++)
-    // {
-    //     auto e = static_pointer_cast<FSSElement>(solution[i]);
-    //     std::cout << e->jobNumber << " ";
-    // }
-    auto ns = PFSSolution(bsInstance);
-    ns.pi = this->bsSolution.pi;
-    ns.computeFlowtime(bsInstance);
-    this->objectiveValue = ns.ms;
-    // std::cout << this->objectiveValue << std::endl;
-
+    if (this->objectiveValue < 0) {
+        auto bsInstance = ((FSSInstance&)parentInstance).getBaseInstance();
+        auto ns = PFSSolution(bsInstance);
+        ns.pi = this->bsSolution.pi;
+        ns.computeFlowtime(bsInstance);
+        this->objectiveValue = ns.ms;
+    }
     return this->objectiveValue;
 }
 
@@ -115,6 +111,13 @@ bool FSSInstance::isComplete(problem::SolutionPtr solution) {
 double FSSProblem::objectiveValue(problem::SolutionPtr solution) {
     auto fssSolution = std::static_pointer_cast<FSSSolution>(solution);
     return fssSolution->getObjectiveValue();
+}
+
+double FSSProblem::objectiveValue(problem::SolutionPtr solution, problem::ElementPtr element) {
+    auto fssSolution = static_pointer_cast<FSSSolution>(solution);
+    auto fssElement = static_pointer_cast<FSSElement>(element);
+
+    return fssSolution->getElementQuality(fssElement);
 }
 
 bool FSSProblem::isValid(problem::Instance& instance, problem::SolutionPtr solution, problem::ElementPtr element){

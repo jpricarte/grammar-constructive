@@ -17,15 +17,18 @@ namespace fs = std::filesystem;
 
 int main(int argc, char* argv[])
 {
-	if (argc < 4)
-	{
-		cout << "Usage: " << argv[0] << " <seed> <instance> <configuration>" << endl;
-		return 1;
-	}
+    if (argc < 5)
+    {
+        cout << "Usage: " << argv[0] << " <seed> <instance> <configuration> <problem>" << endl;
+        return 1;
+    }
 
-	return autoFSSP(argc, argv);
-    // return autoKLSFP(argc, argv);
-    // return autoKnapsack(argc, argv);
+    if (std::string(argv[4]) == "fssp")
+        return autoFSSP(argc, argv);
+    if (std::string(argv[4]) == "klsfp")
+        return autoKLSFP(argc, argv);
+    if (std::string(argv[4]) == "knapsack")
+        return autoKnapsack(argc, argv);
 }
 
 int autoFSSP(int argc, char* argv[])
@@ -65,14 +68,14 @@ int autoKLSFP(int argc, char* argv[])
     auto solution = dynamic_pointer_cast<KLSFSolution>(configuration.run(problem, instance));
     //cout << gOperationCounter << endl;
     // config,instance,obj_val,operations
-    cout << fs::path(argv[3]).filename() << "," << fs::path(argv[2]).filename() << "," << solution->getObjectiveValue() << ","<< gOperationCounter << endl;
+    cout << solution->getObjectiveValue() /*<< "," << fs::path(argv[3]).filename() << "," << fs::path(argv[2]).filename() << "," << gOperationCounter*/ << endl;
 
     return 0;
 }
 
 int autoKnapsack(int argc, char* argv[])
 {
-    srand(0xc0ffe3);
+    srand(atoi(argv[1]));
     auto problem = KnapsackProblem();
     auto instance = KnapsackInstance(argv[2]);
     auto configuration = AlgorithmConfiguration();

@@ -30,6 +30,8 @@ shift 4 || error "Not enough parameters"
 CONFIG_PARAMS=$*
 # End of parsing
 
+PROBLEM="fssp"
+
 ## Find our own location.
 # BINDIR=$(dirname "$(readlink -f "$(type -P $0 || echo $0)")")
 
@@ -61,7 +63,7 @@ STDERR=c${CONFIG_ID}-${INSTANCE_ID}-${SEED}.stderr
 # # If the command below fails, but you are not sure why, it may be useful to
 # # print it before executing using 'echo', as in:
 # echo "$EXE ${EXE_PARAMS} 1> ${STDOUT} 2> ${STDERR}"
-${CONFIG_BUILDER}; $EXE ${EXE_PARAMS} 1> ${STDOUT} 2> ${STDERR}
+${CONFIG_BUILDER}; $EXE ${EXE_PARAMS} ${PROBLEM} 1> ${STDOUT} 2> ${STDERR}
 
 # # This may be used to introduce a delay if there are filesystem issues.
 # SLEEPTIME=1

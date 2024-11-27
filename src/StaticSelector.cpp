@@ -5,10 +5,10 @@ using namespace selection;
 
 problem::ElementPtr GreedySelector::selectElement(problem::Instance& instance, problem::SolutionPtr solution)
 {
-	auto listCandidates = instance.getCandidatesElements(solution);
+    auto listCandidates = instance.getCandidatesElements(solution);
 
     if (listCandidates.empty()) {
-		return nullptr;
+        return nullptr;
     }
     else {
         return listCandidates.front();
@@ -52,5 +52,5 @@ problem::ElementPtr selection::WeightedRandomSelector::selectElement(problem::In
     int pos = distribution(this->generator);
     auto element = listCandidates.at(pos);
 
-	return element;
+    return element;
 }
