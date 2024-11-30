@@ -34,8 +34,8 @@ beam_w          ""                   i (2, 8)       | alg == "B"
 beam_e          ""                   i (2, 8)       | alg == "B"
 
 # Iterated params
-max_iter        ""                   i (0, 200)     | alg == "I"
-max_nImpr       ""                   i (0, 200)     | alg == "I"
+max_iter        ""                   i (0, 0)       | alg == "I"
+max_nImpr       ""                   i (0, 0)       | alg == "I"
 n_sols          ""                   i (1, 10)      | alg == "I"
 
 ## Internal algorithm (In iterated)
@@ -48,6 +48,5 @@ p_alg           "-p "                c ("G", "R", "W", "Ph", "Pi")
 rand_a          ""                   r (0, 0.99)    | p_alg == "R"
 rand_k          ""                   r (0, 0.99)    | p_alg == "R"
 pil_k           ""                   r (0, 0.99)    | p_alg == "Pi"
-pher_a          ""                   r (0, 1)       | p_alg == "Ph"
-pher_b          ""                   r (0, 1)       | p_alg == "Ph"
+pher_g          ""                   r (0, 2)       | p_alg == "Ph"
 pher_p          ""                   r (0, 1)       | p_alg == "Ph"

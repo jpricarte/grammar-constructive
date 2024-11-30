@@ -104,12 +104,20 @@ def parse_weighted_priority(args_list):
     return {"type": "weighted"}
 
 def parse_pheromone_priority(args_list):
-    if len(args_list) != 4:
-        raise argparse.ArgumentError(None, 'Pheromone priority usage: -p Ph <alpha> <beta> <phi>')
-    alpha_value = float(args_list[1])
-    beta_value = float(args_list[2])
-    phi_value = float(args_list[3])
-    return {"type": "pheromone", "alpha-value": alpha_value, "beta-value": beta_value, "phi-value": phi_value}
+    if len(args_list) > 4 or len(args_list) < 3:
+        raise argparse.ArgumentError(None, 'Pheromone priority usage: "-p Ph <alpha> <beta> <phi>" or "-p Ph <gamma> <phi>"')
+    if (len(args_list) == 4):
+        alpha_value = float(args_list[1])
+        beta_value = float(args_list[2])
+        phi_value = float(args_list[3])
+        return {"type": "pheromone", "alpha-value": alpha_value, "beta-value": beta_value, "phi-value": phi_value}
+    elif (len(args_list) == 3):
+        gamma_value = float(args_list[1])
+        phi_value = float(args_list[2])
+        return {"type": "pheromone", "gamma-value": gamma_value, "phi-value": phi_value}
+    else:
+        return {}
+
 
 def parse_pilot_priority(args_list):
     if len(args_list) != 2:

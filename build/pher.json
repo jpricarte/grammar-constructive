@@ -1,0 +1,15 @@
+{
+    "type": "iterated",
+    "internal-algorithm": {
+        "type": "greedy",
+        "priority": {
+            "type": "pheromone",
+            "gamma-value": 2.0,
+            "phi-value": 0.2
+        }
+    },
+    "stop": {
+        "max-iterations": 0,
+        "max-no-improvement-iterations": 3
+    }
+}

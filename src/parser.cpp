@@ -194,8 +194,28 @@ void AlgorithmConfiguration::parseWeightedSelection(nlohmann::json& algorithmCon
 void AlgorithmConfiguration::parsePheromoneSelection(nlohmann::json& algorithmConfig)
 {
     auto config = algorithmConfig["priority"];
-    double alpha = config["alpha-value"];
-    double beta = config["beta-value"];
+    double alpha;
+    double beta;
+    if (config.contains("gamma-value"))
+    {
+        double gamma = config["gamma-value"];
+        if (gamma > 1)
+        {
+            alpha = 1 / gamma;
+            beta = 1;
+        }
+        else
+        {
+            alpha = 1;
+            beta = gamma;
+        }
+    }
+    else
+    {
+        alpha = config["alpha-value"];
+        beta = config["beta-value"];
+    }
+
     double phi = config["phi-value"];
 
     elementSelector = static_pointer_cast<selection::Selector>(make_shared<selection::PheromoneSelector>(alpha, beta, phi));
