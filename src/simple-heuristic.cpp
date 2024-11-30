@@ -40,21 +40,22 @@ void setBugetFSSP(AlgorithmConfiguration& configuration, FSSInstance& instance)
     int n = instance.getNumJobs();
     if (m == 5 && n <= 20)
     {
-        configuration.stopCriteria->maxIterations = 0;
-        configuration.stopCriteria->maxNoImprov = 0;
+        // configuration.stopCriteria->maxIterations = 0;
+        // configuration.stopCriteria->maxNoImprov = 0;
         configuration.stopCriteria->maxBudget = 700;
     }
     else if (n <= 200)
     {
-        configuration.stopCriteria->maxIterations = 0;
-        configuration.stopCriteria->maxNoImprov = 0;
+        // configuration.stopCriteria->maxIterations = 0;
+        // configuration.stopCriteria->maxNoImprov = 0;
         configuration.stopCriteria->maxBudget = (int) (m * 5418.36)+(n*189.1)-31093.04;
     }
     else
     {
-        configuration.stopCriteria->maxIterations = 0;
-        configuration.stopCriteria->maxNoImprov = 0;
+        // configuration.stopCriteria->maxIterations = 0;
+        // configuration.stopCriteria->maxNoImprov = 0;
         configuration.stopCriteria->maxBudget = (int) (m * 16537.1)+(n*262.73)-102886.16;
+
     }
 }
 
@@ -71,6 +72,7 @@ int autoFSSP(int argc, char* argv[])
     configuration.readConfiguration(argv[3]);
     setBugetFSSP(configuration, instance);
     auto solution = static_pointer_cast<FSSSolution>(configuration.run(problem, instance));
+
     double value = DBL_MAX;
     if (solution)
     {

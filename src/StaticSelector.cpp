@@ -25,11 +25,14 @@ problem::ElementPtr RandomSelector::selectElement(problem::Instance& instance, p
 
     auto element = listCandidates.front();
     if (rand() % 100 < static_cast<int>((1 - this->alphaValue) * 100)) {
-        auto max = (this->kValue <= 0 || this->kValue >= listCandidates.size()) ? listCandidates.size() - 1 : this->kValue;
+        int max = (int)(listCandidates.size() * this->kValue);
+        if (max < 1)
+            max = 1;
+        if (this->kValue <= 0 || this->kValue >= 1)
+            max = listCandidates.size() - 1;
         this->distribution = std::uniform_int_distribution<int>(1, static_cast<int>(max));
         int pos;
-        if (listCandidates.size() == 1) pos = 0;
-        else pos = distribution(this->generator);
+        pos = (listCandidates.size() == 1) ? 0 : distribution(this->generator);
         element = listCandidates.at(pos);
     }
     return element;

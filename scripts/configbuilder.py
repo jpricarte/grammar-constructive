@@ -22,17 +22,17 @@ Params:
 2. Priority: (G, R, W, Ph, Pi) - Will config the priority algorithm for the next element. It could be Greedy, Randomized, by Pheromones or Pilot method
     Random params:
     - alpha: [0, 1] - Represents the possibility of get the best element as the next one (1=greedy, 0=full random)
-    - k: INTEGER    - Represents the window of elements to be selected as random (1=greedy, 0=all possible elements)
+    - k:     [0, 1] - Represents the window of elements to be selected as random (elements out of the range = greedy)
     Pheromones elements:
     - alpha: [0, 1] - Represents the weight of the pheromones in the probability
     - beta:  [0, 1] - Represents the weight of the quality in the probability
     - phi:   [0, 1] - Represents the evaporation rate, i.e.: how much of the pheromone will remain for the next iteration (0=all, 1=nothing)
     Pilot params:
-    - k: INTEGER    - Represents the depth of the pilot method (0=go all the way down)
+    - k:     [0, 1] - Represents the width of the pilot method (0=go all the way down)
 
 Input examples:
-1. Greedy with Randomized(0.8, 5) priority
-    input: python configbuild.py -a G -p R 0.8 5
+1. Greedy with Randomized(0.8, 0.5) priority
+    input: python configbuild.py -a G -p R 0.8 0.5
 2. Beam-search(3, 4) with Greedy priority
     input: python configbuild.py -a B 3 4 -p G 
 3. Iterated(2000, 10) Beam-search(2, 3) with Pheromones(0.4, 0.6, 0.9)
@@ -97,7 +97,7 @@ def parse_random_priority(args_list):
     if len(args_list) != 3:
         raise argparse.ArgumentError(None, 'Random priority usage: -p R <alpha> <k>')
     alpha_value = float(args_list[1])
-    k_value = int(args_list[2])
+    k_value = float(args_list[2])
     return {"type":  "random", "alpha-value": alpha_value, "k-value": k_value}
 
 def parse_weighted_priority(args_list):
@@ -114,7 +114,7 @@ def parse_pheromone_priority(args_list):
 def parse_pilot_priority(args_list):
     if len(args_list) != 2:
         raise argparse.ArgumentError(None, 'Pilot priority usage: -p Pi <k>')
-    k_value = int(args_list[1])
+    k_value = float(args_list[1])
     return {"type": "pilot", "k-value": k_value}
 
 def parse_priority(args, output, has_internal):

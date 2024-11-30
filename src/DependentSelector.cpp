@@ -52,7 +52,7 @@ problem::ElementPtr selection::PheromoneSelector::selectElement(problem::Instanc
     return listCandidates.at(pos);
 }
 
-selection::PilotSelector::PilotSelector(int KValue) : kValue(KValue)
+selection::PilotSelector::PilotSelector(double KValue) : kValue(KValue)
 {
     baseSelector = std::make_shared<GreedySelector>();
 }
@@ -62,11 +62,11 @@ problem::ElementPtr selection::PilotSelector::selectElement(problem::Instance& i
     double bestVal = INFINITY;
     problem::ElementPtr bestElement = nullptr;
     auto listCandidates = solution->getCandidatesElements();
-    int minRange;
-    if (kValue == 0)
+    int minRange = (int)(listCandidates.size() * kValue);
+    if (minRange < 1)
+        minRange = 1;
+    if (kValue <= 0 || kValue >= 1)
         minRange = (int)listCandidates.size();
-    else
-        minRange = std::min(kValue, (int)listCandidates.size());
 
     for (int i = 0; i < minRange; i++)
     {

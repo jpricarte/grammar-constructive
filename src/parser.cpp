@@ -19,6 +19,8 @@ void AlgorithmConfiguration::parseAlgorithmType(json& algorithmConfig)
 {
     assert(algorithmConfig.contains("type"));
 
+    stopCriteria = shared_ptr<ConstructiveAlgorithm::StopCriteria>(new ConstructiveAlgorithm::StopCriteria());
+
     if (algorithmConfig["type"] == "greedy")
     {
         parseGreedy(algorithmConfig);
@@ -137,8 +139,6 @@ void AlgorithmConfiguration::parsePriority(json& algorithmConfig)
 
 void AlgorithmConfiguration::parseStopCriteria(json& algorithmConfig)
 {
-    stopCriteria = shared_ptr<ConstructiveAlgorithm::StopCriteria>(new ConstructiveAlgorithm::StopCriteria());
-
     if (algorithmConfig.contains("max-budget"))
     {
         stopCriteria->maxBudget = algorithmConfig["max-budget"];
@@ -180,7 +180,7 @@ void AlgorithmConfiguration::parseRandomSelection(nlohmann::json& algorithmConfi
 {
     auto config = algorithmConfig["priority"];
     double alpha = config["alpha-value"];
-    int kValue = config["k-value"];
+    double kValue = config["k-value"];
     elementSelector = static_pointer_cast<selection::Selector>(make_shared<selection::RandomSelector>(kValue, alpha));
 }
 

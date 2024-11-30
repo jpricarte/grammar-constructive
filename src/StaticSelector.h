@@ -23,14 +23,14 @@ namespace selection {
     class RandomSelector : public Selector
     {
     private:
-        int kValue;
+        double kValue;
         double alphaValue;
         std::uniform_int_distribution<int> distribution;
         std::default_random_engine generator;
 
 
     public:
-        inline RandomSelector(int kValue, double alpha) : kValue(kValue), alphaValue(alpha), generator(std::default_random_engine()) {};
+        inline RandomSelector(double kValue, double alpha) : kValue(kValue), alphaValue(alpha), generator(std::default_random_engine()) {};
 
         inline void initialize(problem::Instance& instance, problem::SolutionPtr solution) override { /*Do nothing*/ };
 
