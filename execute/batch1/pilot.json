@@ -1,6 +1,7 @@
 {
     "type": "greedy",
     "priority": {
-        "type": "greedy"
+        "type": "pilot",
+        "k-value": 0
     }
 }

@@ -19,11 +19,15 @@ namespace ConstructiveAlgorithm {
 
     void selectBestCandidates(problem::Problem& problem, std::vector<problem::SolutionPtr>& solutions, int beamWidth);
 
-    problem::SolutionPtr greedyAlgorithm(problem::Problem& problem, problem::Instance& instance, selection::SelectorPtr selector);
+    problem::SolutionPtr greedyAlgorithm(problem::Problem& problem, problem::Instance& instance, selection::SelectorPtr selector, StopCriteriaPtr stopCriteria);
 
     problem::SolutionPtr greedyAlgorithm(problem::Instance& instance, problem::SolutionPtr solution, selection::SelectorPtr selector);
 
-    problem::SolutionPtr beamsearchAlgorithm(problem::Problem& problem, problem::Instance& instance, selection::SelectorPtr selector, int beamWidth, int expasionWidth);
+    problem::SolutionPtr beamsearchAlgorithm(problem::Problem& problem,
+        problem::Instance& instance,
+        selection::SelectorPtr selector,
+        int beamWidth, int expasionWidth,
+        StopCriteriaPtr stopCriteria);
 
     problem::SolutionPtr multistartAlgorithm(problem::Problem& problem,
         problem::Instance& instance,

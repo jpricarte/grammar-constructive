@@ -23,7 +23,6 @@ class AlgorithmConfiguration {
 
     // Params struct, may be empty
     BeamSearchParamsPtr beamParams = nullptr;
-    ConstructiveAlgorithm::StopCriteriaPtr stopCriteria = nullptr;
 
     int numSolutions;
 
@@ -43,6 +42,7 @@ class AlgorithmConfiguration {
     void parseStopCriteria(nlohmann::json& algorithmConfig);
 
     public:
+        ConstructiveAlgorithm::StopCriteriaPtr stopCriteria = nullptr;
         AlgorithmConfiguration() = default;
         void readConfiguration(std::string filename);
         problem::SolutionPtr run(problem::Problem& problem, problem::Instance& instance);

@@ -76,11 +76,10 @@ if [ ! -s "${STDOUT}" ]; then
     error "${STDOUT}: No such file or directory"
 fi
 # This is an example of reading a number from the output.  It assumes that the
-# objective value is the first number in the first column of the last line of
-# the output.
-COST=$(tail -n 1 ${STDOUT} | grep -e '^[[:space:]]*[+-]\?[0-9]' | cut -f1)
-echo "$COST"
+# objective value is the third number in the of the last line of the output (sep with ',').
+COST=$(tail -n 1 ${STDOUT} | cut -f3 -d ,)
+TIME=$(tail -n 1 ${STDOUT} | cut -f4 -d ,)
+echo "${COST} ${TIME}"
 # Comment the following line if you wish to preserve temporary files
 rm -f "${STDOUT}" "${STDERR}" "${CONFIG_FILE}"
 exit 0
-

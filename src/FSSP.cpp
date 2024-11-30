@@ -42,6 +42,7 @@ std::vector<problem::ElementPtr> FSSSolution::getSolution() {
 
 void FSSSolution::addElementToSolution(problem::ElementPtr element) {
     this->solution.push_back(element);
+    this->elementsQuality.clear();
     auto fssElement = static_pointer_cast<FSSElement>(element);
     std::sort(this->candidates.begin(), this->firstVisited, [this](problem::ElementPtr a, problem::ElementPtr b) {
         return this->getElementQuality(a) < this->getElementQuality(b);
@@ -50,22 +51,31 @@ void FSSSolution::addElementToSolution(problem::ElementPtr element) {
     auto fssInstance = (FSSInstance&) this->parentInstance;
     //TODO: mapear jobNumber com ji do bsSolution
     auto ji = findJiFromJobNumber(fssElement->jobNumber);
+    gOperationCounter++;
     this->bsSolution.addi(ji, fssInstance.getBaseInstance());
 }
 
 double FSSSolution::getElementQuality(problem::ElementPtr element) {
+    if (this->elementsQuality.count(element))
+        return this->elementsQuality[element];
+
+    gOperationCounter++;
     auto fssElement = std::static_pointer_cast<FSSElement>(element);
     auto ji = findJiFromJobNumber(fssElement->jobNumber);
     auto fssInstance = (FSSInstance&)this->parentInstance;
     auto bsInstance = fssInstance.getBaseInstance();
+    double quality;
     if (this->solution.size()==0)
-        return this->bsSolution.Ivalue(ji, bsInstance);
+        quality = this->bsSolution.Ivalue(ji, bsInstance);
     else
-        return this->bsSolution.Bvalue(ji, bsInstance);
+        quality = this->bsSolution.Bvalue(ji, bsInstance);
+    this->elementsQuality[element] = quality;
+    return quality;
 }
 
 double FSSSolution::getObjectiveValue() {
     if (this->objectiveValue < 0) {
+        gOperationCounter++;
         auto bsInstance = ((FSSInstance&)parentInstance).getBaseInstance();
         auto ns = PFSSolution(bsInstance);
         ns.pi = this->bsSolution.pi;

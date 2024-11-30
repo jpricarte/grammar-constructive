@@ -1,0 +1,18 @@
+{
+    "type": "iterated",
+    "internal-algorithm": {
+        "type": "beamsearch",
+        "beam-width": 8,
+        "expansion-width": 5,
+        "priority": {
+            "type": "random",
+            "alpha-value": 0.327,
+            "k-value": 15
+        }
+    },
+    "stop": {
+        "max-iterations": 34,
+        "max-no-improvement-iterations": 17
+    },
+    "num-solutions": 8
+}

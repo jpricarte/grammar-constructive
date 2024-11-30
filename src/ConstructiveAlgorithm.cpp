@@ -1,4 +1,5 @@
 #include "ConstructiveAlgorithm.h"
+#include "Problem.h"
 #include <algorithm>
 #include <iostream>
 #include <cmath>
@@ -50,7 +51,10 @@ void ConstructiveAlgorithm::selectBestCandidates(problem::Problem& problem, vect
     }
 }
 
-problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Problem& problem, problem::Instance& instance, selection::SelectorPtr selector)
+problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Problem& problem,
+    problem::Instance& instance,
+    selection::SelectorPtr selector,
+    StopCriteriaPtr stopCriteria)
 {
     auto solution = instance.initializeSolution();
     while (not instance.isComplete(solution))
@@ -62,10 +66,14 @@ problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Problem& pr
         }
         solution->addElementToVisited(choosedElement);
     }
+    if (stopCriteria->shouldStop(0, 0))
+        solution = nullptr;
     return solution;
 }
 
-problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Instance& instance, problem::SolutionPtr solution, selection::SelectorPtr selector)
+problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Instance& instance,
+    problem::SolutionPtr solution,
+    selection::SelectorPtr selector)
 {
     while (not instance.isComplete(solution))
     {
@@ -80,7 +88,12 @@ problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Instance& i
     return solution;
 }
 
-problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem& problem, problem::Instance& instance, selection::SelectorPtr selector, int beamWidth, int expasionWidth)
+problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem& problem,
+    problem::Instance& instance,
+    selection::SelectorPtr selector,
+    int beamWidth,
+    int expasionWidth,
+    StopCriteriaPtr stopCriteria)
 {
     vector<problem::SolutionPtr> beam{};
     problem::SolutionPtr bestSolution = nullptr;
@@ -129,9 +142,16 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
                     }
                 }
             }
+            // Stop calc if is over budget
+            if (stopCriteria->shouldStop(0, 0))
+                break;
         }
         selectBestCandidates(problem, beam, beamWidth);
+        // Stop calc if is over budget
+        if (stopCriteria->shouldStop(0, 0))
+            break;
     }
+
     return bestSolution;
 }
 
@@ -148,6 +168,8 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithm(problem::Problem
     while (!stopCriteria->shouldStop(iterations, countNoImprovement))
 	{
 		auto solution = algorithm(problem, instance, elementSelector);
+        if (stopCriteria->shouldStop(iterations, countNoImprovement))
+            break;
         double val = problem.objectiveValue(solution);
         if (bestSolution == nullptr or val < bestVal) {
             bestSolution = solution;
@@ -185,6 +207,9 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithm(problem::Problem
         for (int i = 0; i < numSolutions; i++)
         {
             ants.push_back(algorithm(problem, instance, elementSelector));
+            if (stopCriteria->shouldStop(iterations, countNoImprovement))
+                break;
+
             double val = ants[i]->getObjectiveValue();
             if (bestAnt == nullptr or val < bestValue) {
                 bestAnt = ants[i];
@@ -193,6 +218,9 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithm(problem::Problem
                 improved = true;
             }
         }
+        if (stopCriteria->shouldStop(iterations, countNoImprovement))
+            break;
+
         if (!improved)
         {
             countNoImprovement++;

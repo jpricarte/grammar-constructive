@@ -3,7 +3,9 @@
 #include "../submodule/fssp/beam_search.hpp"
 #include "../submodule/fssp/instance.hpp"
 #include "Problem.h"
+#include <unordered_map>
 
+using uo_t = unordered_map<problem::ElementPtr, double>;
 
 struct FSSElement : public problem::Element {
     int jobNumber;
@@ -18,6 +20,7 @@ public:
     beamnode bsSolution;
     problem::Instance& parentInstance;
     int objectiveValue;
+    uo_t elementsQuality;
 
     FSSSolution(FSSSolution& other);
     FSSSolution(problem::Instance& parentInstance);
@@ -43,7 +46,8 @@ public:
     bool isComplete(problem::SolutionPtr solution) override;
 
     inline InstanceFSSP getBaseInstance() { return bsInstance; };
-    inline int getNumJobs() { return numJobs; };
+    inline const int getNumJobs() { return numJobs; };
+    inline const int getNumMachines() { return numMachines; };
     inline std::vector<problem::ElementPtr> getJobs() { return jobs; };
 };
 

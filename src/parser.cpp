@@ -47,7 +47,7 @@ void AlgorithmConfiguration::parseGreedy(json& algorithmConfig)
     parsePriority(algorithmConfig);
 
     this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i, selection::SelectorPtr s) {
-        return ConstructiveAlgorithm::greedyAlgorithm(p, i, s);
+        return ConstructiveAlgorithm::greedyAlgorithm(p, i, s, this->stopCriteria);
     };
 }
 
@@ -78,7 +78,7 @@ void AlgorithmConfiguration::parseBeamsearch(json& algorithmConfig)
     }
 
     this->baseAlgorithm = [&](problem::Problem& p, problem::Instance& i, selection::SelectorPtr s) {
-        return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, s, beamParams->beamWidth, beamParams->expansionWidth);
+        return ConstructiveAlgorithm::beamsearchAlgorithm(p, i, s, beamParams->beamWidth, beamParams->expansionWidth, this->stopCriteria);
     };
 }
 

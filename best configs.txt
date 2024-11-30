@@ -1,0 +1,35 @@
+KSLFP -
+# Best configurations as commandlines (first number is the configuration ID; same order as above):
+244  -a I 39 23 8 -i B 5 2 -p R 0.2176 6
+259  -a I 27 17 10 -i B 4 2 -p R 0.4016 8
+293  -a I 31 22 8 -i B 6 3 -p R 0.2492 10
+233  -a I 22 9 7 -i B 7 3 -p R 0.2198 10
+289  -a I 14 16 10 -i B 7 4 -p R 0.0989 14
+170  -a I 24 22 6 -i B 2 3 -p R 0.2456 6
+
+FSSP -
+# Best configurations as commandlines (first number is the configuration ID; same order as above):
+310  -a I 34 17 8 -i B 8 5 -p R 0.327 15
+364  -a I 19 27 10 -i B 8 4 -p R 0.375 17
+350  -a I 48 19 5 -i B 8 4 -p R 0.2881 18
+314  -a I 18 30 10 -i B 8 5 -p R 0.3863 19
+379  -a I 24 29 10 -i B 8 5 -p R 0.2732 18
+366  -a I 36 20 8 -i B 8 6 -p R 0.3258 18
+
+FSSP - No Iterated
+# Best configurations as commandlines (first number is the configuration ID; same order as above):
+170  -a B 8 4 -p R 0.279 6
+186  -a B 8 4 -p R 0.0534 8
+94   -a B 8 3 -p R 0.2502 6
+159  -a B 8 3 -p R 0.1123 8
+196  -a B 8 3 -p R 0.2631 8
+146  -a B 8 4 -p R 0.3186 6
+
+FSSP - No iterated with time explicity
+# Best configurations as commandlines (first number is the configuration ID; same order as above):
+173  -a B 8 2 -p R 0.4983 13
+177  -a B 8 2 -p R 0.3133 16
+191  -a B 8 2 -p R 0.4225 16
+181  -a B 8 3 -p R 0.3332 18
+154  -a B 8 3 -p R 0.3743 15
+182  -a B 8 3 -p R 0.5215 12

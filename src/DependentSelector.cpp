@@ -62,7 +62,12 @@ problem::ElementPtr selection::PilotSelector::selectElement(problem::Instance& i
     double bestVal = INFINITY;
     problem::ElementPtr bestElement = nullptr;
     auto listCandidates = solution->getCandidatesElements();
-    int minRange = std::min(kValue, (int)listCandidates.size());
+    int minRange;
+    if (kValue == 0)
+        minRange = (int)listCandidates.size();
+    else
+        minRange = std::min(kValue, (int)listCandidates.size());
+
     for (int i = 0; i < minRange; i++)
     {
         auto candidate = solution->getCandidatesElements().at(i);
