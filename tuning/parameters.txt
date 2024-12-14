@@ -34,8 +34,8 @@ beam_w          ""                   i (2, 8)       | alg == "B"
 beam_e          ""                   i (2, 8)       | alg == "B"
 
 # Iterated params
-max_iter        ""                   i (0, 0)       | alg == "I"
-max_nImpr       ""                   i (0, 0)       | alg == "I"
+max_iter        ""                   i (0, 20)      | alg == "I"
+max_nImpr       ""                   i (0, 20)      | alg == "I"
 n_sols          ""                   i (1, 10)      | alg == "I"
 
 ## Internal algorithm (In iterated)

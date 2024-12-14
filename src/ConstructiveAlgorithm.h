@@ -5,6 +5,7 @@
 #include "Problem.h"
 #include "Selector.h"
 
+#define TUNNING 0 // Will return DBL_MAX if the budget is insufficient for iterated
 
 namespace ConstructiveAlgorithm {
 

@@ -3,12 +3,14 @@
 
 #include "simple-heuristic.h"
 #include "../submodule/fssp/instance.hpp"
+#include "ConstructiveAlgorithm.h"
 #include "Problem.h"
 #include "parser.h"
 #include <cfloat>
 #include <fstream>
 #include <filesystem>
 #include <climits>
+#include <cmath>
 
 #define DEBUG 0
 
@@ -59,6 +61,15 @@ void setBugetFSSP(AlgorithmConfiguration& configuration, FSSInstance& instance)
     }
 }
 
+void setBudgetKLSFP(AlgorithmConfiguration& configuration, KLSFInstance& instance)
+{
+    auto& graph = instance.getGraph();
+    int labels = graph.nColors;
+    // configuration.stopCriteria->maxIterations = 0;
+    // configuration.stopCriteria->maxNoImprov = 0;
+    configuration.stopCriteria->maxBudget = 1.48*pow(labels,0.354);
+}
+
 int autoFSSP(int argc, char* argv[])
 {
     srand(atoi(argv[1]));
@@ -70,7 +81,8 @@ int autoFSSP(int argc, char* argv[])
     auto instance = FSSInstance(instanceFSSP);
     auto configuration = AlgorithmConfiguration();
     configuration.readConfiguration(argv[3]);
-    setBugetFSSP(configuration, instance);
+    if (TUNNING)
+        setBugetFSSP(configuration, instance);
     auto solution = static_pointer_cast<FSSSolution>(configuration.run(problem, instance));
 
     double value = DBL_MAX;

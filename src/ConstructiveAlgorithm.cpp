@@ -60,14 +60,17 @@ problem::SolutionPtr ConstructiveAlgorithm::greedyAlgorithm(problem::Problem& pr
     while (not instance.isComplete(solution))
     {
         auto choosedElement = selector->selectElement(instance, solution);
+        if (stopCriteria->shouldStop(0, 0))
+        {
+            solution = nullptr;
+            break;
+        }
         if (instance.isValid(solution, choosedElement))
         {
             solution->addElementToSolution(choosedElement);
         }
         solution->addElementToVisited(choosedElement);
     }
-    if (stopCriteria->shouldStop(0, 0))
-        solution = nullptr;
     return solution;
 }
 
@@ -123,6 +126,10 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
                 for (int j = 0; j < expasionWidth; j++)
                 {
                     auto choosedElement = selector->selectElement(instance, solution);
+                    if (TUNNING && stopCriteria->shouldStop(0, 0))
+                    {
+                        break;
+                    }
 
                     if (choosedElement == nullptr)
                     {
@@ -143,12 +150,12 @@ problem::SolutionPtr ConstructiveAlgorithm::beamsearchAlgorithm(problem::Problem
                 }
             }
             // Stop calc if is over budget
-            if (stopCriteria->shouldStop(0, 0))
+            if (TUNNING && stopCriteria->shouldStop(0, 0))
                 break;
         }
         selectBestCandidates(problem, beam, beamWidth);
         // Stop calc if is over budget
-        if (stopCriteria->shouldStop(0, 0))
+        if (TUNNING && stopCriteria->shouldStop(0, 0))
             break;
     }
 
@@ -168,8 +175,12 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithm(problem::Problem
     while (!stopCriteria->shouldStop(iterations, countNoImprovement))
 	{
 		auto solution = algorithm(problem, instance, elementSelector);
-        if (stopCriteria->shouldStop(iterations, countNoImprovement))
+        if (stopCriteria->shouldStop(0, 0))
+        {
+            if (TUNNING)
+                bestSolution = nullptr;
             break;
+        }
         double val = problem.objectiveValue(solution);
         if (bestSolution == nullptr or val < bestVal) {
             bestSolution = solution;
@@ -207,8 +218,12 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithm(problem::Problem
         for (int i = 0; i < numSolutions; i++)
         {
             ants.push_back(algorithm(problem, instance, elementSelector));
-            if (stopCriteria->shouldStop(iterations, countNoImprovement))
+            if (stopCriteria->shouldStop(0, 0))
+            {
+                if (TUNNING)
+                    bestAnt = nullptr;
                 break;
+            }
 
             double val = ants[i]->getObjectiveValue();
             if (bestAnt == nullptr or val < bestValue) {
@@ -218,8 +233,12 @@ problem::SolutionPtr ConstructiveAlgorithm::multistartAlgorithm(problem::Problem
                 improved = true;
             }
         }
-        if (stopCriteria->shouldStop(iterations, countNoImprovement))
+        if (stopCriteria->shouldStop(0, 0))
+        {
+            if (TUNNING)
+                bestAnt = nullptr;
             break;
+        }
 
         if (!improved)
         {

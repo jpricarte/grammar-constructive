@@ -1,0 +1,10 @@
+{
+    "type": "beamsearch",
+    "beam-width": 3,
+    "expansion-width": 3,
+    "priority": {
+        "type": "random",
+        "alpha-value": 0.8,
+        "k-value": 0
+    }
+}
